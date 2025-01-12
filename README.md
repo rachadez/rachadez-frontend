@@ -1,5 +1,3 @@
----
-
 # React + Vite
 
 Este template fornece uma configuração mínima para usar React com Vite, com HMR (Hot Module Replacement) e algumas regras do ESLint.
@@ -7,7 +5,7 @@ Este template fornece uma configuração mínima para usar React com Vite, com H
 Atualmente, estão disponíveis dois plugins oficiais:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md): utiliza [Babel](https://babeljs.io/) para Fast Refresh.
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc): utiliza [SWC](https://swc.rs/) para Fast Refresh.
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc/blob/main/packages/plugin-react-swc/README.md): utiliza [SWC](https://swc.rs/) para Fast Refresh.
 
 ---
 
@@ -21,5 +19,3 @@ Este comando inicia o servidor de desenvolvimento do Vite. Ele cria uma versão 
 
 ### `npm i react-router-dom`
 Este comando instala a biblioteca `react-router-dom`, que é usada para gerenciar as rotas de navegação em um aplicativo React. Por exemplo, ela permite criar páginas e navegar entre elas sem recarregar a aplicação.
-
---- 
