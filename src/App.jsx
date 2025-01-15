@@ -1,5 +1,27 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
+import LoginProfessor from './pages/LoginProfessor';
+import LoginAluno from './pages/LoginAluno';
+import ProfessorHome from './pages/ProfessorHome';
+import AlunoHome from './pages/AlunoHome';
+
 function App() {
-  return <h1>Hello, World!</h1>;
+  return (
+    <Router>
+      <Routes>
+        {/* Página inicial */}
+        <Route path="/" element={<Home />} />
+
+        {/* Rotas de Login */}
+        <Route path="/login-professor" element={<LoginProfessor />} />
+        <Route path="/login-aluno" element={<LoginAluno />} />
+
+        {/* Páginas pós-login */}
+        <Route path="/professor-home" element={<ProfessorHome />} />
+        <Route path="/aluno-home" element={<AlunoHome />} />
+      </Routes>
+    </Router>
+  );
 }
 
 export default App;
