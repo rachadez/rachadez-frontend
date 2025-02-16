@@ -1,4 +1,5 @@
 import './LoginAluno.css';
+import InputEmail from './components/InputEmail';
 import { useNavigate } from 'react-router-dom';
 
 function LoginAluno() {
@@ -14,7 +15,7 @@ function LoginAluno() {
         <div className="login-aluno">
             <h1>Login do Aluno</h1>
             <form onSubmit={handleSubmit}>
-                <input type="text" placeholder="Email" />
+                <InputEmail />
                 <input type="password" placeholder="Senha" />
                 <button type="submit">Entrar</button>
             </form>
