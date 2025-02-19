@@ -16,8 +16,8 @@ function LoginAluno() {
             <h1>Login do Aluno</h1>
             <form onSubmit={handleSubmit}>
                 <InputEmail />
-                <input type="password" placeholder="Senha" />
-                <button type="submit">Entrar</button>
+                
+                
             </form>
         </div>
     );

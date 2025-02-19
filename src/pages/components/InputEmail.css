@@ -1,33 +1,42 @@
 .email-container {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-    color: #EEEEEE;
-    font-family: 'Open Sans', sans-serif;
-  }
-  
-  .email-container label {
-    font-size: 16px;
-    margin-bottom: 5px;
-    color: #0B53B8;
-    font-weight: 600;
-  }
-  
-  .email-container input {
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #A9A9A9;
-    color: #717171;
-    border-radius: 10px;
-    outline: none;
-  }
+  display: flex;
+  flex-direction: column;
+  width: 17vw;
+  height: 8vh;
+  margin-bottom: 2vh;
+  color: #EEEEEE;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.email-container label {
+  font-size: 2.2vh;
+  margin-bottom: 1vh;
+  color: #0B53B8;
+  font-weight: 600;
+}
+
+.email-container input {
+  padding: 1.5vh;
+  font-size: 1.8vh;
+  border: 0.1vh solid #A9A9A9;
+  color: #717171;
+  border-radius: 1.5vh;
+  width: 17vw;
+  height: 8vh;
+  outline: none;
+}
+
+.email-container input::placeholder {
+  font-size: 2vh; 
+  width: 8.4vw;   
+}
 
 .email-container input.error {
-    border-color: #FF4646; 
-  }
-  
-  .email-container .error-message {
-    color: #FF4646; 
-    font-size: 12px;
-    margin-top: 5px;
-  }
+  border-color: #FF4646; 
+}
+
+.email-container .error-message {
+  color: #FF4646; 
+  font-size: 1.8vh;
+  margin-top: 0.7vh;
+}
