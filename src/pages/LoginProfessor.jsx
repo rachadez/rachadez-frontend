@@ -1,4 +1,5 @@
 import './LoginProfessor.css';
+import DefaultButton from './components/Buttons/DefaultButton';
 import { useNavigate } from 'react-router-dom';
 
 function LoginProfessor() {
@@ -16,7 +17,7 @@ function LoginProfessor() {
             <form onSubmit={handleSubmit}>
                 <input type="text" placeholder="Email" />
                 <input type="password" placeholder="Senha" />
-                <button type="submit">Entrar</button>
+                <DefaultButton label={"Entrar"}></DefaultButton>
             </form>
         </div>
     );

@@ -1,5 +1,6 @@
 import './LoginAluno.css';
 import { useNavigate } from 'react-router-dom';
+import DefaultButton from './components/Buttons/DefaultButton';
 
 function LoginAluno() {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ function LoginAluno() {
             <form onSubmit={handleSubmit}>
                 <input type="text" placeholder="Email" />
                 <input type="password" placeholder="Senha" />
-                <button type="submit">Entrar</button>
+                <DefaultButton label={"Entrar"}></DefaultButton>
             </form>
         </div>
     );

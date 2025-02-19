@@ -1,0 +1,19 @@
+.add-button {
+    font-family: 'Open Sans', sans-serif !important;
+    background-color: #F9F9F9 !important;
+    padding: 15px 32px !important;
+    font-size: 15px !important;
+    border-radius: 10px !important;
+    cursor: pointer;
+    color: #002BBC !important;
+    transition: none;
+}
+
+.add-button:hover {
+    color: #2c2c2c !important;
+}
+
+/* Mexer no ícone */
+.add-button .pi {
+    padding-right: 25px;
+}
