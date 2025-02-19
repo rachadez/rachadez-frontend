@@ -1,5 +1,5 @@
 import './LoginAluno.css';
-import InputEmail from './components/InputEmail';
+import InputEmail from './components/InputEmail/InputEmail';
 import { useNavigate } from 'react-router-dom';
 
 function LoginAluno() {
