@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import "./PasswordInput.css";
 
-const PasswordInput = ({ showToggle = false }) => {
+const PasswordInput = ({ showToggle = true }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
