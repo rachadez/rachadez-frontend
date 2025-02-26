@@ -1,0 +1,75 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.cadastro-page .header {
+  display: flex;
+  align-items: left;
+  padding: 60px;
+  background-color: #0b53b8;
+  gap: 60px;
+}
+
+.header h1 {
+  color: white;
+  font-size: 40px;
+  margin-bottom: 25px;
+}
+
+.header p {
+  color: white;
+}
+
+.cadastro-page a {
+  display: flex;
+  justify-content: center;
+}
+
+.form-container {
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 37px;
+  padding: 65px;
+  column-gap: 65px;
+}
+
+.form-container label {
+  color: #0b53b8;
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.form-container input, select {
+    padding: 15px;
+    background-color: #EEEEEE;
+    border: solid #A9A9A9 1px;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.form-group {
+  width: 330px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+
+.cadastro-page a {
+    font-style: none;
+    color: #0b53b8;
+    text-decoration: none;
+}
+
+.cadastro-page .button {
+    width: 330px;
+    align-self: center;
+    justify-self: center;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+}

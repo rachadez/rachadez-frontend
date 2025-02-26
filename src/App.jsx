@@ -4,7 +4,7 @@ import LoginProfessor from './pages/LoginProfessor';
 import LoginAluno from './pages/LoginAluno';
 import ProfessorHome from './pages/ProfessorHome';
 import AlunoHome from './pages/AlunoHome';
-import PasswordInput from './pages/components/Password/PasswordInput';
+import Cadastro from './pages/Cadastro';
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
         <Route path="/professor-home" element={<ProfessorHome />} />
         <Route path="/aluno-home" element={<AlunoHome />} />
 
-        <Route path="/teste" element={<PasswordInput/>} />
+        <Route path="/cadastro" element={<Cadastro/>} />
       </Routes>
     </Router>
   );
