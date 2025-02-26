@@ -3,6 +3,7 @@ import "./Cadastro.css";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import DefaultButton from "./components/Buttons/DefaultButton";
+import InputTemplate from "./components/InputTemplate/InputTemplate";
 
 function Cadastro() {
   const navigate = useNavigate();
@@ -20,41 +21,38 @@ function Cadastro() {
           </p>
         </div>
       </div>
-
-      <div className="form-container">
-        <div className="form-group">
-          <label>Nome completo</label>
-          <input type="text" placeholder="Fulano de Tal" />
+  
+      <div className="form-wrapper">
+        <div className="form-container">
+          <div className="form-group">
+            <InputTemplate type="text" label="Nome completo" placeholder="Fulano de tal" />
+          </div>
+          <div className="form-group">
+            <InputTemplate type="text" label="Matrícula" placeholder="123456789" />
+          </div>
+          <div className="form-group">
+            <label>Curso</label>
+            <select>
+              <option>Selecione</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <InputTemplate type="email" label="E-mail acadêmico" placeholder="aluno@estudante.ufcg.edu.br" />
+          </div>
+          <div className="form-group">
+            <InputTemplate type="password" label="Senha" placeholder="**********" />
+          </div>
+          <div className="form-group">
+            <InputTemplate type="text" label="Telefone" placeholder="(00) 91234-5678"/>
+          </div>
         </div>
-        <div className="form-group">
-          <label>Matrícula</label>
-          <input type="text" placeholder="123456789" />
+  
+        <div className="button">
+          <DefaultButton label={"Realizar cadastro"} />
+          <a href="#" className="link">
+            Não possuo matrícula &gt;
+          </a>
         </div>
-        <div className="form-group">
-          <label>Curso</label>
-          <select>
-            <option>Selecione</option>
-          </select>
-        </div>
-        <div className="form-group">
-          <label>E-mail acadêmico</label>
-          <input type="email" placeholder="aluno@estudante.ufcg.edu.br" />
-        </div>
-        <div className="form-group">
-          <label>Senha</label>
-          <input type="password" placeholder="**********" />
-        </div>
-        <div className="form-group">
-          <label>Telefone</label>
-          <input type="text" placeholder="(00) 91234-5678" />
-        </div>
-      </div>
-
-      <div className="button">
-        <DefaultButton label={"Realizar cadastro"}></DefaultButton>
-        <a href="#" className="link">
-          Não possuo matrícula &gt;
-        </a>
       </div>
     </div>
   );

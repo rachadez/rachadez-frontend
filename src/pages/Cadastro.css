@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .cadastro-page .header {
@@ -32,9 +33,8 @@
   justify-items: center;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, auto);
-  gap: 37px;
+  gap: 50px;
   padding: 65px;
-  column-gap: 65px;
 }
 
 .form-container label {
@@ -72,4 +72,9 @@
     display: flex;
     flex-direction: column;
     gap: 60px;
+}
+
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
 }

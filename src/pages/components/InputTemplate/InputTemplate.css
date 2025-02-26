@@ -1,0 +1,35 @@
+.input-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+  .input-container input {
+    width: auto;
+    padding: 1rem;
+    font-size: 1rem;
+    border: 1px solid #A9A9A9;
+    border-radius: 10px;
+    background-color: #EEEEEE;
+    outline: none;
+  }
+  
+  .input-container input::placeholder {
+    font-size: 1rem; 
+    color: #A9A9A9;
+  }
+  
+  .input-container input.error {
+    border-color: #FF4646;
+  }
+  .input-container input.error::placeholder {
+    opacity: 0; 
+  }
+  
+  .input-container .error-message {
+    color: #FF4646; 
+    font-size: 1rem;
+    margin-top: 0.7vh;
+    text-align: left;
+  }
