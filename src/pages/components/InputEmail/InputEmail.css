@@ -1,0 +1,45 @@
+.email-container {
+  display: flex;
+  flex-direction: column;
+  width: 17vw;
+  height: 8vh;
+  margin-bottom: 2vh;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.email-container label {
+  font-size: 2.2vh;
+  margin-bottom: 1vh;
+  color: #0B53B8;
+  font-weight: 600;
+}
+
+.email-container input {
+  padding: 1.5vh;
+  font-size: 1.8vh;
+  border: 0.1vh solid #A9A9A9;
+  border-radius: 1.5vh;
+  background-color: #EEEEEE;
+  width: 17vw;
+  height: 8vh;
+  outline: none;
+}
+
+.email-container input::placeholder {
+  font-size: 2vh; 
+  width: 8.4vw;   
+  color: #A9A9A9;
+}
+
+.email-container input.error {
+  border-color: #FF4646; 
+}
+.email-container input.error::placeholder {
+  opacity: 0; 
+}
+
+.email-container .error-message {
+  color: #FF4646; 
+  font-size: 1.8vh;
+  margin-top: 0.7vh;
+}
