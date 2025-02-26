@@ -12,7 +12,6 @@ const EmailInput = () => {
   
     return (
       <div className="email-container">
-        <label htmlFor="email">E-mail</label>
         <input
           type="email"
           id="email"

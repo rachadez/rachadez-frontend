@@ -1,8 +1,10 @@
 .default-button {
-    font-family: 'Open Sans', sans-serif;
+    width: 100%;
+    font-family: 'Open Sans', sans-serif !important;
+    font-weight: bold !important;
     background-color: #0B53B8 !important;
-    padding: 15px 32px !important;
-    font-size: 15px !important;
+    padding: 13px !important;
+    font-size: 18px !important;
     border-radius: 10px !important;
     cursor: pointer;
 }
