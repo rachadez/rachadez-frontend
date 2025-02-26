@@ -23,3 +23,10 @@
 .home-container button:hover {
     background-color: #535bf2;
 }
+
+.test {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: yellowgreen;
+}
