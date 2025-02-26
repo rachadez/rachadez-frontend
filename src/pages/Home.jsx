@@ -13,8 +13,6 @@ function Home() {
             <p>Escolha uma opção:</p>
             <DefaultButton label={"Sou professor"} onClick={() => navigate('/login-professor')}></DefaultButton>
             <DefaultButton label={"Sou aluno"} onClick={() => navigate('/login-aluno')}></DefaultButton>
-            <AddButton label={"Reservar nova partida"} icon="pi pi-plus"></AddButton>
-            <DeleteButton label={"Excluir Administrador"} text></DeleteButton>
         </div>
     );
 }

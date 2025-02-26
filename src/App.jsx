@@ -4,7 +4,7 @@ import LoginProfessor from './pages/LoginProfessor';
 import LoginAluno from './pages/LoginAluno';
 import ProfessorHome from './pages/ProfessorHome';
 import AlunoHome from './pages/AlunoHome';
-import PasswordInput from './components/PasswordInput';
+import PasswordInput from './pages/components/Password/PasswordInput';
 
 function App() {
   return (
