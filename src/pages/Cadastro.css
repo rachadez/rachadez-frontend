@@ -33,7 +33,8 @@
   justify-items: center;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(2, auto);
-  gap: 50px;
+  gap: 2.5rem 0;
+  max-width: 100%;
   padding: 65px;
 }
 
@@ -50,13 +51,15 @@
     border: solid #A9A9A9 1px;
     border-radius: 10px;
     font-size: 16px;
+    width: 100%; 
 }
 
 .form-group {
-  width: 330px;
+  width: 22rem;
   display: flex;
   flex-direction: column;
   align-items: left;
+  padding: 0 1rem;
 }
 
 .cadastro-page a {
@@ -77,4 +80,36 @@
 .form-wrapper {
   display: flex;
   flex-direction: column;
+  padding: 0 10rem;
+}
+
+@media (max-width: 1080px) {
+  .form-container {
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+  }
+
+  .form-wrapper {
+    padding: 0;
+  }
+}
+
+@media (max-width: 800px) {
+  .cadastro-page .header {
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+  }
+
+  .form-container {
+    grid-template-columns: 1fr;
+  }
+
+  .cadastro-page .button {
+    gap: 20px;
+  }
+
+  .arrow-left {
+    display: none;
+  }
 }

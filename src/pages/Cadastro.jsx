@@ -11,7 +11,7 @@ function Cadastro() {
   return (
     <div className="cadastro-page">
       <div className="header">
-        <ArrowLeft color="#ffffff" size={40} onClick={() => navigate("/")} />
+        <ArrowLeft className="arrow-left" color="#ffffff" size={40} onClick={() => navigate("/")} />
         <div className="header-content">
           <h1>Faça seu cadastro!</h1>
           <p>
