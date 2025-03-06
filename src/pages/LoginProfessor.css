@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
+}
 
 .container {
     display: flex;
@@ -64,11 +64,13 @@
     font-weight: 600;
     font-size: 20px;
     color: #0B53B8;
-    margin-top: -20px; /* 45px de gap - 20px de margin = 25px de gap igual prototipação */
+    margin-top: -20px;
+    /* 45px de gap - 20px de margin = 25px de gap igual prototipação */
 }
 
 .right-section-elements p:first-of-type {
-    margin-top: 45px; /* Mantém o primeiro <p> com 45px de distância do form */
+    margin-top: 45px;
+    /* Mantém o primeiro <p> com 45px de distância do form */
 }
 
 .right-section-elements form {
@@ -76,4 +78,66 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+/* Media Queries para Responsividade */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .left-section {
+        display: none;
+    }
+
+    .login-professor {
+        width: 100%;
+        min-height: 100vh;
+        padding: 1.5rem;
+    }
+
+    .right-section-elements {
+        gap: 2rem;
+    }
+
+    .right-section-elements h1 {
+        font-size: 2rem;
+    }
+
+    .right-section-elements form {
+        width: 90%;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .left-section-elements {
+        width: 90%;
+    }
+
+    .left-section-elements p {
+        padding: 2rem 0;
+        font-size: 1rem;
+    }
+
+    .team-image {
+        max-width: 300px;
+    }
+
+    .right-section-elements h1 {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .right-section-elements {
+        gap: 1.5rem;
+    }
+
+    .right-section-elements h1 {
+        font-size: 1.75rem;
+    }
+
+    .right-section-elements p {
+        font-size: 0.9rem;
+    }
 }
