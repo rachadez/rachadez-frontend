@@ -8,7 +8,7 @@ const PasswordInput = ({ showToggle = true }) => {
   return (
     <div className="password-container">
       <input
-        type={showPassword ? "text" : "password"}
+       type={showPassword ? "password" : "text"}
         placeholder="Senha"
         className="password-input"
       />
