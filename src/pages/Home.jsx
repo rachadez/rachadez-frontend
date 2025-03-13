@@ -172,7 +172,7 @@ function Home() {
                         organizar suas atividades esportivas.
                     </p>
                     <div className="cta-button-container">
-                        <a href="index.html" className="btn-cta">
+                        <a href="/cadastro" className="btn-cta">
                             Criar uma conta
                         </a>
                     </div>
