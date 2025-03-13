@@ -34,7 +34,9 @@ function LoginProfessor() {
                             <DefaultButton label={"Entrar"}></DefaultButton>
                         </form>
                         <p>Esqueci minha senha </p>
-                        <p>Ainda não tenho cadastro</p>
+<p onClick={() => navigate("/cadastro")} style={{ cursor: "pointer" }}>
+        Ainda não tenho cadastro
+</p>   
                     </div>
                 </div>
             </div>
