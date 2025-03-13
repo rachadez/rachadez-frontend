@@ -49,12 +49,12 @@ function Home() {
                             <span className="logo-text">Racha10</span>
                         </div>
                     </div>
-                    <div className="nav-right">
+                    <div className="nav-right button-container">
                         <Link to="/login-aluno" className="btn-aluno">
-                            Entrar como Aluno
+                            <span className="btn-text">Entrar como Aluno</span>
                         </Link>
                         <Link to="/login-professor" className="btn-externo">
-                            Entrar como Externo
+                            <span className="btn-text">Entrar como Externo</span>
                         </Link>
                     </div>
                 </div>
