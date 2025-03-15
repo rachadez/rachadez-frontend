@@ -1,8 +1,8 @@
 import './LoginProfessor.css';
 import DefaultButton from './components/Buttons/DefaultButton';
-import EmailInput from './components/InputEmail/InputEmail';
 import PasswordInput from './components/Password/PasswordInput';
 import { useNavigate } from 'react-router-dom';
+import InputTemplate from './components/InputTemplate/InputTemplate';
 
 function LoginProfessor() {
     const navigate = useNavigate();
@@ -29,7 +29,7 @@ function LoginProfessor() {
                     <div className="right-section-elements">
                         <h1>Faça login no sistema</h1>
                         <form onSubmit={handleSubmit}>
-                            <EmailInput></EmailInput>
+                            <InputTemplate type="cpf" placeholder="Cpf" />
                             <PasswordInput></PasswordInput>
                             <DefaultButton label={"Entrar"}></DefaultButton>
                         </form>

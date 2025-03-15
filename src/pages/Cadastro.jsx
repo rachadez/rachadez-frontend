@@ -37,7 +37,7 @@ function Cadastro() {
             </select>
           </div>
           <div className="form-group">
-            <InputTemplate type="email" label="E-mail acadêmico" placeholder="aluno@estudante.ufcg.edu.br" />
+            <InputTemplate type="email" label="E-mail acadêmico" placeholder="email@ufcg.edu.br" />
           </div>
           <div className="form-group">
             <InputTemplate type="password" label="Senha" placeholder="**********" />

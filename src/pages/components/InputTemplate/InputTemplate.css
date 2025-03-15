@@ -9,15 +9,15 @@
     width: auto;
     padding: 1rem;
     font-size: 1rem;
-    border: 1px solid #A9A9A9;
     border-radius: 10px;
     background-color: #EEEEEE;
     outline: none;
+    border: 1px solid #d1d1d1;
   }
   
   .input-container input::placeholder {
     font-size: 1rem; 
-    color: #A9A9A9;
+    color: #717171;
   }
   
   .input-container input.error {

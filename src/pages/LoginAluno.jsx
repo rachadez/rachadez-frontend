@@ -1,6 +1,6 @@
 import './LoginAluno.css';
 import DefaultButton from './components/Buttons/DefaultButton';
-import EmailInput from './components/InputEmail/InputEmail';
+import InputTemplate from './components/InputTemplate/InputTemplate';
 import PasswordInput from './components/Password/PasswordInput';
 import { useNavigate } from 'react-router-dom';
 
@@ -30,7 +30,7 @@ function LoginAluno() {
                     <div className="right-section-elements">
                         <h1>Faça login no sistema</h1>
                         <form onSubmit={handleSubmit}>
-                            <EmailInput />
+                            <InputTemplate type="email" placeholder="email@ufcg.edu.br" />
                             <PasswordInput />
                             <DefaultButton label="Entrar" />
                         </form>
