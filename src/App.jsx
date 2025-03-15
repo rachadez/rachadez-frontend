@@ -5,6 +5,7 @@ import LoginAluno from './pages/LoginAluno';
 import ProfessorHome from './pages/ProfessorHome';
 import AlunoHome from './pages/AlunoHome';
 import Cadastro from './pages/Cadastro';
+import CadastrarReserva from './pages/CadastrarReserva';
 
 function App() {
   return (
@@ -22,6 +23,9 @@ function App() {
         <Route path="/aluno-home" element={<AlunoHome />} />
 
         <Route path="/cadastro" element={<Cadastro/>} />
+
+        <Route path="/cadastrar-reserva" element={<CadastrarReserva />} />
+
       </Routes>
     </Router>
   );
