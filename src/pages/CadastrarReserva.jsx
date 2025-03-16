@@ -43,8 +43,6 @@ const CadastrarReserva = () => {
     setShowExternalInput(true);
   };
 
-
-
   return (
     <div className="container">
       <header className="header">

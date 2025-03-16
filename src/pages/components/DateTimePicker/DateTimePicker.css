@@ -49,26 +49,22 @@
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-/* Ajuste do calendário em telas pequenas */
 @media (max-width: 767px) {
-  /* Ajustando o campo de data */
   .date-input-container {
-      max-width: 100%; /* Permite o campo de data ocupar toda a largura da tela */
-      margin-bottom: 1rem; /* Adiciona um pequeno espaçamento abaixo */
+      max-width: 100%; 
+      margin-bottom: 1rem;
   }
 
-  /* Ajustando o calendário */
   .react-datepicker-wrapper {
-      width: 100%; /* O calendário vai ocupar toda a largura disponível */
+      width: 100%;
   }
 
   .react-datepicker {
-      position: relative; /* Garante que o calendário se posicione corretamente */
-      z-index: 999; /* Garante que o calendário não fique atrás do conteúdo principal */
+      position: relative;
+      z-index: 999; 
   }
 
-  /* Se o calendário for aberto, pode ser posicionado abaixo do campo de data */
   .react-datepicker__triangle {
-      display: none; /* Remove a seta do calendário */
+      display: none; 
   }
 }

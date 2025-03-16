@@ -1,24 +1,19 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css');
 
 body {
-  overflow-x: auto; /* Permite rolar horizontalmente */
-  width: 100%; /* Garante que o body ocupe 100% da largura da tela */
+  overflow-x: auto;
+  width: 100%;
 }
 
 .container {
   background-color: #f3f4f6;
   min-height: 100vh;
   padding-top: 120px;
-  box-sizing: border-box; /* Inclui padding e bordas no cálculo da largura */
-  overflow-x: hidden; /* Impede rolagem lateral na página inteira */
+  box-sizing: border-box;
+  overflow-x: hidden;
   width: 100%;
-
-
-
-  /* Ajuste para não sobrepor header e main-content */
 }
 
-/* Header fixo */
 .header {
   background-color: white;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -34,37 +29,25 @@ body {
   height: 60px;
 }
 
-/* Título e ícone no header */
 .logo {
   color: #0B53B8;
   font-size: 2rem;
   font-weight: 700;
   margin-left: 10rem;
-  /* Aumentei a margem à esquerda */
-
 }
 
-/* Barra azul abaixo do header */
 .main-content {
   background-color: #0B53B8;
   color: white;
   padding-top: 32px;
-  /* Padding superior */
   padding-right: 32px;
-  /* Ajuste o padding à direita */
   padding-bottom: 32px;
-  /* Padding inferior */
   padding-left: 32px;
-  /* Ajuste o padding à esquerda */
   position: fixed;
   top: 60px;
-  /* Logo abaixo do header */
   left: 0;
-  /* Começa no início da tela */
   width: 100%;
-  /* Ocupar toda a largura da tela */
   height: 240px;
-  /* Altura fixa de 240px */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -96,30 +79,20 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
   margin-top: 180px;
-  /* Garantir que fique imediatamente abaixo do main-content */
   border-radius: 0.5rem;
   width: 100%;
-  /* Ocupar toda a largura da tela */
   max-width: 100%;
-  /* Garantir que ocupe 100% da largura disponível */
   display: flex;
   flex-direction: column;
   overflow: auto;
-  /* Garante que o conteúdo não ultrapasse os limites da seção */
   box-sizing: border-box;
-  /* Inclui padding na altura total da seção */
 }
 
 .form-grid {
   display: flex;
-  /* Alinha os inputs horizontalmente */
   gap: 1rem;
-  /* Ajusta o espaço entre os inputs */
   justify-content: center;
-  /* Centraliza os inputs */
   align-items: center;
-  
-  /* Alinha verticalmente */
 }
 
 @media (min-width: 768px) {
@@ -176,18 +149,14 @@ label {
   font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
-  /* Linha cinza */
   padding-bottom: 0.5rem;
 }
 
 .title-and-button {
   display: flex;
   align-items: center;
-  /* Alinha verticalmente os itens */
   justify-content: space-between;
-  /* Espaça os elementos, colocando o botão à direita */
   border-bottom: 2.5px solid #d1d5db;
-  /* Linha cinza entre os itens */
   margin-top: 1rem;
 }
 
@@ -210,23 +179,20 @@ label {
   padding: 1rem 0;
   width: 100%;
   border-bottom: 2.5px solid #d1d5db;
-  /* Linha cinza entre os itens */
 }
 
-/* Ajustes para permitir que o e-mail quebre a linha */
 .participant-item span {
-  flex: 1; /* Garante que o nome, CPF/email ocupem a mesma largura */
-  margin-right: 1rem; /* Espaçamento entre o nome e o e-mail ou CPF */
-  text-overflow: ellipsis; /* Impede o texto de ultrapassar */
-  overflow: hidden; /* Garante que o texto não ultrapasse os limites */
-  word-wrap: break-word; /* Permite a quebra de linha no caso de texto longo */
+  flex: 1;
+  margin-right: 1rem;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-wrap: break-word;
 }
 
-/* Ajustes para e-mails especificamente */
 .participant-email {
   margin-right: 1rem;
   color: #6b7280;
-  word-wrap: break-word; /* Permite que o e-mail quebre a linha */
+  word-wrap: break-word;
 }
 
 
@@ -234,11 +200,6 @@ label {
 .participant-cpf {
   color: #6b7280;
 }
-
-/* Ajuste para o layout da linha "UFCG" e "Usuários Externos" */
-
-
-
 
 .input-row {
   display: flex;
@@ -264,17 +225,12 @@ label {
   background-color: #0B53B8;
   color: white;
   padding: 1rem 4rem;
-  /* Aumentando o padding para aumentar a altura e largura */
   width: 400px;
-  /* Define uma largura maior */
   font-size: 1rem;
-  /* Aumenta o tamanho do texto */
   border: none;
   border-radius: 0.5rem;
-  /* Bordas um pouco mais arredondadas */
   cursor: pointer;
   font-weight: bold;
-  /* Deixa o texto mais destacado */
 }
 
 .submit-button:hover {
@@ -311,14 +267,12 @@ label {
 
 
 @media (max-width: 767px) {
-  
-  /* Ajusta o logo e o header para telas pequenas */
+
   .logo {
     margin-left: 0.2rem;
     font-size: 1.5rem;
   }
 
-  /* Reduz o padding e ajusta a altura do main-content */
   .main-content {
     padding: 30px;
     height: auto;
@@ -326,40 +280,35 @@ label {
     align-items: flex-start;
   }
 
-  /* Altera o layout da grid para coluna e ocupa 100% da largura */
   .form-grid {
-    flex-direction: column;  /* Coloca os itens em coluna */
-    justify-content: flex-start;  /* Alinha os itens no início */
-    align-items: stretch;  /* Garante que os inputs ocupem toda a largura */
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
     gap: 1rem;
   }
 
   .form-section {
-    /* ... outras propriedades ... */
-    margin-top: 110px; /* Reduzido de 180px para 80px */
+    margin-top: 110px;
   }
 
-  /* Ajuste os inputs para ocupar toda a largura disponível */
   .input-group {
     width: 100%;
     align-items: flex-start;
   }
 
   .participant-item input {
-    width: 100%;  /* Garante que os inputs ocupem toda a largura */
+    width: 100%;
     padding: 0.5rem;
-    margin-right: 0; /* Remove a margem à direita */
+    margin-right: 0;
     border: 1px solid #d1d5db;
     border-radius: 0.375rem;
   }
 
-  /* Reduz as margens internas da seção de participantes */
   .participants-section {
     padding-left: 1rem;
     padding-right: 1rem;
   }
 
-  /* Torna o botão de submit responsivo */
   .submit-button {
     width: 100%;
     padding: 1rem;
