@@ -1,10 +1,22 @@
 import React, { useState } from "react";
 import "./CadastrarReserva.css";
 import ConfigIcon from "./components/ConfigIcon/ConfigIcon";
-
+import TrashIcon from "./components/TrashIcon/TrashIcon";
+import ArrowIcon from "./components/ArrowIcon/ArrowIcon";
+import DateTimePicker from "./components/DateTimePicker/DateTimePicker";
+import ConfirmIcon from "./components/ConfirmIcon/ConfirmIcon";
+import CancelIcon from "./components/CancelIcon/CancelIcon";
 
 const CadastrarReserva = () => {
-  // Estado para armazenar os participantes
+
+  const [selectedDate, setSelectedDate] = useState(null);
+
+  const [newUfcgParticipant, setNewUfcgParticipant] = useState({ name: "", email: "" });
+  const [newExternalParticipant, setNewExternalParticipant] = useState({ name: "", cpf: "" });
+
+  const [showUfcgInput, setShowUfcgInput] = useState(false);
+  const [showExternalInput, setShowExternalInput] = useState(false);
+
   const [ufcgParticipants, setUfcgParticipants] = useState([
     { name: "Fulano de Tal", email: "fulano.tal@curso.ufcg.edu.br" },
     { name: "Ciclano Bla Bla Bla da Silva", email: "ciclano.silva@curso.ufcg.edu.br" },
@@ -15,24 +27,23 @@ const CadastrarReserva = () => {
     { name: "Ciclano Bla Bla Bla da Silva", cpf: "222.222.222-22" },
   ]);
 
-  // Função para remover um participante da lista UFCG
   const removeUfcgParticipant = (index) => {
     setUfcgParticipants(ufcgParticipants.filter((_, i) => i !== index));
   };
 
-  // Função para remover um participante da lista de externos
   const removeExternalParticipant = (index) => {
     setExternalParticipants(externalParticipants.filter((_, i) => i !== index));
   };
 
   const addUfcgParticipant = () => {
-    setExternalParticipants([...externalParticipants, { name: "", email: "" }]);
+    setShowUfcgInput(true);
   };
 
-  // Função para adicionar um participante externo
   const addExternalParticipant = () => {
-    setExternalParticipants([...externalParticipants, { name: "", cpf: "" }]);
+    setShowExternalInput(true);
   };
+
+
 
   return (
     <div className="container">
@@ -43,7 +54,7 @@ const CadastrarReserva = () => {
 
       <main className="main-content">
         <div className="title-container">
-          <ion-icon name="arrow-back-outline" className="back-icon"></ion-icon>
+          <ArrowIcon direction="back" className="back-icon" />
           <h2 className="title">Cadastrar Reserva</h2>
         </div>
       </main>
@@ -59,17 +70,7 @@ const CadastrarReserva = () => {
 
           <div className="input-group">
             <label htmlFor="data-hora">DATA E HORA</label>
-            <div className="date-input-container">
-              <span className="calendar-icon">
-                <ion-icon name="calendar-outline"></ion-icon>
-              </span>
-              <input
-                type="text"
-                id="data-hora"
-                className="date-input"
-                placeholder="10/01/2024 00:00"
-              />
-            </div>
+            <DateTimePicker selectedDate={selectedDate} onChange={setSelectedDate} />
           </div>
         </div>
 
@@ -83,23 +84,54 @@ const CadastrarReserva = () => {
                 <ion-icon name="add-circle-outline" className="add-button"></ion-icon>
               </div>
             </div>
+
+            {/* Formulário de entrada para UFCG */}
+            {showUfcgInput && (
+              <div className="participant-item">
+                <input
+                  type="text"
+                  placeholder="Nome"
+                  value={newUfcgParticipant.name}
+                  onChange={(e) => setNewUfcgParticipant({ ...newUfcgParticipant, name: e.target.value })}
+                />
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={newUfcgParticipant.email}
+                  onChange={(e) => setNewUfcgParticipant({ ...newUfcgParticipant, email: e.target.value })}
+                />
+                <div className="action-buttons">
+                  <ConfirmIcon
+                    onClick={() => {
+                      setUfcgParticipants([...ufcgParticipants, newUfcgParticipant]);
+                      setShowUfcgInput(false);  // Esconde os campos após confirmar
+                      setNewUfcgParticipant({ name: "", email: "" });
+                    }}
+                  />
+                  <CancelIcon
+                    onClick={() => {
+                      setShowUfcgInput(false);  // Esconde os campos após negar
+                      setNewUfcgParticipant({ name: "", email: "" });
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+
             <div className="participant-list">
               {ufcgParticipants.map((participant, index) => (
                 <div key={index} className="participant-item">
                   <span>{participant.name || "Novo Participante"}</span>
                   <span className="participant-email">{participant.email}</span>
-                  <ion-icon
-                    name="trash-outline"
-                    className="delete-icon"
-                    onClick={() => removeUfcgParticipant(index)}
-                  ></ion-icon>
+                  <TrashIcon onClick={() => removeUfcgParticipant(index)} className="trash-icon" />
                 </div>
               ))}
             </div>
-            {/* Linha cinza ocupando toda a largura */}
+
             <div className="separator-line"></div>
           </div>
 
+          {/* Seção de participantes externos */}
           <div className="participant-group">
             <div className="title-and-button">
               <h4 className="sub-title">USUÁRIOS EXTERNOS</h4>
@@ -107,25 +139,52 @@ const CadastrarReserva = () => {
                 <ion-icon name="add-circle-outline" className="add-button"></ion-icon>
               </div>
             </div>
+
+            {/* Formulário de entrada para participantes externos */}
+            {showExternalInput && (
+              <div className="participant-item">
+                <input
+                  type="text"
+                  placeholder="Nome"
+                  value={newExternalParticipant.name}
+                  onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, name: e.target.value })}
+                />
+                <input
+                  type="text"
+                  placeholder="CPF"
+                  value={newExternalParticipant.cpf}
+                  onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, cpf: e.target.value })}
+                />
+                <div className="action-buttons">
+                  <ConfirmIcon
+                    onClick={() => {
+                      setExternalParticipants([...externalParticipants, newExternalParticipant]);
+                      setShowExternalInput(false);  // Esconde os campos após confirmar
+                      setNewExternalParticipant({ name: "", cpf: "" });
+                    }}
+                  />
+                  <CancelIcon
+                    onClick={() => {
+                      setShowExternalInput(false);  // Esconde os campos após negar
+                      setNewExternalParticipant({ name: "", cpf: "" });
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+
             <div className="participant-list">
               {externalParticipants.map((participant, index) => (
                 <div key={index} className="participant-item">
                   <span>{participant.name || "Novo Participante"}</span>
                   <span className="participant-cpf">{participant.cpf}</span>
-                  <ion-icon
-                    name="trash-outline"
-                    className="delete-icon"
-                    onClick={() => removeExternalParticipant(index)}
-                  ></ion-icon>
+                  <TrashIcon onClick={() => removeExternalParticipant(index)} className="trash-icon" />
                 </div>
               ))}
             </div>
-            {/* Linha cinza ocupando toda a largura */}
+
             <div className="separator-line"></div>
           </div>
-
-
-
         </div>
 
         <div className="submit-button-container">

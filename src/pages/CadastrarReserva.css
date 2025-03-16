@@ -1,53 +1,74 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css');
 
+body {
+  overflow-x: auto; /* Permite rolar horizontalmente */
+  width: 100%; /* Garante que o body ocupe 100% da largura da tela */
+}
+
 .container {
-    background-color: #f3f4f6;
-    min-height: 100vh;
-    padding-top: 120px; /* Ajuste para não sobrepor header e main-content */
+  background-color: #f3f4f6;
+  min-height: 100vh;
+  padding-top: 120px;
+  box-sizing: border-box; /* Inclui padding e bordas no cálculo da largura */
+  overflow-x: hidden; /* Impede rolagem lateral na página inteira */
+  width: 100%;
+
+
+
+  /* Ajuste para não sobrepor header e main-content */
 }
 
 /* Header fixo */
 .header {
-    background-color: white;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    height: 60px;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  height: 60px;
 }
 
 /* Título e ícone no header */
 .logo {
-    color: #0B53B8;
-    font-size: 2rem;
-    font-weight: 700;
-    margin-left: 10rem; /* Aumentei a margem à esquerda */
+  color: #0B53B8;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-left: 10rem;
+  /* Aumentei a margem à esquerda */
 
 }
 
 /* Barra azul abaixo do header */
 .main-content {
-    background-color: #0B53B8;
-    color: white;
-    padding-top: 32px; /* Padding superior */
-    padding-right: 32px; /* Ajuste o padding à direita */
-    padding-bottom: 32px; /* Padding inferior */
-    padding-left: 32px; /* Ajuste o padding à esquerda */
-    position: fixed;
-    top: 60px; /* Logo abaixo do header */
-    left: 0; /* Começa no início da tela */
-    width: 100%; /* Ocupar toda a largura da tela */
-    height: 240px; /* Altura fixa de 240px */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 999;
+  background-color: #0B53B8;
+  color: white;
+  padding-top: 32px;
+  /* Padding superior */
+  padding-right: 32px;
+  /* Ajuste o padding à direita */
+  padding-bottom: 32px;
+  /* Padding inferior */
+  padding-left: 32px;
+  /* Ajuste o padding à esquerda */
+  position: fixed;
+  top: 60px;
+  /* Logo abaixo do header */
+  left: 0;
+  /* Começa no início da tela */
+  width: 100%;
+  /* Ocupar toda a largura da tela */
+  height: 240px;
+  /* Altura fixa de 240px */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 0;
 }
 
 .title-container {
@@ -56,8 +77,8 @@
 }
 
 .back-icon {
-    font-size: 1.5rem;
-    cursor: pointer;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
 .title {
@@ -65,30 +86,41 @@
   font-weight: 700;
 }
 
-.title, .back-icon {
-    margin-left: 2rem;
+.title,
+.back-icon {
+  margin-left: 2rem;
 }
 
 .form-section {
-    background-color: white;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
-    margin-top: 180px; /* Garantir que fique imediatamente abaixo do main-content */
-    border-radius: 0.5rem;
-    width: 100%; /* Ocupar toda a largura da tela */
-    max-width: 100%; /* Garantir que ocupe 100% da largura disponível */
-    display: flex;
-    flex-direction: column;
-    overflow: auto; /* Garante que o conteúdo não ultrapasse os limites da seção */
-    box-sizing: border-box; /* Inclui padding na altura total da seção */
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+  margin-top: 180px;
+  /* Garantir que fique imediatamente abaixo do main-content */
+  border-radius: 0.5rem;
+  width: 100%;
+  /* Ocupar toda a largura da tela */
+  max-width: 100%;
+  /* Garantir que ocupe 100% da largura disponível */
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  /* Garante que o conteúdo não ultrapasse os limites da seção */
+  box-sizing: border-box;
+  /* Inclui padding na altura total da seção */
 }
 
 .form-grid {
-    display: flex; /* Alinha os inputs horizontalmente */
-    gap: 1rem; /* Ajusta o espaço entre os inputs */
-    justify-content: center; /* Centraliza os inputs */
-    align-items: center; /* Alinha verticalmente */
-  }
+  display: flex;
+  /* Alinha os inputs horizontalmente */
+  gap: 1rem;
+  /* Ajusta o espaço entre os inputs */
+  justify-content: center;
+  /* Centraliza os inputs */
+  align-items: center;
+  
+  /* Alinha verticalmente */
+}
 
 @media (min-width: 768px) {
   .form-grid {
@@ -97,35 +129,12 @@
 }
 
 .input-group {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 20%; /* Reduz a largura dos inputs para 48% e manter a consistência */
-  }
-
-.date-input-container {
-    display: flex;
-    border-radius: 0.375rem;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    width: 100%; /* O container ocupa 100% do espaço */
-  }
-  
-  .date-input {
-    flex: 1;
-    padding: 0.5rem;
-    border: 1px solid #d1d5db;
-    border-left: none;
-    border-radius: 0 0.375rem 0.375rem 0;
-    font-size: 0.875rem;
-    height: 2.5rem; /* Ajusta a altura dos inputs */
-  }
-  
-.date-input:focus {
-    outline: none;
-    border-color: #0B53B8;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 18%;
 }
-  
+
 label {
   display: block;
   font-size: 1.2rem;
@@ -135,57 +144,25 @@ label {
 }
 
 .select-input {
-    width: 100%;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #d1d5db;
-    border-radius: 0.375rem;
-    font-size: 1rem;
-    height: 2.5rem; /* Garante que a altura seja consistente com a dos outros inputs */
-}
-  
-.select-input:focus {
-    outline: none;
-    border-color: #0B53B8;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-  
-.date-input-container {
-  display: flex;
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
   border-radius: 0.375rem;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  font-size: 1rem;
+  height: 2.5rem;
 }
 
-.calendar-icon {
-  display: inline-flex;
-  align-items: center;
-  padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-right: none;
-  background-color: #f9fafb;
-  color: #6b7280;
-  font-size: 0.875rem;
-}
-
-.date-input {
-  flex: 1;
-  padding: 0.5rem;
-  border: 1px solid #d1d5db;
-  border-left: none;
-  border-radius: 0 0.375rem 0.375rem 0;
-  font-size: 0.875rem;
-}
-
-.date-input:focus {
+.select-input:focus {
   outline: none;
   border-color: #0B53B8;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .participants-section {
-    margin-top: 1.5rem;
-    padding-left: 6rem; /* Aumenta a margem à esquerda */
-    padding-right: 6rem; /* Aumenta a margem à direita */
-  }
+  margin-top: 1.5rem;
+  padding-left: 6rem;
+  padding-right: 6rem;
+}
 
 .section-title {
   color: #0B53B8;
@@ -210,8 +187,8 @@ label {
   justify-content: space-between;
   /* Espaça os elementos, colocando o botão à direita */
   border-bottom: 2.5px solid #d1d5db;
-      /* Linha cinza entre os itens */
-    margin-top: 1rem;
+  /* Linha cinza entre os itens */
+  margin-top: 1rem;
 }
 
 .add-button {
@@ -224,7 +201,6 @@ label {
 .participant-list {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
 }
 
 .participant-item {
@@ -233,22 +209,29 @@ label {
   align-items: center;
   padding: 1rem 0;
   width: 100%;
-      /* Faz o item ocupar toda a largura disponível */
-  border-bottom: 2.5px solid #d1d5db; /* Linha cinza entre os itens */
-
+  border-bottom: 2.5px solid #d1d5db;
+  /* Linha cinza entre os itens */
 }
 
+/* Ajustes para permitir que o e-mail quebre a linha */
 .participant-item span {
-  margin-right: 1rem;
-  /* Espaçamento entre o nome e o e-mail */
+  flex: 1; /* Garante que o nome, CPF/email ocupem a mesma largura */
+  margin-right: 1rem; /* Espaçamento entre o nome e o e-mail ou CPF */
+  text-overflow: ellipsis; /* Impede o texto de ultrapassar */
+  overflow: hidden; /* Garante que o texto não ultrapasse os limites */
+  word-wrap: break-word; /* Permite a quebra de linha no caso de texto longo */
 }
 
+/* Ajustes para e-mails especificamente */
 .participant-email {
   margin-right: 1rem;
-  /* Espaçamento entre o e-mail e o ícone de delete */
+  color: #6b7280;
+  word-wrap: break-word; /* Permite que o e-mail quebre a linha */
 }
 
-.participant-email, .participant-cpf {
+
+.participant-email,
+.participant-cpf {
   color: #6b7280;
 }
 
@@ -263,7 +246,8 @@ label {
   align-items: center;
 }
 
-.name-input, .cpf-input {
+.name-input,
+.cpf-input {
   flex: 1;
   padding: 0.5rem;
   border: transparent;
@@ -295,4 +279,89 @@ label {
 
 .submit-button:hover {
   background-color: #1d4ed8;
+}
+
+
+
+.participant-item input {
+  padding: 0.5rem;
+  margin-right: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+.action-buttons button {
+  padding: 0.5rem 1rem;
+  background-color: #0B53B8;
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+.action-buttons button:hover {
+  background-color: #1d4ed8;
+}
+
+
+@media (max-width: 767px) {
+  
+  /* Ajusta o logo e o header para telas pequenas */
+  .logo {
+    margin-left: 0.2rem;
+    font-size: 1.5rem;
+  }
+
+  /* Reduz o padding e ajusta a altura do main-content */
+  .main-content {
+    padding: 30px;
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Altera o layout da grid para coluna e ocupa 100% da largura */
+  .form-grid {
+    flex-direction: column;  /* Coloca os itens em coluna */
+    justify-content: flex-start;  /* Alinha os itens no início */
+    align-items: stretch;  /* Garante que os inputs ocupem toda a largura */
+    gap: 1rem;
+  }
+
+  .form-section {
+    /* ... outras propriedades ... */
+    margin-top: 110px; /* Reduzido de 180px para 80px */
+  }
+
+  /* Ajuste os inputs para ocupar toda a largura disponível */
+  .input-group {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .participant-item input {
+    width: 100%;  /* Garante que os inputs ocupem toda a largura */
+    padding: 0.5rem;
+    margin-right: 0; /* Remove a margem à direita */
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+  }
+
+  /* Reduz as margens internas da seção de participantes */
+  .participants-section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Torna o botão de submit responsivo */
+  .submit-button {
+    width: 100%;
+    padding: 1rem;
+  }
 }

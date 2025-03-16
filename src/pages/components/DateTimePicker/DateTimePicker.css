@@ -1,0 +1,74 @@
+/* data.css */
+
+/* Container do campo de data e hora */
+.date-input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 400px; /* Ajuste a largura máxima do campo */
+  border-radius: 0.375rem;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* Estilo do input de data */
+.date-input {
+  flex: 1;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  width: 100%; /* Garante que o input ocupe toda a largura disponível */
+  height: 2.5rem; /* Ajusta a altura do campo */
+}
+
+/* Estilo de foco do input de data */
+.date-input:focus {
+  outline: none;
+  border-color: #0B53B8;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Estilo do calendário */
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+/* Input dentro do calendário */
+.react-datepicker__input-container input {
+  border: 1px solid #d1d5db;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.react-datepicker__input-container input:focus {
+  outline: none;
+  border-color: #0B53B8;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Ajuste do calendário em telas pequenas */
+@media (max-width: 767px) {
+  /* Ajustando o campo de data */
+  .date-input-container {
+      max-width: 100%; /* Permite o campo de data ocupar toda a largura da tela */
+      margin-bottom: 1rem; /* Adiciona um pequeno espaçamento abaixo */
+  }
+
+  /* Ajustando o calendário */
+  .react-datepicker-wrapper {
+      width: 100%; /* O calendário vai ocupar toda a largura disponível */
+  }
+
+  .react-datepicker {
+      position: relative; /* Garante que o calendário se posicione corretamente */
+      z-index: 999; /* Garante que o calendário não fique atrás do conteúdo principal */
+  }
+
+  /* Se o calendário for aberto, pode ser posicionado abaixo do campo de data */
+  .react-datepicker__triangle {
+      display: none; /* Remove a seta do calendário */
+  }
+}
