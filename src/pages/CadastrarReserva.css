@@ -31,14 +31,6 @@
 
 }
 
-.config-icon {
-    color: #4b5563;
-    font-size: 1.5rem;
-    cursor: pointer;
-    margin-right:  7rem; /* Aumentei a margem à direita */
-    padding: 0.25rem; /* Ajuste o padding para dar um espaçamento adequado */
-}
-
 /* Barra azul abaixo do header */
 .main-content {
     background-color: #0B53B8;
@@ -134,12 +126,11 @@
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
   
-
 label {
   display: block;
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #374151;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #0B53B8;
   margin-bottom: 0.5rem;
 }
 
@@ -198,16 +189,36 @@ label {
 
 .section-title {
   color: #0B53B8;
-  font-size: 1.125rem;
+  font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 1rem;
 }
 
 .sub-title {
   color: #0B53B8;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
+  /* Linha cinza */
+  padding-bottom: 0.5rem;
+}
+
+.title-and-button {
+  display: flex;
+  align-items: center;
+  /* Alinha verticalmente os itens */
+  justify-content: space-between;
+  /* Espaça os elementos, colocando o botão à direita */
+  border-bottom: 2.5px solid #d1d5db;
+      /* Linha cinza entre os itens */
+    margin-top: 1rem;
+}
+
+.add-button {
+  color: #0B53B8;
+  cursor: pointer;
+  font-size: 2rem;
+  margin-left: auto;
 }
 
 .participant-list {
@@ -220,25 +231,31 @@ label {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 0;
+  padding: 1rem 0;
+  width: 100%;
+      /* Faz o item ocupar toda a largura disponível */
   border-bottom: 2.5px solid #d1d5db; /* Linha cinza entre os itens */
 
+}
+
+.participant-item span {
+  margin-right: 1rem;
+  /* Espaçamento entre o nome e o e-mail */
+}
+
+.participant-email {
+  margin-right: 1rem;
+  /* Espaçamento entre o e-mail e o ícone de delete */
 }
 
 .participant-email, .participant-cpf {
   color: #6b7280;
 }
 
-.delete-icon {
-  color: #ef4444;
-  cursor: pointer;
-}
+/* Ajuste para o layout da linha "UFCG" e "Usuários Externos" */
 
-.add-button {
-  color: #0B53B8;
-  margin-top: 1rem;
-  cursor: pointer;
-}
+
+
 
 .input-row {
   display: flex;
@@ -262,11 +279,18 @@ label {
 .submit-button {
   background-color: #0B53B8;
   color: white;
-  padding: 0.5rem 1.5rem;
+  padding: 1rem 4rem;
+  /* Aumentando o padding para aumentar a altura e largura */
+  width: 400px;
+  /* Define uma largura maior */
+  font-size: 1rem;
+  /* Aumenta o tamanho do texto */
   border: none;
-  border-radius: 0.375rem;
-  font-size: 0.875rem;
+  border-radius: 0.5rem;
+  /* Bordas um pouco mais arredondadas */
   cursor: pointer;
+  font-weight: bold;
+  /* Deixa o texto mais destacado */
 }
 
 .submit-button:hover {

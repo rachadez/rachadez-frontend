@@ -1,18 +1,49 @@
-import React from 'react';
-import './CadastrarReserva.css';
+import React, { useState } from "react";
+import "./CadastrarReserva.css";
+import ConfigIcon from "./components/ConfigIcon/ConfigIcon";
+
 
 const CadastrarReserva = () => {
+  // Estado para armazenar os participantes
+  const [ufcgParticipants, setUfcgParticipants] = useState([
+    { name: "Fulano de Tal", email: "fulano.tal@curso.ufcg.edu.br" },
+    { name: "Ciclano Bla Bla Bla da Silva", email: "ciclano.silva@curso.ufcg.edu.br" },
+  ]);
+
+  const [externalParticipants, setExternalParticipants] = useState([
+    { name: "Fulano de Tal", cpf: "111.111.111-11" },
+    { name: "Ciclano Bla Bla Bla da Silva", cpf: "222.222.222-22" },
+  ]);
+
+  // Função para remover um participante da lista UFCG
+  const removeUfcgParticipant = (index) => {
+    setUfcgParticipants(ufcgParticipants.filter((_, i) => i !== index));
+  };
+
+  // Função para remover um participante da lista de externos
+  const removeExternalParticipant = (index) => {
+    setExternalParticipants(externalParticipants.filter((_, i) => i !== index));
+  };
+
+  const addUfcgParticipant = () => {
+    setExternalParticipants([...externalParticipants, { name: "", email: "" }]);
+  };
+
+  // Função para adicionar um participante externo
+  const addExternalParticipant = () => {
+    setExternalParticipants([...externalParticipants, { name: "", cpf: "" }]);
+  };
+
   return (
     <div className="container">
-      
-      <header className="header">          
+      <header className="header">
         <h2 className="logo">Racha10 UFCG</h2>
-        <i className="fas fa-cog config-icon"></i>
+        <ConfigIcon className="config-icon" />
       </header>
 
       <main className="main-content">
         <div className="title-container">
-          <i className="fas fa-arrow-left back-icon"></i>
+          <ion-icon name="arrow-back-outline" className="back-icon"></ion-icon>
           <h2 className="title">Cadastrar Reserva</h2>
         </div>
       </main>
@@ -25,12 +56,12 @@ const CadastrarReserva = () => {
               <option>Esporte</option>
             </select>
           </div>
-          
+
           <div className="input-group">
             <label htmlFor="data-hora">DATA E HORA</label>
             <div className="date-input-container">
               <span className="calendar-icon">
-                <i className="far fa-calendar-alt"></i>
+                <ion-icon name="calendar-outline"></ion-icon>
               </span>
               <input
                 type="text"
@@ -44,63 +75,61 @@ const CadastrarReserva = () => {
 
         <div className="participants-section">
           <h3 className="section-title">PARTICIPANTES</h3>
-          
+
           <div className="participant-group">
-            <h4 className="sub-title">UFCG</h4>
+            <div className="title-and-button">
+              <h4 className="sub-title">UFCG</h4>
+              <div className="add-button" onClick={addUfcgParticipant}>
+                <ion-icon name="add-circle-outline" className="add-button"></ion-icon>
+              </div>
+            </div>
             <div className="participant-list">
-              <div className="participant-item">
-                <span>Fulano de Tal</span>
-                <span className="participant-email">fulano.tal@curso.ufcg.edu.br</span>
-                <i className="fas fa-trash-alt delete-icon"></i>
-              </div>
-              <div className="participant-item">
-                <span>Ciclano Bla Bla Bla da Silva</span>
-                <span className="participant-email">ciclano.silva@curso.ufcg.edu.br</span>
-                <i className="fas fa-trash-alt delete-icon"></i>
-              </div>
+              {ufcgParticipants.map((participant, index) => (
+                <div key={index} className="participant-item">
+                  <span>{participant.name || "Novo Participante"}</span>
+                  <span className="participant-email">{participant.email}</span>
+                  <ion-icon
+                    name="trash-outline"
+                    className="delete-icon"
+                    onClick={() => removeUfcgParticipant(index)}
+                  ></ion-icon>
+                </div>
+              ))}
             </div>
-            <div className="add-button">
-              <i className="fas fa-plus-circle"></i>
-            </div>
+            {/* Linha cinza ocupando toda a largura */}
+            <div className="separator-line"></div>
           </div>
 
           <div className="participant-group">
-            <h4 className="sub-title">USUÁRIOS EXTERNOS</h4>
+            <div className="title-and-button">
+              <h4 className="sub-title">USUÁRIOS EXTERNOS</h4>
+              <div className="add-button" onClick={addExternalParticipant}>
+                <ion-icon name="add-circle-outline" className="add-button"></ion-icon>
+              </div>
+            </div>
             <div className="participant-list">
-              <div className="participant-item">
-                <span>Fulano de Tal</span>
-                <span className="participant-cpf">111.111.111-11</span>
-                <i className="fas fa-trash-alt delete-icon"></i>
-              </div>
-              <div className="participant-item">
-                <span>Ciclano Bla Bla Bla da Silva</span>
-                <span className="participant-cpf">222.222.222-22</span>
-                <i className="fas fa-trash-alt delete-icon"></i>
-              </div>
-              <div className="input-row">
-                <input
-                  type="text"
-                  placeholder="Nome"
-                  className="name-input"
-                />
-                <input
-                  type="text"
-                  placeholder="CPF"
-                  className="cpf-input"
-                />
-                <i className="fas fa-trash-alt delete-icon"></i>
-              </div>
+              {externalParticipants.map((participant, index) => (
+                <div key={index} className="participant-item">
+                  <span>{participant.name || "Novo Participante"}</span>
+                  <span className="participant-cpf">{participant.cpf}</span>
+                  <ion-icon
+                    name="trash-outline"
+                    className="delete-icon"
+                    onClick={() => removeExternalParticipant(index)}
+                  ></ion-icon>
+                </div>
+              ))}
             </div>
-            <div className="add-button">
-              <i className="fas fa-plus-circle"></i>
-            </div>
+            {/* Linha cinza ocupando toda a largura */}
+            <div className="separator-line"></div>
           </div>
+
+
+
         </div>
 
         <div className="submit-button-container">
-          <button className="submit-button">
-            Cadastrar Reserva
-          </button>
+          <button className="submit-button">Cadastrar Reserva</button>
         </div>
       </section>
     </div>
