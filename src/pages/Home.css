@@ -315,6 +315,7 @@ body {
 
 .feature-card h3 {
     font-size: 20px;
+    text-align: start;
     font-weight: bold;
     margin: 0 0 8px 0;
     color: #2d3748;
@@ -322,6 +323,7 @@ body {
 
 .feature-card p {
     font-size: 14px;
+    text-align: start;
     color: #718096;
 }
 
