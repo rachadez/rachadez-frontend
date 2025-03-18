@@ -21,7 +21,7 @@ function LoginAluno() {
                 <div className="left-section">
                     <div className="left-section-elements">
                         <img src="src/assets/Logo_3.png" alt="Logo" />
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</p>
+                        <p>O Racha10 é uma plataforma desenvolvida por estudantes de Computação com o objetivo de facilitar a organização de eventos e partidas no complexo desportivo da UFCG, proporcionando uma experiência mais prática e dinâmica para todos os participantes.</p>
                         <img className="team-image" src="src/assets/imagem_equipe_tela_login.png" alt="Equipe" />
                     </div>
                 </div>
