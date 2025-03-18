@@ -7,10 +7,11 @@
   
   .input-container input {
     width: auto;
+    color: #717171;
     padding: 1rem;
     font-size: 1rem;
     border-radius: 10px;
-    background-color: #EEEEEE;
+    background-color: #eeeeee;
     outline: none;
     border: 1px solid #d1d1d1;
   }
