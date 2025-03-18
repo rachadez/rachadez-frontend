@@ -79,9 +79,11 @@ body {
     color: #2d3748;
 }
 
-.nav-right a {
-    margin-left: 12px;
-    text-decoration: none;
+.nav-right {
+    display: flex;
+    width: 21%;
+    gap: 2%;
+    align-items: center;
 }
 
 /* Botões */
@@ -124,13 +126,6 @@ body {
     display: inline-block;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s, box-shadow 0.3s;
-}
-
-/* Contêiner para os botões */
-.button-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 0.2rem;
 }
 
 .btn-aluno:hover {
@@ -233,6 +228,7 @@ body {
 }
 
 .hero-button-container {
+    width: 40%;
     margin-top: 24px;
 }
 
@@ -338,6 +334,10 @@ body {
 }
 
 .cta-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -354,6 +354,7 @@ body {
 }
 
 .cta-button-container {
+    width: 20%;
     margin-top: 50px;
 }
 

@@ -2,6 +2,8 @@ import './Home.css';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import DefaultButton from './components/Buttons/DefaultButton';
+import SecondaryButton from './components/Buttons/SecondaryButton';
 
 function Home() {
 
@@ -49,13 +51,9 @@ function Home() {
                             <span className="logo-text">Racha10</span>
                         </div>
                     </div>
-                    <div className="nav-right button-container">
-                        <Link to="/login-aluno" className="btn-aluno">
-                            <span className="btn-text">Entrar como Aluno</span>
-                        </Link>
-                        <Link to="/login-professor" className="btn-externo">
-                            <span className="btn-text">Entrar como Externo</span>
-                        </Link>
+                    <div className="nav-right">
+                        <DefaultButton label="Sou da UFCG"></DefaultButton>
+                        <SecondaryButton label="Sou Usuário Externo" onClick={"/login-professor"}></SecondaryButton>
                     </div>
                 </div>
             </nav>
@@ -72,9 +70,7 @@ function Home() {
                                 O Racha10 é uma plataforma desenvolvida por estudantes de Computação com o objetivo de facilitar a organização de eventos e partidas no complexo desportivo da UFCG, proporcionando uma experiência mais prática e dinâmica para todos os participantes.
                             </p>
                             <div className="hero-button-container mt-8">
-                                <a href="#criar-conta" className="btn-comecar"> {/* Usando o ID como link */}
-                                    Começar agora
-                                </a>
+                                <SecondaryButton label="Começar agora"></SecondaryButton>
                             </div>
 
 
@@ -172,9 +168,7 @@ function Home() {
                         organizar suas atividades esportivas.
                     </p>
                     <div className="cta-button-container">
-                        <a href="/cadastro" className="btn-cta">
-                            Criar uma conta
-                        </a>
+                        <SecondaryButton label="Criar uma conta"></SecondaryButton>
                     </div>
 
                 </div>
