@@ -29,7 +29,7 @@ function LoginProfessor() {
                     <div className="right-section-elements">
                         <h1>Faça login no sistema</h1>
                         <form onSubmit={handleSubmit}>
-                            <InputTemplate type="cpf" placeholder="Cpf" />
+                            <InputTemplate type="cpf" placeholder="CPF" />
                             <PasswordInput></PasswordInput>
                             <DefaultButton label={"Entrar"}></DefaultButton>
                         </form>
