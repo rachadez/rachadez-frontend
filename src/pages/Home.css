@@ -61,11 +61,6 @@ body {
     align-items: center;
 }
 
-.logo-container {
-    display: flex;
-    align-items: center;
-}
-
 .logo-icon {
     width: 32px;
     height: 32px;

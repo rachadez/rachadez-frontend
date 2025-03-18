@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import DefaultButton from './components/Buttons/DefaultButton';
 import SecondaryButton from './components/Buttons/SecondaryButton';
+import Logo from "../assets/Logo_3.png";
 
 function Home() {
 
@@ -36,24 +37,10 @@ function Home() {
             <nav className="navbar">
                 <div className="nav-container">
                     <div className="nav-left">
-                        <div className="logo-container">
-                            <svg
-                                className="logo-icon"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                            >
-                                <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                                <path d="M2 17l10 5 10-5" />
-                                <path d="M2 12l10 5 10-5" />
-                            </svg>
-                            <span className="logo-text">Racha10</span>
-                        </div>
                     </div>
                     <div className="nav-right">
-                        <DefaultButton label="Sou da UFCG"></DefaultButton>
-                        <SecondaryButton label="Sou Usuário Externo" onClick={"/login-professor"}></SecondaryButton>
+                        <DefaultButton label="Sou da UFCG" to="/login-aluno"></DefaultButton>
+                        <SecondaryButton label="Sou Usuário Externo" to="/login-professor"></SecondaryButton>
                     </div>
                 </div>
             </nav>
