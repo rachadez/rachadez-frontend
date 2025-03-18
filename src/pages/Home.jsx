@@ -57,7 +57,7 @@ function Home() {
                                 O Racha10 é uma plataforma desenvolvida por estudantes de Computação com o objetivo de facilitar a organização de eventos e partidas no complexo desportivo da UFCG, proporcionando uma experiência mais prática e dinâmica para todos os participantes.
                             </p>
                             <div className="hero-button-container mt-8">
-                                <SecondaryButton label="Começar agora"></SecondaryButton>
+                                <SecondaryButton label="Começar agora" to="/cadastro"></SecondaryButton>
                             </div>
 
 
@@ -155,7 +155,7 @@ function Home() {
                         organizar suas atividades esportivas.
                     </p>
                     <div className="cta-button-container">
-                        <SecondaryButton label="Criar uma conta"></SecondaryButton>
+                        <SecondaryButton label="Criar uma conta" to="/cadastro"></SecondaryButton>
                     </div>
 
                 </div>
