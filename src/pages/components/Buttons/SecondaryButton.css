@@ -1,0 +1,17 @@
+.secondary-button {
+    width: 100%;
+    font-family: 'Open Sans', sans-serif !important;
+    font-weight: bold !important;
+    color: #2563eb !important;
+    background-color: white !important;
+    padding: 13px !important;
+    font-size: 18px !important;
+    border-radius: 10px !important;
+    cursor: pointer;
+    border: none;
+}
+
+.secondary-button:hover {
+    background-color: #001B76 !important;
+    color: white !important;
+}
