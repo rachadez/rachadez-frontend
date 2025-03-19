@@ -109,18 +109,41 @@ body {
     box-shadow: 0 0 0 2px #19449f;
 }
 
-/* Estilos para o botão "Entrar como Aluno" */
-.btn-aluno {
-    padding: 0.49rem 1rem;
+/* Contêiner para os botões */
+.button-container {
+    display: flex;
+    justify-content: end;
+    gap: 0.5rem;
+    align-items: center;
+    width: 100%;
+}
+
+/* Estilos padronizados para os botões */
+.btn-aluno,
+.btn-externo {
+    padding: 0.3rem 1.5rem;
     border-radius: 0.375rem;
     font-size: 0.875rem;
     font-weight: 600;
-    color: white;
-    background-color: #1d4ed8;
     text-decoration: none;
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 32px;
+    width: 100%;
+    max-width: 200px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.btn-aluno {
+    color: white;
+    background-color: #1d4ed8;
+}
+
+.btn-externo {
+    color: #374151;
+    background-color: #e5e7eb;
 }
 
 .btn-aluno:hover {
@@ -131,20 +154,6 @@ body {
     outline: none;
     outline: 2px solid #2563eb;
     outline-offset: 2px;
-}
-
-/* Estilos para o botão "Entrar como Externo" */
-.btn-externo {
-    padding: 0.6rem 1rem;
-    border-radius: 0.375rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #374151;
-    background-color: #e5e7eb;
-    text-decoration: none;
-    display: inline-block;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .btn-externo:hover {
@@ -321,11 +330,11 @@ body {
 
 /* CTA Section */
 .cta-section {
-    background: linear-gradient(135deg, #2563eb 0%, #0B53B8 100%);    
+    background: linear-gradient(135deg, #3498db 0%, #2563eb 100%);
     color: #ffffff;
     text-align: center;
     min-height: 370px;
-    padding: 110px 20px; 
+    padding: 110px 20px;
 }
 
 .cta-container {
@@ -471,9 +480,16 @@ body {
         flex-direction: row;
     }
 
-    .hero-text,
-    .hero-image {
+    .hero-text {
         width: 50%;
+    }
+
+    .hero-image {
+        max-width: 90%;
+    }
+
+    .hero-image img {
+        max-height: 300px;
     }
 
     .hero-text {
@@ -496,8 +512,13 @@ body {
 /* Responsividade para telas pequenas */
 @media (max-width: 480px) {
 
-    .btn-externo,
     .btn-aluno {
+        padding: 0.6rem 1rem;
+        font-size: 0.75rem;
+        position: relative;
+    }
+
+    .btn-externo {
         padding: 0.6rem 1rem;
         font-size: 0.75rem;
         min-width: 80px;
