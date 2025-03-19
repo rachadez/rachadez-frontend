@@ -1,0 +1,54 @@
+.nav-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px;
+}
+
+.custom-menubar {
+    border-radius: 10px;
+    padding: 8px;
+}
+
+.p-menubar .p-menuitem-link {
+    font-weight: bold;
+    font-size: 16px;
+    padding: 10px 30px;
+}
+
+.p-menubar .p-menuitem-text {
+    color: #2563eb;
+    font-weight: bold;
+}
+
+.p-menubar .p-menuitem-icon {
+    color: #2563eb;
+    margin-right: 10px;
+    font-size: 22px;
+}
+
+@media screen and (max-width: 960px) {  
+    .p-menubar-root-list {
+        position: absolute !important;  
+        top: 105% !important;  /* Fica logo abaixo do botão de menu */
+        left: -230% !important;  
+        transform: translateX(-50%) !important;  /* Centraliza horizontalmente */
+        width: 90vw !important;  
+        max-width: 320px !important;  
+        background-color: white !important;  
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2) !important;  
+        border-radius: 8px !important;  
+        z-index: 1000 !important;
+    }
+
+    .p-menubar .p-menuitem-link {
+        justify-content: center !important;  /* Centraliza os itens */
+        padding: 15px !important;
+    }
+
+    .p-menubar .p-menuitem-icon {
+        font-size: 24px !important;  
+        margin-right: 10px !important;  
+    }
+}

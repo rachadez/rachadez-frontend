@@ -40,45 +40,16 @@ body {
     opacity: 1;
 }
 
-/* Navbar */
-.navbar {
-    background-color: #ffffff;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.nav-container {
-    width: 100%;
-    margin: 0 auto;
-    padding: 0 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 64px;
-}
-
-.nav-left {
-    display: flex;
-    align-items: center;
-}
-
 .logo-icon {
     width: 32px;
     height: 32px;
     stroke: #3498db;
 }
 
-.logo-text {
-    margin-left: 8px;
+.footer-landing-page-text {
     font-size: 20px;
     font-weight: bold;
-    color: #2d3748;
-}
-
-.nav-right {
-    display: flex;
-    width: 21%;
-    gap: 2%;
-    align-items: center;
+    color: white;
 }
 
 /* Botões */
@@ -507,6 +478,14 @@ body {
         font-size: 0.875rem;
         flex: 1;
     }
+
+    .cta-button-container {
+        width: 40%;
+    }
+
+    .hero-button-container {
+        width: 50%;
+    }
 }
 
 /* Responsividade para telas pequenas */
@@ -539,5 +518,14 @@ body {
 
     .btn-externo::after {
         content: "Externo";
+    }
+
+    .cta-button-container {
+        width: 70%;
+    }
+
+    .hero-button-container {
+        padding-bottom: 10px;
+        width: 50%;
     }
 }
