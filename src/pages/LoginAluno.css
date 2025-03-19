@@ -108,37 +108,40 @@
     .right-section-elements form {
         width: 90%;
     }
+
+    .right-section-elements p {
+        font-size: 1.1rem;
+    }
 }
 
-@media (min-width: 769px) and (max-width: 1024px) {
-    .left-section-elements {
-        width: 90%;
+@media (min-width: 769px) and (max-width: 1150px) {
+    .container {
+        flex-direction: column;
     }
 
-    .left-section-elements p {
-        padding: 2rem 0;
-        font-size: 1rem;
+    .left-section {
+        display: none;
     }
 
-    .team-image {
-        max-width: 300px;
+    .login-aluno {
+        width: 100%;
+        min-height: 100vh;
+        padding: 1.5rem;
+    }
+
+    .right-section-elements {
+        gap: 2rem;
     }
 
     .right-section-elements h1 {
         font-size: 2rem;
     }
-}
 
-@media (max-width: 480px) {
-    .right-section-elements {
-        gap: 1.5rem;
-    }
-
-    .right-section-elements h1 {
-        font-size: 2.5rem;
+    .right-section-elements form {
+        width: 55%;
     }
 
     .right-section-elements p {
-        font-size: 1.3rem;
+        font-size: 1.1rem;
     }
 }

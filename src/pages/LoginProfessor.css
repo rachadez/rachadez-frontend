@@ -80,7 +80,6 @@
     align-items: center;
 }
 
-/* Media Queries para Responsividade */
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
@@ -134,10 +133,12 @@
     }
 
     .right-section-elements h1 {
-        font-size: 1.75rem;
+        font-size: 2.5rem;
+        padding-bottom: 20px;
     }
 
     .right-section-elements p {
-        font-size: 0.9rem;
+        font-size: 1.1rem;
+        padding-top: 20px;
     }
 }
