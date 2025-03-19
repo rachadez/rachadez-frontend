@@ -8,6 +8,7 @@ const TrashIcon = ({ onClick, className = "" }) => {
         color: "red",
         fontSize: "1.5rem",
         opacity: 0.7,
+        zIndex: 0,
         marginRight: "0.2rem"
       }}
     ></ion-icon>

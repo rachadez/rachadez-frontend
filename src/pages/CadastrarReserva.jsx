@@ -44,8 +44,8 @@ const CadastrarReserva = () => {
   };
 
   return (
-    <div className="container">
-      <header className="header">
+    <div className="container-cadastrar-reserva">
+      <header className="header-cadastrar-reserva">
         <h2 className="logo">Racha10 UFCG</h2>
         <ConfigIcon className="config-icon" />
       </header>
