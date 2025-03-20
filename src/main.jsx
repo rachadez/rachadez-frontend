@@ -1,9 +1,15 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './App.jsx'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { PrimeReactProvider } from "primereact/api";
+import App from "./App";
+import "primereact/resources/themes/lara-light-cyan/theme.css"; // Importação do tema
+import "primereact/resources/primereact.min.css"; // Estilos base dos componentes
+import "primeicons/primeicons.css"; // Ícones
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <PrimeReactProvider>
+      <App />
+    </PrimeReactProvider>
+  </React.StrictMode>
+);

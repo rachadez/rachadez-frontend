@@ -1,0 +1,117 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Open Sans', sans-serif;
+}
+
+.cadastro-page .header {
+  display: flex;
+  align-items: left;
+  padding: 60px;
+  background-color: #0b53b8;
+  gap: 60px;
+}
+
+.header h1 {
+  color: white;
+  font-size: 40px;
+  margin-bottom: 25px;
+}
+.arrow-left {
+  cursor: pointer;
+}
+.header p {
+  color: white;
+}
+
+.cadastro-page a {
+  display: flex;
+  justify-content: center;
+}
+
+.form-container {
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, auto);
+  gap: 2.5rem 0;
+  max-width: 100%;
+  padding: 65px;
+}
+
+.form-container label {
+  color: #0b53b8;
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.form-container input, select {
+    padding: 15px;
+    background-color: #EEEEEE;
+    border: solid #A9A9A9 1px;
+    border-radius: 10px;
+    font-size: 16px;
+    width: 100%; 
+}
+
+.form-group {
+  width: 22rem;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  padding: 0 1rem;
+}
+
+.cadastro-page a {
+    font-style: none;
+    color: #0b53b8;
+    text-decoration: none;
+}
+
+.cadastro-page .button {
+    width: 330px;
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    margin-bottom: 60px;
+}
+
+.form-wrapper {
+  display: flex;
+  flex-direction: column;
+  padding: 0 10rem;
+}
+
+@media (max-width: 1080px) {
+  .form-container {
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+  }
+
+  .form-wrapper {
+    padding: 0;
+  }
+}
+
+@media (max-width: 800px) {
+  .cadastro-page .header {
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+  }
+
+  .form-container {
+    grid-template-columns: 1fr;
+  }
+
+  .cadastro-page .button {
+    gap: 20px;
+  }
+
+  .arrow-left {
+    display: none;
+  }
+}

@@ -1,0 +1,27 @@
+.header-cadastrar-reserva {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #f8faf9;
+}
+
+.logo {
+    color: #0B53B8;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-left: 10rem;
+}
+
+.config-icon {
+    cursor: pointer;
+}
+
+@media (max-width: 767px) {
+
+    .logo {
+        margin-left: 0.2rem;
+        font-size: 1.5rem;
+    }
+
+}

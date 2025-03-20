@@ -1,0 +1,36 @@
+.input-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+  .input-container input {
+    width: auto;
+    color: #717171;
+    padding: 1rem;
+    font-size: 1rem;
+    border-radius: 10px;
+    background-color: #eeeeee;
+    outline: none;
+    border: 1px solid #d1d1d1;
+  }
+  
+  .input-container input::placeholder {
+    font-size: 1rem; 
+    color: #717171;
+  }
+  
+  .input-container input.error {
+    border-color: #FF4646;
+  }
+  .input-container input.error::placeholder {
+    opacity: 0; 
+  }
+  
+  .input-container .error-message {
+    color: #FF4646; 
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    text-align: left;
+  }

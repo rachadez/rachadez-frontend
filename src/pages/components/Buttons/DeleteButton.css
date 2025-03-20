@@ -1,0 +1,14 @@
+.delete-button {
+    font-family: 'Open Sans', sans-serif !important;
+    background-color: transparent !important;
+    padding: 15px 32px !important;
+    font-size: 15px !important;
+    border-radius: 10px !important;
+    cursor: pointer;
+    color: #FF4646 !important;
+}
+
+.delete-button:hover {
+    background-color: #FF4646 !important;
+    color: #F9F9F9 !important;
+}
