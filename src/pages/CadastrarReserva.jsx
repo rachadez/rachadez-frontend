@@ -7,6 +7,9 @@ import DateTimePicker from "./components/DateTimePicker/DateTimePicker";
 import ConfirmIcon from "./components/ConfirmIcon/ConfirmIcon";
 import CancelIcon from "./components/CancelIcon/CancelIcon";
 import Header from "./components/Header/Header";
+import MainContent from "./components/MainContent/MainContent";
+
+
 
 
 const CadastrarReserva = () => {
@@ -48,13 +51,8 @@ const CadastrarReserva = () => {
   return (
     <div className="container-cadastrar-reserva">
       <Header />
-      
-      <main className="main-content">
-        <div className="title-container">
-          <ArrowIcon direction="back" className="back-icon" />
-          <h2 className="title">Cadastrar Reserva</h2>
-        </div>
-      </main>
+
+      <MainContent title="Cadastrar Reserva" />
 
       <section className="form-section">
         <div className="form-grid">
