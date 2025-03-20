@@ -1,0 +1,16 @@
+.header-cadastrar-reserva {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #f8faf9;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.config-icon {
+    cursor: pointer;
+}

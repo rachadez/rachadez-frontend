@@ -6,6 +6,8 @@ import ArrowIcon from "./components/ArrowIcon/ArrowIcon";
 import DateTimePicker from "./components/DateTimePicker/DateTimePicker";
 import ConfirmIcon from "./components/ConfirmIcon/ConfirmIcon";
 import CancelIcon from "./components/CancelIcon/CancelIcon";
+import Header from "./components/Header/Header";
+
 
 const CadastrarReserva = () => {
 
@@ -45,11 +47,8 @@ const CadastrarReserva = () => {
 
   return (
     <div className="container-cadastrar-reserva">
-      <header className="header-cadastrar-reserva">
-        <h2 className="logo">Racha10 UFCG</h2>
-        <ConfigIcon className="config-icon" />
-      </header>
-
+      <Header />
+      
       <main className="main-content">
         <div className="title-container">
           <ArrowIcon direction="back" className="back-icon" />
