@@ -1,0 +1,10 @@
+.edit-icon {
+    font-size: 1.5rem;
+    color: #0B53B8;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.edit-icon:hover {
+    color: #1d4ed8;
+}

@@ -7,6 +7,8 @@ import AlunoHome from './pages/AlunoHome';
 import Cadastro from './pages/Cadastro';
 import CadastrarReserva from './pages/CadastrarReserva';
 import VisualizarReservas from './pages/VisualizarReservas';
+import EditarReserva from './pages/EditarReserva'; 
+
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
 
         <Route path="/visualizar-reservas" element={<VisualizarReservas />} />
 
+        <Route path="/editar-reserva" element={<EditarReserva />} />
 
       </Routes>
     </Router>
