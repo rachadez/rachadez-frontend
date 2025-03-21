@@ -6,7 +6,7 @@ import ProfessorHome from './pages/ProfessorHome';
 import AlunoHome from './pages/AlunoHome';
 import Cadastro from './pages/Cadastro';
 import CadastrarReserva from './pages/CadastrarReserva';
-import VizualizarReservas from './pages/VizualizarReservas';
+import VisualizarReservas from './pages/VisualizarReservas';
 
 function App() {
   return (
@@ -27,7 +27,7 @@ function App() {
 
         <Route path="/cadastrar-reserva" element={<CadastrarReserva />} />
 
-        <Route path="/vizualizar-reservas" element={<VizualizarReservas />} />
+        <Route path="/visualizar-reservas" element={<VisualizarReservas />} />
 
 
       </Routes>
