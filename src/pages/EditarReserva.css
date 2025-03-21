@@ -1,11 +1,11 @@
-.container-editar-reserva {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css');
 
-.form-section {
+body {
+    overflow-x: auto;
+    width: 100%;
+  }
+  
+  .form-section {
     background-color: white;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     padding: 1.5rem;
@@ -19,8 +19,8 @@
     margin: 0 auto;
     position: relative;
     z-index: 2;
-    margin-top: 1rem;
-}
+    margin-top: 0;
+  }
 
 .form-grid {
     display: flex;

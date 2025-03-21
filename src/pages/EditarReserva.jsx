@@ -27,6 +27,9 @@ const EditarReserva = () => {
         { name: "Ciclano Bla Bla Bla da Silva", cpf: "222.222.222-22" },
     ]);
 
+    const [editingUfcgIndex, setEditingUfcgIndex] = useState(null);
+    const [editingExternalIndex, setEditingExternalIndex] = useState(null);
+
     const removeUfcgParticipant = (index) => {
         setUfcgParticipants(ufcgParticipants.filter((_, i) => i !== index));
     };
@@ -37,10 +40,50 @@ const EditarReserva = () => {
 
     const addUfcgParticipant = () => {
         setShowUfcgInput(true);
+        setEditingUfcgIndex(null);
+        setNewUfcgParticipant({ name: "", email: "" });
     };
 
     const addExternalParticipant = () => {
         setShowExternalInput(true);
+        setEditingExternalIndex(null);
+        setNewExternalParticipant({ name: "", cpf: "" });
+    };
+
+    const editUfcgParticipant = (index) => {
+        setShowUfcgInput(true);
+        setEditingUfcgIndex(index);
+        setNewUfcgParticipant(ufcgParticipants[index]);
+    };
+
+    const editExternalParticipant = (index) => {
+        setShowExternalInput(true);
+        setEditingExternalIndex(index);
+        setNewExternalParticipant(externalParticipants[index]);
+    };
+
+    const confirmUfcgParticipant = () => {
+        if (editingUfcgIndex !== null) {
+            const updatedParticipants = [...ufcgParticipants];
+            updatedParticipants[editingUfcgIndex] = newUfcgParticipant;
+            setUfcgParticipants(updatedParticipants);
+        } else {
+            setUfcgParticipants([...ufcgParticipants, newUfcgParticipant]);
+        }
+        setShowUfcgInput(false);
+        setNewUfcgParticipant({ name: "", email: "" });
+    };
+
+    const confirmExternalParticipant = () => {
+        if (editingExternalIndex !== null) {
+            const updatedParticipants = [...externalParticipants];
+            updatedParticipants[editingExternalIndex] = newExternalParticipant;
+            setExternalParticipants(updatedParticipants);
+        } else {
+            setExternalParticipants([...externalParticipants, newExternalParticipant]);
+        }
+        setShowExternalInput(false);
+        setNewExternalParticipant({ name: "", cpf: "" });
     };
 
     return (
@@ -68,8 +111,7 @@ const EditarReserva = () => {
                             </div>
                         </div>
 
-                        {/* Formulário de entrada para UFCG */}
-                        {showUfcgInput && (
+                        {showUfcgInput && editingUfcgIndex === null && (
                             <div className="participant-item">
                                 <input
                                     type="text"
@@ -84,40 +126,50 @@ const EditarReserva = () => {
                                     onChange={(e) => setNewUfcgParticipant({ ...newUfcgParticipant, email: e.target.value })}
                                 />
                                 <div className="action-buttons">
-                                    <ConfirmIcon
-                                        onClick={() => {
-                                            setUfcgParticipants([...ufcgParticipants, newUfcgParticipant]);
-                                            setShowUfcgInput(false);  // Esconde os campos após confirmar
-                                            setNewUfcgParticipant({ name: "", email: "" });
-                                        }}
-                                    />
-                                    <CancelIcon
-                                        onClick={() => {
-                                            setShowUfcgInput(false);  // Esconde os campos após negar
-                                            setNewUfcgParticipant({ name: "", email: "" });
-                                        }}
-                                    />
+                                    <ConfirmIcon onClick={confirmUfcgParticipant} />
+                                    <CancelIcon onClick={() => setShowUfcgInput(false)} />
                                 </div>
                             </div>
                         )}
 
                         <div className="participant-list">
                             {ufcgParticipants.map((participant, index) => (
-                                <div key={index} className="participant-item">
-                                    <span>{participant.name || "Novo Participante"}</span>
-                                    <span className="participant-email">{participant.email}</span>
-                                    <div className="action-icons">
-                                        <EditIcon onClick={() => {/* Adicione a lógica de edição aqui */ }} className="edit-icon" />
-                                        <TrashIcon onClick={() => removeUfcgParticipant(index)} className="trash-icon" />
+                                <React.Fragment key={index}>
+                                    {showUfcgInput && editingUfcgIndex === index && (
+                                        <div className="participant-item">
+                                            <input
+                                                type="text"
+                                                placeholder="Nome"
+                                                value={newUfcgParticipant.name}
+                                                onChange={(e) => setNewUfcgParticipant({ ...newUfcgParticipant, name: e.target.value })}
+                                            />
+                                            <input
+                                                type="email"
+                                                placeholder="Email"
+                                                value={newUfcgParticipant.email}
+                                                onChange={(e) => setNewUfcgParticipant({ ...newUfcgParticipant, email: e.target.value })}
+                                            />
+                                            <div className="action-buttons">
+                                                <ConfirmIcon onClick={confirmUfcgParticipant} />
+                                                <CancelIcon onClick={() => setShowUfcgInput(false)} />
+                                            </div>
+                                        </div>
+                                    )}
+                                    <div className="participant-item">
+                                        <span>{participant.name || "Novo Participante"}</span>
+                                        <span className="participant-email">{participant.email}</span>
+                                        <div className="action-icons">
+                                            <EditIcon onClick={() => editUfcgParticipant(index)} className="edit-icon" />
+                                            <TrashIcon onClick={() => removeUfcgParticipant(index)} className="trash-icon" />
+                                        </div>
                                     </div>
-                                </div>
+                                </React.Fragment>
                             ))}
                         </div>
 
                         <div className="separator-line"></div>
                     </div>
 
-                    {/* Seção de participantes externos */}
                     <div className="participant-group">
                         <div className="title-and-button">
                             <h4 className="sub-title">USUÁRIOS EXTERNOS</h4>
@@ -126,8 +178,7 @@ const EditarReserva = () => {
                             </div>
                         </div>
 
-                        {/* Formulário de entrada para participantes externos */}
-                        {showExternalInput && (
+                        {showExternalInput && editingExternalIndex === null && (
                             <div className="participant-item">
                                 <input
                                     type="text"
@@ -142,33 +193,44 @@ const EditarReserva = () => {
                                     onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, cpf: e.target.value })}
                                 />
                                 <div className="action-buttons">
-                                    <ConfirmIcon
-                                        onClick={() => {
-                                            setExternalParticipants([...externalParticipants, newExternalParticipant]);
-                                            setShowExternalInput(false);  // Esconde os campos após confirmar
-                                            setNewExternalParticipant({ name: "", cpf: "" });
-                                        }}
-                                    />
-                                    <CancelIcon
-                                        onClick={() => {
-                                            setShowExternalInput(false);  // Esconde os campos após negar
-                                            setNewExternalParticipant({ name: "", cpf: "" });
-                                        }}
-                                    />
+                                    <ConfirmIcon onClick={confirmExternalParticipant} />
+                                    <CancelIcon onClick={() => setShowExternalInput(false)} />
                                 </div>
                             </div>
                         )}
 
                         <div className="participant-list">
                             {externalParticipants.map((participant, index) => (
-                                <div key={index} className="participant-item">
-                                    <span>{participant.name || "Novo Participante"}</span>
-                                    <span className="participant-cpf">{participant.cpf}</span>
-                                    <div className="action-icons">
-                                        <EditIcon onClick={() => {/* Adicione a lógica de edição aqui */ }} className="edit-icon" />
-                                        <TrashIcon onClick={() => removeExternalParticipant(index)} className="trash-icon" />
+                                <React.Fragment key={index}>
+                                    {showExternalInput && editingExternalIndex === index && (
+                                        <div className="participant-item">
+                                            <input
+                                                type="text"
+                                                placeholder="Nome"
+                                                value={newExternalParticipant.name}
+                                                onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, name: e.target.value })}
+                                            />
+                                            <input
+                                                type="text"
+                                                placeholder="CPF"
+                                                value={newExternalParticipant.cpf}
+                                                onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, cpf: e.target.value })}
+                                            />
+                                            <div className="action-buttons">
+                                                <ConfirmIcon onClick={confirmExternalParticipant} />
+                                                <CancelIcon onClick={() => setShowExternalInput(false)} />
+                                            </div>
+                                        </div>
+                                    )}
+                                    <div className="participant-item">
+                                        <span>{participant.name || "Novo Participante"}</span>
+                                        <span className="participant-cpf">{participant.cpf}</span>
+                                        <div className="action-icons">
+                                            <EditIcon onClick={() => editExternalParticipant(index)} className="edit-icon" />
+                                            <TrashIcon onClick={() => removeExternalParticipant(index)} className="trash-icon" />
+                                        </div>
                                     </div>
-                                </div>
+                                </React.Fragment>
                             ))}
                         </div>
 
