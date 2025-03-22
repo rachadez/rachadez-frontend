@@ -33,6 +33,7 @@ function App() {
 
         <Route path="/editar-reserva" element={<EditarReserva />} />
 
+        <Route path="/admin-menu" element={<AdminMenu />} />
       </Routes>
     </Router>
   );
