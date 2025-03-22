@@ -8,7 +8,7 @@ import Cadastro from './pages/Cadastro';
 import CadastrarReserva from './pages/CadastrarReserva';
 import VisualizarReservas from './pages/VisualizarReservas';
 import EditarReserva from './pages/EditarReserva'; 
-
+import AdminMenu from './pages/AdminMenu'
 
 function App() {
   return (
