@@ -4,7 +4,6 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
     box-sizing: border-box;
     margin-bottom: 5rem;
 }
@@ -48,7 +47,6 @@
     padding-right: 10rem;
     box-sizing: border-box;
     width: 100%;
-    overflow-x: auto;
 }
 
 .item-reserva-reservaDetalhes {
@@ -148,4 +146,115 @@
 
 .bold-text-reservaDetalhes {
     font-weight: bold;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+    .titulos-reservas-reservaDetalhes,
+    .item-reserva-reservaDetalhes {
+        grid-template-columns: 2fr 2fr 2fr;
+        gap: 5rem;
+    }
+
+    .button-container-reservaDetalhes {
+        width: auto;
+    }
+
+    .lista-reservas-reservaDetalhes {
+        padding-left: 5rem;
+        padding-right: 5rem;
+    }
+
+    .titulos-reservas-reservaDetalhes {
+        padding-left: 6rem;
+        padding-right: 6rem;
+    }
+
+    .title-container-reservaDetalhes {
+        align-items: center
+    }
+
+    .arrow-left-reservaDetalhes {
+        display: none;
+    }
+}
+
+@media (max-width: 760px) {
+    .titulos-reservas-reservaDetalhes,
+    .item-reserva-reservaDetalhes {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .button-container-reservaDetalhes {
+        width: 10rem;
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .title-reservaDetalhes {
+        font-size: 2rem;
+    }
+
+    .subtitle-reservaDetalhes {
+        font-size: 0.9rem;
+        margin-left: 0;
+    }
+
+    .titulos-reservas-reservaDetalhes {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+
+    .lista-reservas-reservaDetalhes {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    .responsavel-reservaDetalhes {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .delete-button-reservaDetalhes {
+        font-size: 16px;
+        padding: 10px 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content-reservaDetalhes {
+        align-items: center;
+    }
+
+    .title-reservaDetalhes {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+
+    .subtitle-reservaDetalhes {
+        font-size: 1rem;
+    }
+
+    .titulos-reservas-reservaDetalhes {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    .lista-reservas-reservaDetalhes {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .button-container-reservaDetalhes {
+        flex-wrap: wrap;
+        padding: 0;
+        gap: 0.5rem;
+        margin: 0;
+    }
+
+    .delete-button-reservaDetalhes {
+        font-size: 14px;
+        padding: 8px 20px;
+    }
 }

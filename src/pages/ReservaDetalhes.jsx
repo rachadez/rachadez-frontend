@@ -1,12 +1,11 @@
 import "./ReservaDetalhes.css";
 import Header from "./components/Header/Header";
-import ArrowIcon from "./components/ArrowIcon/ArrowIcon";
+import { ArrowLeft } from "lucide-react";
 import SecondaryButton from "./components/Buttons/SecondaryButton";
+import { useNavigate } from "react-router-dom";
 
 const ReservaDetalhes = () => {
-  const handleEditClick = () => {
-    console.log("Edit button clicked");
-  };
+  const navigate = useNavigate();
 
   const handleDownloadPDFClick = () => {
     console.log("Download PDF button clicked");
@@ -22,7 +21,7 @@ const ReservaDetalhes = () => {
       <div className="main-content-reservaDetalhes">
         <div className="title-container-reservaDetalhes">
           <div className="title-left-reservaDetalhes">
-            <ArrowIcon direction="back" className="back-icon-reservaDetalhes" />
+            <ArrowLeft className="arrow-left-reservaDetalhes" color="#ffffff" size={40} onClick={() => navigate("/admin-menu")} />
             <h1 className="title-reservaDetalhes">Reserva Quadra 1 - Vôlei</h1>
           </div>
           <h2 className="subtitle-reservaDetalhes">01/01/2025 - 18:00h</h2>
@@ -31,7 +30,7 @@ const ReservaDetalhes = () => {
         <div className="button-container-reservaDetalhes">
           <SecondaryButton
             label="Editar"
-            onClick={handleEditClick}
+            onClick={() => navigate("/editar-reserva")}
             className="secondary-button-reservaDetalhes"
           />
           <SecondaryButton
