@@ -1,17 +1,12 @@
 import React from 'react';
 import './VisualizarReservas.css';
 import Header from "./components/Header/Header";
-import MainContent from "./components/MainContent/MainContent";
 import DefaultButton from "./components/Buttons/DefaultButton";
 import MainContentWithButton from "./components/MainContentWithButton/MainContentWithButton";
-
+import { useNavigate } from "react-router-dom";
 
 const VizualizarReservas = () => {
-
-    const handleButtonClick = () => {
-        
-        console.log("Botão clicado!");
-    };
+    const navigate = useNavigate();
 
     return (
         <div className="container-vizualizar-reserva">
@@ -19,6 +14,7 @@ const VizualizarReservas = () => {
             <MainContentWithButton
                 title="Reservas"
                 buttonText="Cadastrar Reserva"
+                onArrowClick={() => navigate("/admin-menu")}
             />
             <section className="section-reservas">
                 {/* Títulos das colunas */}
@@ -36,7 +32,9 @@ const VizualizarReservas = () => {
                             <span>01/01/2025 - 18:00h</span>
 
                             <div className="button">
-                                <DefaultButton label={"Detalhes"} />
+                                <DefaultButton 
+                                    label={"Detalhes"} 
+                                    onClick={() => navigate("/admin-detalhes-reserva")} />
                             </div>
                         </div>
                     ))}

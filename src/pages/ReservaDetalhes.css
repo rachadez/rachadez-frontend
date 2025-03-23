@@ -8,6 +8,10 @@
     margin-bottom: 5rem;
 }
 
+.arrow-left-reservaDetalhes {
+    cursor: pointer;
+}
+
 .titulos-reservas-reservaDetalhes,
 .item-reserva-reservaDetalhes {
     display: grid;

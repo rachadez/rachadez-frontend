@@ -21,7 +21,7 @@ const ReservaDetalhes = () => {
       <div className="main-content-reservaDetalhes">
         <div className="title-container-reservaDetalhes">
           <div className="title-left-reservaDetalhes">
-            <ArrowLeft className="arrow-left-reservaDetalhes" color="#ffffff" size={40} onClick={() => navigate("/admin-menu")} />
+            <ArrowLeft className="arrow-left-reservaDetalhes" color="#ffffff" size={40} onClick={() => navigate("/visualizar-reservas")} />
             <h1 className="title-reservaDetalhes">Reserva Quadra 1 - Vôlei</h1>
           </div>
           <h2 className="subtitle-reservaDetalhes">01/01/2025 - 18:00h</h2>
