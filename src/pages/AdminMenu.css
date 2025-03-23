@@ -42,3 +42,77 @@ body {
   font-weight: 600;
   font-size: 1.2rem;
 }
+
+@media (max-width: 1200px) {
+  .container-options {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2rem;
+    width: 80%; 
+    margin-top: 2rem;
+  }
+
+  .container-option {
+    width: 45%; 
+    height: 12rem; 
+  }
+
+  .options-title {
+    font-size: 1rem; 
+  }
+
+  .reserva-icon-menu svg, .usuarios-icon-menu svg {
+    width: 70px;
+    height: 70px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container-options {
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    height: auto;
+  }
+
+  .container-option {
+    width: 80%; 
+    height: 10rem;
+    margin: 1rem auto; 
+  }
+
+  .options-title {
+    font-size: 1rem;
+  }
+
+  .reserva-icon-menu svg, .usuarios-icon-menu svg {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 3rem 1rem;
+  }
+
+  .container-options {
+    gap: 1.5rem;
+    padding: 10px 0;
+  }
+
+  .container-option {
+    width: 70%;
+    height: 8rem;
+    margin: 0.5rem auto;
+  }
+
+  .options-title {
+    font-size: 0.9rem;
+  }
+
+  .reserva-icon-menu svg, .usuarios-icon-menu svg {
+    width: 50px;
+    height: 50px;
+  }
+}
