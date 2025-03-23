@@ -42,3 +42,14 @@ body {
   font-weight: 600;
   font-size: 1.2rem;
 }
+
+.cards-container {
+  width: 80%;
+  margin-top: 60px;
+  margin-bottom: 100px;
+  justify-self: center;
+  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, auto));
+  gap: 50px;
+}
