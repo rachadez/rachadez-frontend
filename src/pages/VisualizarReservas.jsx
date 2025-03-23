@@ -3,8 +3,10 @@ import './VisualizarReservas.css';
 import Header from "./components/Header/Header";
 import DefaultButton from "./components/Buttons/DefaultButton";
 import MainContentWithButton from "./components/MainContentWithButton/MainContentWithButton";
+import { useNavigate } from "react-router-dom";
 
 const VizualizarReservas = () => {
+    const navigate = useNavigate();
 
     return (
         <div className="container-vizualizar-reserva">

@@ -30,3 +30,40 @@
   margin-top: 12px;
   font-size: 1.25rem;
 }
+
+@media (max-width: 1200px) {
+  .card {
+    width: 240px; 
+    height: 11rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    width: 180px;
+    height: 9rem;
+  }
+
+  .card-icon {
+    height: 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 3rem 1rem;
+  }
+
+  .card {
+    width: 160px;
+    height: 8rem;
+  }
+
+  .card-icon {
+    font-size: 1rem; 
+  }
+
+  .card p {
+    font-size: 0.875rem;
+  }
+}
