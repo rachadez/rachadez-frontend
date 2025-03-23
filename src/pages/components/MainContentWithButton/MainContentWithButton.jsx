@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import ArrowIcon from "../ArrowIcon/ArrowIcon";
 import "./MainContentWithButton.css";
 
-const MainContentWithButton = ({ title, buttonText, onArrowClick }) => {
+const MainContentWithButton = ({ title, buttonText, path }) => {
     const navigate = useNavigate();
 
     const handleButtonClick = () => {
@@ -16,7 +16,7 @@ const MainContentWithButton = ({ title, buttonText, onArrowClick }) => {
                 <ArrowIcon 
                     direction="back" 
                     className="back-icon" 
-                    onClick={onArrowClick} 
+                    onClick={() => navigate(path)} 
                 />
                 <h2 className="title">{title}</h2>
             </div>

@@ -1,8 +1,11 @@
 import React from "react";
 import ArrowIcon from "../ArrowIcon/ArrowIcon";
 import "./MainContent.css";
+import { useNavigate } from "react-router-dom";
 
 const MainContent = ({ title, subtitle, path }) => {
+   const navigate = useNavigate();
+
   return (
     <main className="main-content">
       <div className="title-container">

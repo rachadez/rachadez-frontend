@@ -7,7 +7,6 @@ import ConfirmIcon from "./components/ConfirmIcon/ConfirmIcon";
 import CancelIcon from "./components/CancelIcon/CancelIcon";
 import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
-import { useNavigate } from "react-router-dom";
 
 const EditarReserva = () => {
     const [selectedDate, setSelectedDate] = useState(null);
@@ -87,13 +86,11 @@ const EditarReserva = () => {
         setNewExternalParticipant({ name: "", cpf: "" });
     };
 
-    const navigate = useNavigate();
-
     return (
         <div className="container-editar-reserva">
             <Header />
 
-            <MainContent title="Editar Reserva" onArrowClick={() => navigate("/admin-detalhes-reserva")}/>
+            <MainContent title="Editar Reserva" path={"/admin-detalhes-reserva"}/>
 
             <section className="form-section">
                 <div className="form-grid">

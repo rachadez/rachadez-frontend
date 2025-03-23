@@ -8,7 +8,7 @@ const AdminUsuarios = () => {
   return (
     <div className="container-admin-menu">
       <Header />
-      <MainContent title="Usuários" subtitle="Gerencie todos os usuários cadastrados no sistema! Acesse o tipo de operação nas abas abaixo!" />
+      <MainContent title="Usuários" subtitle="Gerencie todos os usuários cadastrados no sistema! Acesse o tipo de operação nas abas abaixo!" path={"/admin-menu"}/>
 
       <div className="cards-container">
         <Card icon={UserRoundPlus} title="Cadastrar usuário" path="/cadastrar-usuarios" />

@@ -8,9 +8,6 @@ import ConfirmIcon from "./components/ConfirmIcon/ConfirmIcon";
 import CancelIcon from "./components/CancelIcon/CancelIcon";
 import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
-import { useNavigate } from "react-router-dom";
-
-
 
 const CadastrarReserva = () => {
 
@@ -48,13 +45,11 @@ const CadastrarReserva = () => {
     setShowExternalInput(true);
   };
 
-  const navigate = useNavigate();
-
   return (
     <div className="container-cadastrar-reserva">
       <Header />
 
-      <MainContent title="Cadastrar Reserva" onArrowClick={() => navigate("/visualizar-reservas")}/>
+      <MainContent title="Cadastrar Reserva" path={"/visualizar-reservas"}/>
 
       <section className="form-section">
         <div className="form-grid">
