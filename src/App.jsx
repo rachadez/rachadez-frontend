@@ -9,6 +9,7 @@ import CadastrarReserva from './pages/CadastrarReserva';
 import VisualizarReservas from './pages/VisualizarReservas';
 import EditarReserva from './pages/EditarReserva'; 
 import AdminMenu from './pages/AdminMenu'
+import ReservaDetalhes from './pages/ReservaDetalhes'
 
 function App() {
   return (
@@ -34,6 +35,8 @@ function App() {
         <Route path="/editar-reserva" element={<EditarReserva />} />
 
         <Route path="/admin-menu" element={<AdminMenu />} />
+
+        <Route path="/admin-detalhes-reserva" element={<ReservaDetalhes />} />
       </Routes>
     </Router>
   );
