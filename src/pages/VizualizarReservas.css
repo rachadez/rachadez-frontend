@@ -1,0 +1,87 @@
+/* VizualizarReservas.css */
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.bg-gray-100 {
+    background-color: #f7fafc;
+}
+
+.bg-white {
+    background-color: #ffffff;
+}
+
+.bg-blue-600 {
+    background-color: #3182ce;
+}
+
+.text-blue-600 {
+    color: #3182ce;
+}
+
+.text-white {
+    color: #ffffff;
+}
+
+.text-gray-600 {
+    color: #718096;
+}
+
+.shadow {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.p-4 {
+    padding: 1rem;
+}
+
+.py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.rounded {
+    border-radius: 0.25rem;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+.flex {
+    display: flex;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.mb-4 {
+    margin-bottom: 1rem;
+}
+
+.min-w-full {
+    min-width: 100%;
+}
+
+.shadow-md {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.border-b {
+    border-bottom: 1px solid #e2e8f0;
+}
