@@ -1,0 +1,32 @@
+.card {
+  width: 280px;
+  height: 12.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid #0b53b8;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.3s;
+  color: #717171;
+}
+
+.card:hover {
+  background-color: #0b53b8;
+  color: white;
+  transform: scale(1.05);
+}
+
+.card-icon {
+  color: #0b53b8;
+}
+
+.card:hover .card-icon {
+  color: white;
+}
+
+.card p {
+  margin-top: 12px;
+  font-size: 1.25rem;
+}
