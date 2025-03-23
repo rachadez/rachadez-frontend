@@ -6,7 +6,10 @@ import ProfessorHome from './pages/ProfessorHome';
 import AlunoHome from './pages/AlunoHome';
 import Cadastro from './pages/Cadastro';
 import CadastrarReserva from './pages/CadastrarReserva';
-import VizualizarReservas from './pages/VizualizarReservas';
+import VisualizarReservas from './pages/VisualizarReservas';
+import EditarReserva from './pages/EditarReserva'; 
+import AdminMenu from './pages/AdminMenu'
+import AdminUsuariosMenu from './pages/AdminUsuariosMenu';
 
 function App() {
   return (
@@ -23,13 +26,17 @@ function App() {
         <Route path="/professor-home" element={<ProfessorHome />} />
         <Route path="/aluno-home" element={<AlunoHome />} />
 
-        <Route path="/cadastro" element={<Cadastro/>} />
+        <Route path="/cadastro" element={<Cadastro />} />
 
         <Route path="/cadastrar-reserva" element={<CadastrarReserva />} />
 
-        <Route path="/vizualizar-reservas" element={<VizualizarReservas />} />
+        <Route path="/visualizar-reservas" element={<VisualizarReservas />} />
 
+        <Route path="/editar-reserva" element={<EditarReserva />} />
 
+        <Route path="/admin-menu" element={<AdminMenu />} />
+
+        <Route path="/usuarios-menu" element={<AdminUsuariosMenu />} />
       </Routes>
     </Router>
   );
