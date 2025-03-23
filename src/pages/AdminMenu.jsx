@@ -9,6 +9,10 @@ const AdminMenu = () => {
   const handleRedirectReservas = () => {
     navigate("/visualizar-reservas");
   };
+  
+  const handleRedirectUsuarios = () => {
+    navigate("/usuarios-menu");
+  };
 
   return (
     <div className="container-admin-menu">
@@ -37,7 +41,7 @@ const AdminMenu = () => {
           <div className="options-title">Reservas</div>
         </div>
 
-        <div className="container-option">
+        <div className="container-option" onClick={handleRedirectUsuarios}>
           <div className="usuarios-icon-menu">
             <svg
               width="90"
