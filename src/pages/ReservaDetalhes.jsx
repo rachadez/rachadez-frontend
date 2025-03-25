@@ -1,14 +1,39 @@
+import React from "react";
 import "./ReservaDetalhes.css";
 import Header from "./components/Header/Header";
 import { ArrowLeft } from "lucide-react";
 import SecondaryButton from "./components/Buttons/SecondaryButton";
 import { useNavigate } from "react-router-dom";
+import { jsPDF } from "jspdf";
+import { autoTable } from "jspdf-autotable"; 
 
 const ReservaDetalhes = () => {
   const navigate = useNavigate();
 
   const handleDownloadPDFClick = () => {
-    console.log("Download PDF button clicked");
+    const doc = new jsPDF();
+
+    doc.setFontSize(18);
+    doc.text("Reserva Quadra 1 - Vôlei", 20, 20);
+    doc.setFontSize(12);
+    doc.text("01/01/2025 - 18:00h", 20, 30);
+
+    const headers = [["Nome", "Curso/tipo", "Matrícula/CPF"]];
+    const data = Array(10)
+      .fill()
+      .map((_, index) => [
+        index % 2 === 0 ? "Alexandre Costa" : "José Canhoto da Silva Nunes Pereira",
+        index % 2 === 0 ? "Ciência da computação" : "COMUNIDADE",
+        index % 2 === 0 ? "123456789" : "111.111.111-11",
+      ]);
+
+    autoTable(doc, { 
+      startY: 40,
+      head: headers,
+      body: data,
+    });
+
+    doc.save("reserva_detalhes.pdf");
   };
 
   const handleDeleteClick = () => {
@@ -68,21 +93,13 @@ const ReservaDetalhes = () => {
             .fill()
             .map((_, index) => (
               <div key={index} className="item-reserva-reservaDetalhes">
-                <span
-                  className={index === 0 ? "bold-text-reservaDetalhes" : ""}
-                >
-                  {index % 2 === 0
-                    ? "Alexandre Costa"
-                    : "José Canhoto da Silva Nunes Pereira"}
+                <span className={index === 0 ? "bold-text-reservaDetalhes" : ""}>
+                  {index % 2 === 0 ? "Alexandre Costa" : "José Canhoto da Silva Nunes Pereira"}
                 </span>
-                <span
-                  className={index === 0 ? "bold-text-reservaDetalhes" : ""}
-                >
+                <span className={index === 0 ? "bold-text-reservaDetalhes" : ""}>
                   {index % 2 === 0 ? "Ciência da computação" : "COMUNIDADE"}
                 </span>
-                <span
-                  className={index === 0 ? "bold-text-reservaDetalhes" : ""}
-                >
+                <span className={index === 0 ? "bold-text-reservaDetalhes" : ""}>
                   {index % 2 === 0 ? "123456789" : "111.111.111-11"}
                 </span>
               </div>
