@@ -6,6 +6,7 @@ import SecondaryButton from "./components/Buttons/SecondaryButton";
 import { useNavigate } from "react-router-dom";
 import { jsPDF } from "jspdf";
 import { autoTable } from "jspdf-autotable"; 
+import Logo from "../assets/Logo_3_vazada.png"; 
 
 const ReservaDetalhes = () => {
   const navigate = useNavigate();
@@ -13,10 +14,20 @@ const ReservaDetalhes = () => {
   const handleDownloadPDFClick = () => {
     const doc = new jsPDF();
 
+    const pageWidth = doc.internal.pageSize.getWidth();
+    const imgWidth = 90;
+    const imgHeight = 50;
+    const imgX = (pageWidth - imgWidth) / 2; 
+
+    doc.addImage(Logo, "PNG", imgX, 10, imgWidth, imgHeight);
+
+
+    doc.setTextColor(11, 83, 184);
     doc.setFontSize(18);
-    doc.text("Reserva Quadra 1 - Vôlei", 20, 20);
+    doc.text("Reserva Quadra 1 - Vôlei", 20, 63); 
+    doc.setTextColor(0, 0, 0);
     doc.setFontSize(12);
-    doc.text("01/01/2025 - 18:00h", 20, 30);
+    doc.text("01/01/2025 - 18:00h", 20, 72); 
 
     const headers = [["Nome", "Curso/tipo", "Matrícula/CPF"]];
     const data = Array(10)
@@ -27,10 +38,24 @@ const ReservaDetalhes = () => {
         index % 2 === 0 ? "123456789" : "111.111.111-11",
       ]);
 
-    autoTable(doc, { 
-      startY: 40,
+    autoTable(doc, {
+      startY: 80, 
       head: headers,
       body: data,
+      headStyles: {
+        fillColor: [0, 102, 204],
+        textColor: [255, 255, 255],
+        fontStyle: "bold",
+      },
+      styles: {
+        fillColor: [230, 240, 255],
+        textColor: [0, 0, 0],
+      },
+      didParseCell: function (data) {
+        if (data.row.index === 0) {
+          data.cell.styles.fontStyle = "bold";
+        }
+      },
     });
 
     doc.save("reserva_detalhes.pdf");
