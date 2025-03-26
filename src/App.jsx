@@ -12,6 +12,10 @@ import AdminMenu from './pages/AdminMenu'
 import AdminUsuariosMenu from './pages/AdminUsuariosMenu';
 import ReservaDetalhes from './pages/ReservaDetalhes'
 import AdminEditarUsuario from './pages/AdminEditarUsuario';
+import AdminUsuariosEditar from './pages/AdminUsuariosEditar';
+import AdminUsuariosExcluir from './pages/AdminUsuariosExcluir';
+import AdminUsuariosVisualizar from './pages/AdminUsuariosVisualizar';
+import AdminUsuariosBanir from './pages/AdminUsuariosBanir';
 
 
 function App() {
@@ -44,6 +48,15 @@ function App() {
         <Route path='/editar-usuario/:usuarioId' element={<AdminEditarUsuario />} />
           
         <Route path="/admin-detalhes-reserva" element={<ReservaDetalhes />} />
+
+        <Route path="/admin-editar-usuarios" element={<AdminUsuariosEditar />} />
+
+        <Route path="/admin-excluir-usuarios" element={<AdminUsuariosExcluir />} />
+
+        <Route path="/admin-visualizar-usuarios" element={<AdminUsuariosVisualizar />} />
+
+        <Route path="/admin-banir-usuarios" element={<AdminUsuariosBanir />} />
+
       </Routes>
     </Router>
   );

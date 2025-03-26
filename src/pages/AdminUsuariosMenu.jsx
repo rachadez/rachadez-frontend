@@ -13,10 +13,10 @@ const AdminUsuarios = () => {
       <div className="cards-container">
         <Card icon={UserRoundPlus} title="Cadastrar usuário (UFCG)" path="/cadastrar-usuario-ufcg" />
         <Card icon={UsersRound} title="Cadastrar usuário (Externo)" path="/cadastrar-usuario-externo" />
-        <Card icon={UserRoundPen} title="Editar usuários" path="/editar-usuarios" />
-        <Card icon={UserRoundMinus} title="Excluir usuários" path="/excluir-usuarios" />
-        <Card icon={UserRoundSearch} title="Visualizar usuários" path="/visualizar-usuarios" />
-        <Card icon={UserRoundX} title="Usuários banidos" path="/usuarios-banidos" />
+        <Card icon={UserRoundPen} title="Editar usuários" path="/admin-editar-usuarios" />
+        <Card icon={UserRoundMinus} title="Excluir usuários" path="/admin-excluir-usuarios" />
+        <Card icon={UserRoundSearch} title="Visualizar usuários" path="/admin-visualizar-usuarios" />
+        <Card icon={UserRoundX} title="Usuários banidos" path="/admin-menu-banimento" />
       </div>
     </div>
   );
