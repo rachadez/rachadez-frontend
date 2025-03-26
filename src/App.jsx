@@ -11,8 +11,13 @@ import EditarReserva from './pages/EditarReserva';
 import AdminMenu from './pages/AdminMenu'
 import AdminUsuariosMenu from './pages/AdminUsuariosMenu';
 import ReservaDetalhes from './pages/ReservaDetalhes'
+import AdminEditarUsuario from './pages/AdminEditarUsuario';
+import AdminUsuariosEditar from './pages/AdminUsuariosEditar';
+import AdminUsuariosExcluir from './pages/AdminUsuariosExcluir';
+import AdminUsuariosVisualizar from './pages/AdminUsuariosVisualizar';
 import AdminVisualizarUsuario from './pages/AdminVisualizarUsuario';
 import AdminUsuariosMenuBanimento from './pages/AdminUsuariosMenuBanimento';
+import AdminUsuariosBanir from './pages/AdminUsuariosBanir';
 
 
 function App() {
@@ -42,11 +47,25 @@ function App() {
 
         <Route path="/usuarios-menu" element={<AdminUsuariosMenu />} />
 
-        <Route path="/visualizar-usuario/:usuarioId" element={<AdminVisualizarUsuario />} />
           
         <Route path="/admin-detalhes-reserva" element={<ReservaDetalhes />} />
 
+        <Route path='/editar-usuario/:usuarioId' element={<AdminEditarUsuario />} />
+          
+        <Route path="/admin-detalhes-reserva" element={<ReservaDetalhes />} />
+
+        <Route path="/admin-editar-usuarios" element={<AdminUsuariosEditar />} />
+
+        <Route path="/admin-excluir-usuarios" element={<AdminUsuariosExcluir />} />
+
+        <Route path="/admin-visualizar-usuarios" element={<AdminUsuariosVisualizar />} />
+          
+        <Route path="/visualizar-usuario/:usuarioId" element={<AdminVisualizarUsuario />} />
+          
         <Route path='/admin-usuarios-menu-banimento' element={<AdminUsuariosMenuBanimento />} />
+
+        <Route path="/admin-banir-usuarios" element={<AdminUsuariosBanir />} />
+
       </Routes>
     </Router>
   );
