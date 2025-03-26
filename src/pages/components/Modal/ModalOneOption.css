@@ -30,5 +30,7 @@
 
 .ModalContainer .default-button {
     width: 70%; 
+    white-space: normal; 
+    word-break: break-word;
 }
 

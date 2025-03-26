@@ -15,10 +15,17 @@ const EditarReserva = () => {
     const [modalType, setModalType] = useState("");
   
     const handleUpdateClick = () => {
-        const horarioAgendado = true; // Substitua isso pela lógica para verificar se há reserva no horário
-        
+        const horarioAgendado = false; // Substitua isso pela lógica para verificar se há reserva no horário
+        const horarioIndisponivel = false; // substitua para a logica de checar se o horario esta disponivel
+        const credenciaisInvalidas = false; /* substitua para a lógica de checar se o usuario responsavel é permitido 
+                                            ou há qualquer outro problema com os dados inseridos*/
+
         if (horarioAgendado) {
             setModalType("sobrescrever-horario");
+        } else if (horarioIndisponivel) {
+            setModalType("horario-indisponivel");
+        } else if (credenciaisInvalidas) {
+            setModalType("credenciais-invalidas");
         } else {
             setModalType("confirmar-edicoes");
         }
@@ -286,8 +293,8 @@ const EditarReserva = () => {
                 <ModalOneOption
                     iconName="calendario-check" 
                     modalText="Reserva atualizada com sucesso!"
-                    buttonText="Ir para a página inicial"
-                    buttonPath={"/admin-menu"}
+                    buttonText="Voltar"
+                    buttonPath={"/visualizar-reservas"}
                 />
             )}
 
@@ -300,6 +307,29 @@ const EditarReserva = () => {
                     onClickButtonOne={() => setIsModalOpen(false)}
                     buttonTextTwo="Confirmar"
                     onClickButtonTwo={handleAtualizarReserva}
+                />
+            )}
+
+            {/* Modal de horário indisponivel */}
+            {isModalOpen && modalType === "horario-indisponivel" && (
+                <ModalOneOption
+                    iconName="calendario-erro" 
+                    modalText="Data/horário escolhido indisponível. Tente novamente"
+                    buttonText="Tentar novamente"
+                    onClick={() => setIsModalOpen(false)}
+                />
+            )}
+
+            {/* Modal pra caso o usuario responsavel nao seja permitido ou haja qualquer 
+            problema com os dados inseridos */}
+            {isModalOpen && modalType === "credenciais-invalidas" && (
+                <ModalOneOption
+                    iconName="circulo-erro" 
+                    modalText="Credenciais inválidas!
+                            Cheque os dados inseridos e
+                            tente novamente"
+                    buttonText="Tentar novamente"
+                    onClick={() => setIsModalOpen(false)}
                 />
             )}
         </div>
