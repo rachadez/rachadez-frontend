@@ -7,8 +7,30 @@ import ConfirmIcon from "./components/ConfirmIcon/ConfirmIcon";
 import CancelIcon from "./components/CancelIcon/CancelIcon";
 import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
+import ModalTwoOptions from "./components/Modal/ModalTwoOptions";
+import ModalOneOption from "./components/Modal/ModalOneOption";
 
 const EditarReserva = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalType, setModalType] = useState("");
+  
+    const handleUpdateClick = () => {
+        const horarioAgendado = true; // Substitua isso pela lógica para verificar se há reserva no horário
+        
+        if (horarioAgendado) {
+            setModalType("sobrescrever-horario");
+        } else {
+            setModalType("confirmar-edicoes");
+        }
+
+        setIsModalOpen(true);
+    };
+
+    const handleAtualizarReserva = () => {
+        //add logica de atualizar reserva
+        setModalType("reserva-atualizada");
+    };
+
     const [selectedDate, setSelectedDate] = useState(null);
 
     const [newUfcgParticipant, setNewUfcgParticipant] = useState({ name: "", email: "" });
@@ -238,9 +260,49 @@ const EditarReserva = () => {
                     </div>
                 </div>
 
-                <div className="submit-button-container">
-                    <button className="submit-button">Atualizar Reserva</button>
-                </div>
+                <div>
+            <div className="submit-button-container">
+                <button className="submit-button" onClick={handleUpdateClick}>
+                    Atualizar Reserva
+                </button>
+            </div>
+
+            {/* Modal de sobrescrever Horário */}
+            {isModalOpen && modalType === "sobrescrever-horario" && (
+                <ModalTwoOptions
+                    iconName="triangulo-amarelo"
+                    modalText="Já existe uma reserva agendada para este horário. Deseja sobrescrever?"
+                    buttonTextOne="Sim"
+                    buttonColorOne="red"
+                    onClickButtonOne={handleAtualizarReserva}
+
+                    buttonTextTwo="Não"
+                    onClickButtonTwo={() => setIsModalOpen(false)}
+                />
+            )}
+
+            {/* Modal de reserva atualizada */}
+            {isModalOpen && modalType === "reserva-atualizada" && (
+                <ModalOneOption
+                    iconName="calendario-check" 
+                    modalText="Reserva atualizada com sucesso!"
+                    buttonText="Ir para a página inicial"
+                    buttonPath={"/admin-menu"}
+                />
+            )}
+
+            {/* Modal de Confirmação das Edições */}
+            {isModalOpen && modalType === "confirmar-edicoes" && (
+                <ModalTwoOptions
+                    iconName="calendario-relogio"
+                    modalText="Deseja confirmar suas edições?"
+                    buttonTextOne="Continuar editando"
+                    onClickButtonOne={() => setIsModalOpen(false)}
+                    buttonTextTwo="Confirmar"
+                    onClickButtonTwo={handleAtualizarReserva}
+                />
+            )}
+        </div>
             </section>
         </div>
     );
