@@ -11,6 +11,7 @@ import EditarReserva from './pages/EditarReserva';
 import AdminMenu from './pages/AdminMenu'
 import AdminUsuariosMenu from './pages/AdminUsuariosMenu';
 import ReservaDetalhes from './pages/ReservaDetalhes'
+import AdminEditarUsuario from './pages/AdminEditarUsuario';
 
 
 function App() {
@@ -39,6 +40,8 @@ function App() {
         <Route path="/admin-menu" element={<AdminMenu />} />
 
         <Route path="/usuarios-menu" element={<AdminUsuariosMenu />} />
+
+        <Route path='/editar-usuario/:usuarioId' element={<AdminEditarUsuario />} />
           
         <Route path="/admin-detalhes-reserva" element={<ReservaDetalhes />} />
       </Routes>
