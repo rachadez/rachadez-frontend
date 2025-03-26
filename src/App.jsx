@@ -14,6 +14,7 @@ import ReservaDetalhes from './pages/ReservaDetalhes'
 import AdminUsuariosEditar from './pages/AdminUsuariosEditar';
 import AdminUsuariosExcluir from './pages/AdminUsuariosExcluir';
 import AdminUsuariosVisualizar from './pages/AdminUsuariosVisualizar';
+import AdminUsuariosBanir from './pages/AdminUsuariosBanir';
 
 
 function App() {
@@ -50,6 +51,8 @@ function App() {
         <Route path="/admin-excluir-usuarios" element={<AdminUsuariosExcluir />} />
 
         <Route path="/admin-visualizar-usuarios" element={<AdminUsuariosVisualizar />} />
+
+        <Route path="/admin-banir-usuarios" element={<AdminUsuariosBanir />} />
 
       </Routes>
     </Router>
