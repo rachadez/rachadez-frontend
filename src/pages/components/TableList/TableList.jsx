@@ -2,7 +2,7 @@ import React from 'react';
 import './TableList.css';
 import DefaultButton from '../Buttons/DefaultButton';
 
-const TableList = ({ cabecalho, dados }) => {
+const TableList = ({ cabecalho, dados, botao }) => {
     const cabecalhoCompleto = [...cabecalho, 'Ação'];
   
     return (
@@ -25,7 +25,7 @@ const TableList = ({ cabecalho, dados }) => {
                 </div>
               ))}
               <div className="botao-container">
-                <DefaultButton label="Editar" />
+                {botao ? React.cloneElement(botao, { item: linha }) : null}
               </div>
             </div>
             {linhaIndex < dados.length - 1 && <div className="linha-divisoria" />}
