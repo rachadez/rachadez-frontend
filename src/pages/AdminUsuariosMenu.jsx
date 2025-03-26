@@ -4,7 +4,7 @@ import { UserRoundPlus, UsersRound, UserRoundPen, UserRoundMinus, UserRoundSearc
 import Card from "./components/Cards/Card";
 import "./AdminMenu.css";
 
-const AdminUsuarios = () => {
+const AdminUsuariosMenu = () => {
   return (
     <div className="container-admin-menu">
       <Header />
@@ -22,4 +22,4 @@ const AdminUsuarios = () => {
   );
 };
 
-export default AdminUsuarios;
+export default AdminUsuariosMenu;
