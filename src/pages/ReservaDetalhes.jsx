@@ -7,8 +7,24 @@ import { useNavigate } from "react-router-dom";
 import { jsPDF } from "jspdf";
 import { autoTable } from "jspdf-autotable"; 
 import Logo from "../assets/Logo_3_vazada.png"; 
+import { useState } from "react";
+import ModalTwoOptions from "./components/Modal/ModalTwoOptions";
+import ModalOneOption from "./components/Modal/ModalOneOption";
 
 const ReservaDetalhes = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState("");
+
+  const handleDeleteClick = () => {
+    setIsModalOpen(true);
+    setModalType("deletar-reserva");
+  };
+
+  const handleDeletaReserva = () => {
+    //add logica de deletar reserva
+    setModalType("reserva-deletada");
+};
+
   const navigate = useNavigate();
 
   const handleDownloadPDFClick = () => {
@@ -59,10 +75,6 @@ const ReservaDetalhes = () => {
     });
 
     doc.save("reserva_detalhes.pdf");
-  };
-
-  const handleDeleteClick = () => {
-    console.log("Delete button clicked");
   };
 
   return (
@@ -131,6 +143,28 @@ const ReservaDetalhes = () => {
             ))}
         </div>
       </section>
+          {/* Modal exibido ao clicar para deletar reserva */}
+            {isModalOpen && modalType === "deletar-reserva" && (
+              <ModalTwoOptions
+                  iconName="triangulo-amarelo" 
+                  modalText="Tem certeza que deseja remover esta reserva?"
+                  buttonTextOne="Remover"
+                  buttonColorOne="red"
+                  onClickButtonOne={handleDeletaReserva}
+                  buttonTextTwo="Cancelar"
+                  onClickButtonTwo={() => setIsModalOpen(false)}
+              />
+            )}
+
+          {/* Modal exibido após deletar a reserva com sucesso */}
+            {isModalOpen && modalType === "reserva-deletada" && (
+              <ModalOneOption
+                  iconName="sucesso-check" 
+                  modalText="Reserva deletada com sucesso!"
+                  buttonText="Voltar"
+                  buttonPath="/visualizar-reservas"
+              />
+            )}
     </div>
   );
 };

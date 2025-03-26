@@ -90,7 +90,7 @@ function Cadastro() {
               />
           ) : (
               <ModalOneOption
-                  iconName="cancelar" 
+                  iconName="X" 
                   modalText="Ocorreu um erro inesperado.
                             Por favor, tente novamente!"
                   buttonText="Tentar novamente"

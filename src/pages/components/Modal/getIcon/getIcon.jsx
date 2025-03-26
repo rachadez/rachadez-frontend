@@ -3,7 +3,7 @@ import { CalendarCheck, CalendarClock, Trash, CalendarOff, CalendarX, XCircle } 
 
 const iconMapIconify = {
     "triangulo-amarelo": { icon: "basil:info-triangle-outline", color: "#FFA629" },
-    "cancelar": { icon: "ix:cancel", color: "red" },
+    "X": { icon: "ix:cancel", color: "red" },
     "sucesso-check": { icon: "material-symbols:check", color: "#0B53B8" }
 };
 
@@ -23,7 +23,7 @@ const getIconifyIcon = (iconName) => {
 };
 
 const getLucideIcon = (iconName) => {
-    const { icon, color } = iconMapLucide[iconName] || { icon: <CalendarCheck />, color: "#0B53B8" };
+    const { icon, color } = iconMapLucide[iconName] || { icon: <CalendarCheck size={85} strokeWidth={1} />, color: "#0B53B8" };
 
     return (props) => <div style={{ color: color }}>{icon}</div>; 
 };
