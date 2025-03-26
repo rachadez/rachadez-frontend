@@ -1,11 +1,32 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useState } from "react";
 import "./Cadastro.css";
 import { ArrowLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import DefaultButton from "./components/Buttons/DefaultButton";
 import InputTemplate from "./components/InputTemplate/InputTemplate";
+import ModalOneOption from "./components/Modal/ModalOneOption";
 
 function Cadastro() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState("");
+
+  const handleCadastroClick = () => {
+      const cadastroSuccess = false; // Isso é apenas um exemplo, substitua pela lógica de cadastro
+
+      if (cadastroSuccess) {
+          setModalType("sucesso"); 
+      } else {
+          setModalType("erro");
+      }
+
+      setIsModalOpen(true); 
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   const navigate = useNavigate();
 
   return (
@@ -48,12 +69,35 @@ function Cadastro() {
         </div>
   
         <div className="button">
-          <DefaultButton label={"Realizar cadastro"} />
+          <DefaultButton label={"Realizar cadastro"} onClick={handleCadastroClick} />
           <a href="#" className="link">
             Não possuo matrícula &gt;
           </a>
         </div>
       </div>
+
+        {/* Exibe o Modal dependendo do tipo de sucesso ou erro */}
+        {isModalOpen && (
+          modalType === "sucesso" ? (
+              <ModalOneOption
+                  iconName="triangulo-amarelo" 
+                  modalText="Enviamos um e-mail para você! Para concluir
+                            o seu cadastro, clique no link de confirmação
+                            que está em seu e-mail. Lembre-se de checar
+                            sua pasta de spam."
+                  buttonText="Entendido!"
+                  buttonPath="/login-aluno"
+              />
+          ) : (
+              <ModalOneOption
+                  iconName="cancelar" 
+                  modalText="Ocorreu um erro inesperado.
+                            Por favor, tente novamente!"
+                  buttonText="Tentar novamente"
+                  onClose={closeModal}
+              />
+          )
+      )}
     </div>
   );
 }

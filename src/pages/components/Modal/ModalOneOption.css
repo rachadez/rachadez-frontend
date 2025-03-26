@@ -1,0 +1,34 @@
+.ModalBackdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5); 
+}
+
+.ModalContainer {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    width: 30rem;
+    height: auto;
+    padding: 4rem;
+    border-radius: 1rem;
+    color: #0B53B8;
+    font-weight: 600;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1.5rem;
+}
+
+.ModalContainer .default-button {
+    width: 70%; 
+}
+
