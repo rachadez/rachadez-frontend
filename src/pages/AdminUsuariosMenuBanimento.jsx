@@ -11,8 +11,8 @@ const AdminUsuariosMenuBanimento = () => {
       <MainContent title="Menu de Banimento" subtitle="Gerencie bloqueios e desbloqueios de usuários através das opções abaixo." path={"/usuarios-menu"}/>
 
       <div className="cards-container">
-        <Card icon={ShieldX} title="Banir usuários" path="/banir-usuarios" />
-        <Card icon={ListX} title="Visualizar banidos" path="/visualizar-usuarios-banidos" />
+        <Card icon={ShieldX} title="Banir usuários" path="/admin-banir-usuarios" />
+        <Card icon={ListX} title="Visualizar banidos" path="/admin-visualizar-usuarios-banidos" />
       </div>
     </div>
   );

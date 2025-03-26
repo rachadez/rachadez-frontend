@@ -2,8 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import LoginProfessor from './pages/LoginProfessor';
 import LoginAluno from './pages/LoginAluno';
-import ProfessorHome from './pages/ProfessorHome';
-import AlunoHome from './pages/AlunoHome';
 import Cadastro from './pages/Cadastro';
 import CadastrarReserva from './pages/CadastrarReserva';
 import VisualizarReservas from './pages/VisualizarReservas';
@@ -35,9 +33,6 @@ function App() {
 
         {/* Páginas pós-login */}
         {/* Users */}
-        <Route path="/professor-home" element={<ProfessorHome />} />
-        <Route path="/aluno-home" element={<AlunoHome />} />
-
         <Route path="/cadastro" element={<Cadastro />} />
 
         <Route path="/cadastrar-reserva" element={<CadastrarReserva />} />
@@ -61,13 +56,13 @@ function App() {
 
         <Route path="/admin-editar-usuarios" element={<AdminUsuariosEditar />} />
       
-        <Route path='/editar-usuario/:usuarioId' element={<AdminEditarUsuario />} />
+        <Route path='/admin-editar-usuario/:id' element={<AdminEditarUsuario />} />
 
         <Route path="/admin-excluir-usuarios" element={<AdminUsuariosExcluir />} />
 
         <Route path="/admin-visualizar-usuarios" element={<AdminUsuariosVisualizar />} />
           
-        <Route path="/visualizar-usuario/:usuarioId" element={<AdminVisualizarUsuario />} />
+        <Route path="/admin-visualizar-usuario/:id" element={<AdminVisualizarUsuario />} />
           
         <Route path='/admin-usuarios-menu-banimento' element={<AdminUsuariosMenuBanimento />} />
 

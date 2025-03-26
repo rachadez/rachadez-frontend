@@ -37,7 +37,7 @@ function AdminUsuariosBanir() {
     return (
         <>
             <Header></Header>
-            <MainContent title="Bloquear usuários" subtitle="Clique no usuário que deseja bloquear. Usuários são bloqueados por infrigirem regras do Complexo Esportivo." path={"/usuarios-menu"}/>
+            <MainContent title="Bloquear usuários" subtitle="Clique no usuário que deseja bloquear. Usuários são bloqueados por infrigirem regras do Complexo Esportivo." path={"/admin-usuarios-menu-banimento"}/>
 
             <TableList cabecalho={cabecalho} dados={dados} botao={<DeleteButton label="Banir"/>}></TableList>
         </>

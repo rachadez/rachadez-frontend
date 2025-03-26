@@ -16,7 +16,7 @@ const AdminUsuariosMenu = () => {
         <Card icon={UserRoundPen} title="Editar usuários" path="/admin-editar-usuarios" />
         <Card icon={UserRoundMinus} title="Excluir usuários" path="/admin-excluir-usuarios" />
         <Card icon={UserRoundSearch} title="Visualizar usuários" path="/admin-visualizar-usuarios" />
-        <Card icon={UserRoundX} title="Usuários banidos" path="/admin-menu-banimento" />
+        <Card icon={UserRoundX} title="Usuários banidos" path="/admin-usuarios-menu-banimento" />
       </div>
     </div>
   );
