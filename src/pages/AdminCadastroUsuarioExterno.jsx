@@ -5,12 +5,12 @@ import InputTemplate from "./components/InputTemplate/InputTemplate";
 import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
 
-function Cadastro() {
+function AdminCadastroUsuarioExterno() {
 
   return (
     <div className="cadastro-page">
       <Header />
-      <MainContent path={"/"} title={"Faça seu cadastro!"} subtitle={"Certifique-se de informar seus dados corretamente. Somente membros da comunidade da UFCG (alunos, professores e servidores) podem se cadastrar."}/>
+      <MainContent path={"/usuarios-menu"} title={"Cadastrando novo Usuário Externo"} subtitle={"Adicione usuários externos ao sistema. Membros externos são todos aqueles que não pertencem a UFCG."}/>
   
       <div className="form-wrapper">
         <div className="form-container">
@@ -21,13 +21,10 @@ function Cadastro() {
             <InputTemplate type="text" label="CPF" placeholder="123.456.789-00" />
           </div>
           <div className="form-group">
-            <label>Ocupação</label>
-            <select>
-              <option>Selecione</option>
-            </select>
+            <InputTemplate type="text" label="Ocupação" placeholder="Usuário Externo" />
           </div>
           <div className="form-group">
-            <InputTemplate type="email" label="E-mail acadêmico" placeholder="email@estudante.ufcg.edu.br" />
+            <InputTemplate type="email" label="E-mail" placeholder="email@gmail.com" />
           </div>
           <div className="form-group">
             <InputTemplate type="password" label="Senha" placeholder="**********" />
@@ -38,11 +35,11 @@ function Cadastro() {
         </div>
   
         <div className="button">
-          <DefaultButton label={"Realizar cadastro"} />
+          <DefaultButton label={"Cadastrar"} />
         </div>
       </div>
     </div>
   );
 }
 
-export default Cadastro;
+export default AdminCadastroUsuarioExterno;

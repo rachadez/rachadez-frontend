@@ -5,12 +5,12 @@ import InputTemplate from "./components/InputTemplate/InputTemplate";
 import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
 
-function Cadastro() {
+function AdminCadastroUsuarioUFCG() {
 
   return (
     <div className="cadastro-page">
       <Header />
-      <MainContent path={"/"} title={"Faça seu cadastro!"} subtitle={"Certifique-se de informar seus dados corretamente. Somente membros da comunidade da UFCG (alunos, professores e servidores) podem se cadastrar."}/>
+      <MainContent path={"/usuarios-menu"} title={"Cadastrando novo Usuário Interno"} subtitle={"Adicione membros da comunidade da UFCG: alunos, professores e servidores."}/>
   
       <div className="form-wrapper">
         <div className="form-container">
@@ -38,11 +38,11 @@ function Cadastro() {
         </div>
   
         <div className="button">
-          <DefaultButton label={"Realizar cadastro"} />
+          <DefaultButton label={"Cadastrar"} />
         </div>
       </div>
     </div>
   );
 }
 
-export default Cadastro;
+export default AdminCadastroUsuarioUFCG;
