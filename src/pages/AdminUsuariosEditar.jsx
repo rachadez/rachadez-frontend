@@ -1,6 +1,4 @@
-import './AdminUsuariosEditar.css';
-import DefaultButton from './components/Buttons/SecondaryButton';
-
+import DefaultButton from "./components/Buttons/DefaultButton";
 import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
 import TableList from "./components/TableList/TableList"
@@ -41,7 +39,7 @@ function AdminUsuariosEditar() {
             <Header></Header>
             <MainContent title="Edite um usuário" subtitle="Clique no usuário que deseja editar informações. Você pode alterar quaisquer campos que desejar." path={"/usuarios-menu"}/>
 
-            <TableList cabecalho={cabecalho} dados={dados}></TableList>
+            <TableList cabecalho={cabecalho} dados={dados} botao={<DefaultButton label="Editar"/>}></TableList>
         </>
     )
 }
