@@ -14,7 +14,7 @@ const CadastrarReserva = () => {
   const [selectedDate, setSelectedDate] = useState(null);
 
   const [newUfcgParticipant, setNewUfcgParticipant] = useState({ name: "", email: "" });
-  const [newExternalParticipant, setNewExternalParticipant] = useState({ name: "", cpf: "" });
+  const [newExternalParticipant, setNewExternalParticipant] = useState({ name: "", email: "" });
 
   const [showUfcgInput, setShowUfcgInput] = useState(false);
   const [showExternalInput, setShowExternalInput] = useState(false);
@@ -25,9 +25,11 @@ const CadastrarReserva = () => {
   ]);
 
   const [externalParticipants, setExternalParticipants] = useState([
-    { name: "Fulano de Tal", cpf: "111.111.111-11" },
-    { name: "Ciclano Bla Bla Bla da Silva", cpf: "222.222.222-22" },
+    { name: "Fulano de Tal", email: "fulano.tal@example.com" },
+    { name: "Ciclano Bla Bla Bla da Silva", email: "ciclano.silva@example.com" },
   ]);
+
+  const [responsavel, setResponsavel] = useState(null);
 
   const removeUfcgParticipant = (index) => {
     setUfcgParticipants(ufcgParticipants.filter((_, i) => i !== index));
@@ -45,6 +47,10 @@ const CadastrarReserva = () => {
     setShowExternalInput(true);
   };
 
+  const handleResponsavelChange = (participant, type) => {
+    setResponsavel({ participant, type });
+  };
+
   return (
     <div className="container-cadastrar-reserva">
       <Header />
@@ -56,7 +62,7 @@ const CadastrarReserva = () => {
           <div className="input-group">
             <label htmlFor="esporte">Esporte</label>
             <select id="esporte" className="select-input">
-              <option>Esporte</option>
+              <option>Esporte - Local</option>
             </select>
           </div>
 
@@ -115,6 +121,12 @@ const CadastrarReserva = () => {
                 <div key={index} className="participant-item">
                   <span>{participant.name || "Novo Participante"}</span>
                   <span className="participant-email">{participant.email}</span>
+                  <input
+                    type="checkbox"
+                    checked={responsavel?.participant === participant && responsavel?.type === 'ufcg'}
+                    onChange={() => handleResponsavelChange(participant, 'ufcg')}
+                  />
+                  <label className="responsavel-label">Marcar como responsável</label>
                   <TrashIcon onClick={() => removeUfcgParticipant(index)} className="trash-icon" />
                 </div>
               ))}
@@ -142,23 +154,23 @@ const CadastrarReserva = () => {
                   onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, name: e.target.value })}
                 />
                 <input
-                  type="text"
-                  placeholder="CPF"
-                  value={newExternalParticipant.cpf}
-                  onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, cpf: e.target.value })}
+                  type="email"
+                  placeholder="Email"
+                  value={newExternalParticipant.email}
+                  onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, email: e.target.value })}
                 />
                 <div className="action-buttons">
                   <ConfirmIcon
                     onClick={() => {
                       setExternalParticipants([...externalParticipants, newExternalParticipant]);
                       setShowExternalInput(false);  // Esconde os campos após confirmar
-                      setNewExternalParticipant({ name: "", cpf: "" });
+                      setNewExternalParticipant({ name: "", email: "" });
                     }}
                   />
                   <CancelIcon
                     onClick={() => {
                       setShowExternalInput(false);  // Esconde os campos após negar
-                      setNewExternalParticipant({ name: "", cpf: "" });
+                      setNewExternalParticipant({ name: "", email: "" });
                     }}
                   />
                 </div>
@@ -169,7 +181,13 @@ const CadastrarReserva = () => {
               {externalParticipants.map((participant, index) => (
                 <div key={index} className="participant-item">
                   <span>{participant.name || "Novo Participante"}</span>
-                  <span className="participant-cpf">{participant.cpf}</span>
+                  <span className="participant-email">{participant.email}</span>
+                  <input
+                    type="checkbox"
+                    checked={responsavel?.participant === participant && responsavel?.type === 'external'}
+                    onChange={() => handleResponsavelChange(participant, 'external')}
+                  />
+                  <label className="responsavel-label">Marcar como responsável</label>
                   <TrashIcon onClick={() => removeExternalParticipant(index)} className="trash-icon" />
                 </div>
               ))}

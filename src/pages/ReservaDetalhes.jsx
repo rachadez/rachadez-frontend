@@ -29,7 +29,7 @@ const ReservaDetalhes = () => {
     doc.setFontSize(12);
     doc.text("01/01/2025 - 18:00h", 20, 72); 
 
-    const headers = [["Nome", "Curso/tipo", "Matrícula/CPF"]];
+    const headers = [["Nome", "Curso/tipo", "CPF"]];
     const data = Array(10)
       .fill()
       .map((_, index) => [
@@ -110,7 +110,7 @@ const ReservaDetalhes = () => {
         <div className="titulos-reservas-reservaDetalhes">
           <span>Nome</span>
           <span>Curso/tipo</span>
-          <span>Matrícula/CPF</span>
+          <span>CPF</span>
         </div>
 
         <div className="lista-reservas-reservaDetalhes">
