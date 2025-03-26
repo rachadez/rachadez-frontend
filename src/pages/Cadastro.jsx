@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useState } from "react";
 import "./Cadastro.css";
-import { ArrowLeft } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import DefaultButton from "./components/Buttons/DefaultButton";
 import InputTemplate from "./components/InputTemplate/InputTemplate";
+import Header from "./components/Header/Header";
+import MainContent from "./components/MainContent/MainContent";
 import ModalOneOption from "./components/Modal/ModalOneOption";
 
 function Cadastro() {
@@ -27,38 +27,27 @@ function Cadastro() {
     setIsModalOpen(false);
   };
 
-  const navigate = useNavigate();
-
   return (
     <div className="cadastro-page">
-      <div className="header">
-        <ArrowLeft className="arrow-left" color="#ffffff" size={40} onClick={() => navigate("/")} />
-        <div className="header-content">
-          <h1>Faça seu cadastro!</h1>
-          <p>
-            Certifique-se de informar seus dados corretamente.
-            <br />
-            Você poderá alterar alguns dos dados quando quiser.
-          </p>
-        </div>
-      </div>
+      <Header />
+      <MainContent path={"/"} title={"Faça seu cadastro!"} subtitle={"Certifique-se de informar seus dados corretamente. Somente membros da comunidade da UFCG (alunos, professores e servidores) podem se cadastrar."}/>
   
       <div className="form-wrapper">
         <div className="form-container">
           <div className="form-group">
-            <InputTemplate type="text" label="Nome completo" placeholder="Fulano de tal" />
+            <InputTemplate type="text" label="Nome completo" placeholder="Nome" />
           </div>
           <div className="form-group">
-            <InputTemplate type="text" label="Matrícula" placeholder="123456789" />
+            <InputTemplate type="text" label="CPF" placeholder="123.456.789-00" />
           </div>
           <div className="form-group">
-            <label>Curso</label>
+            <label>Ocupação</label>
             <select>
               <option>Selecione</option>
             </select>
           </div>
           <div className="form-group">
-            <InputTemplate type="email" label="E-mail acadêmico" placeholder="email@ufcg.edu.br" />
+            <InputTemplate type="email" label="E-mail acadêmico" placeholder="email@estudante.ufcg.edu.br" />
           </div>
           <div className="form-group">
             <InputTemplate type="password" label="Senha" placeholder="**********" />
@@ -94,7 +83,7 @@ function Cadastro() {
                   modalText="Ocorreu um erro inesperado.
                             Por favor, tente novamente!"
                   buttonText="Tentar novamente"
-                  onClose={closeModal}
+                  onClick={(closeModal)}
               />
           )
       )}
