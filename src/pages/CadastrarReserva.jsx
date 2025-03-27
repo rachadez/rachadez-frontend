@@ -16,28 +16,28 @@ const CadastrarReserva = () => {
   const [modalType, setModalType] = useState("");
 
   const handleCadastrarClick = () => {
-      const horarioAgendado = false; // Substitua isso pela lógica para verificar se há reserva no horário
-      const horarioIndisponivel = false; // substitua para a logica de checar se o horario esta disponivel
-      const credenciaisInvalidas = true; /* substitua para a lógica de checar se o local está disponivel,
+    const horarioAgendado = false; // Substitua isso pela lógica para verificar se há reserva no horário
+    const horarioIndisponivel = false; // substitua para a logica de checar se o horario esta disponivel
+    const credenciaisInvalidas = true; /* substitua para a lógica de checar se o local está disponivel,
                                            checar se o usuario responsavel é permitido, ou 
                                            qualquer outro problema com os dados inseridos */
 
-      if (horarioAgendado) {
-          setModalType("sobrescrever-horario");
-      } else if (horarioIndisponivel){
-          setModalType("horario-indisponivel");
-      } else if (credenciaisInvalidas) {
-          setModalType("credenciais-invalidas");
-      } else {
-          setModalType("confirmar-cadastro");
-      }
+    if (horarioAgendado) {
+      setModalType("sobrescrever-horario");
+    } else if (horarioIndisponivel) {
+      setModalType("horario-indisponivel");
+    } else if (credenciaisInvalidas) {
+      setModalType("credenciais-invalidas");
+    } else {
+      setModalType("confirmar-cadastro");
+    }
 
-      setIsModalOpen(true);
+    setIsModalOpen(true);
   };
 
   const handleCadastrarReserva = () => {
-      //add logica de cadastrar reserva
-      setModalType("reserva-realizada");
+    //add logica de cadastrar reserva
+    setModalType("reserva-realizada");
   };
 
 
@@ -218,64 +218,64 @@ const CadastrarReserva = () => {
           <button className="submit-button" onClick={handleCadastrarClick}>Cadastrar Reserva</button>
         </div>
 
-          {/* Modal de sobrescrever Horário */}
-          {isModalOpen && modalType === "sobrescrever-horario" && (
-                <ModalTwoOptions
-                    iconName="triangulo-amarelo"
-                    modalText="Já existe uma reserva agendada para este horário. Deseja sobrescrever?"
-                    buttonTextOne="Sim"
-                    buttonColorOne="red"
-                    onClickButtonOne={handleCadastrarReserva}
+        {/* Modal de sobrescrever Horário */}
+        {isModalOpen && modalType === "sobrescrever-horario" && (
+          <ModalTwoOptions
+            iconName="triangulo-amarelo"
+            modalText="Já existe uma reserva agendada para este horário. Deseja sobrescrever?"
+            buttonTextOne="Sim"
+            buttonColorOne="red"
+            onClickButtonOne={handleCadastrarReserva}
 
-                    buttonTextTwo="Não"
-                    onClickButtonTwo={() => setIsModalOpen(false)}
-                />
-            )}
+            buttonTextTwo="Não"
+            onClickButtonTwo={() => setIsModalOpen(false)}
+          />
+        )}
 
-            {/* Modal de reserva realizada */}
-            {isModalOpen && modalType === "reserva-realizada" && (
-                <ModalOneOption
-                    iconName="calendario-check" 
-                    modalText="Reserva realizada com sucesso"
-                    buttonText="Voltar"
-                    buttonPath={"/visualizar-reservas"}
-                />
-            )}
+        {/* Modal de reserva realizada */}
+        {isModalOpen && modalType === "reserva-realizada" && (
+          <ModalOneOption
+            iconName="calendario-check"
+            modalText="Reserva realizada com sucesso"
+            buttonText="Voltar"
+            buttonPath={"/visualizar-reservas"}
+          />
+        )}
 
-            {/* Modal de Confirmação do cadastro */}
-            {isModalOpen && modalType === "confirmar-cadastro" && (
-                <ModalTwoOptions
-                    iconName="calendario-relogio"
-                    modalText="Deseja confirmar sua reserva?"
-                    buttonTextOne="Continuar editando"
-                    onClickButtonOne={() => setIsModalOpen(false)}
-                    buttonTextTwo="Confirmar"
-                    onClickButtonTwo={handleCadastrarReserva}
-                />
-            )}
+        {/* Modal de Confirmação do cadastro */}
+        {isModalOpen && modalType === "confirmar-cadastro" && (
+          <ModalTwoOptions
+            iconName="calendario-relogio"
+            modalText="Deseja confirmar sua reserva?"
+            buttonTextOne="Continuar editando"
+            onClickButtonOne={() => setIsModalOpen(false)}
+            buttonTextTwo="Confirmar"
+            onClickButtonTwo={handleCadastrarReserva}
+          />
+        )}
 
-            {/* Modal de horário indisponivel */}
-            {isModalOpen && modalType === "horario-indisponivel" && (
-                <ModalOneOption
-                    iconName="calendario-erro" 
-                    modalText="Data/horário escolhido indisponível. Tente novamente"
-                    buttonText="Tentar novamente"
-                    onClick={() => setIsModalOpen(false)}
-                />
-            )}
+        {/* Modal de horário indisponivel */}
+        {isModalOpen && modalType === "horario-indisponivel" && (
+          <ModalOneOption
+            iconName="calendario-erro"
+            modalText="Data/horário escolhido indisponível. Tente novamente"
+            buttonText="Tentar novamente"
+            onClick={() => setIsModalOpen(false)}
+          />
+        )}
 
-            {/* Modal pra caso o local esteja indisponivel ou o usuario responsavel nao seja permitido 
+        {/* Modal pra caso o local esteja indisponivel ou o usuario responsavel nao seja permitido 
              ou haja qualquer outro problema com os dados inseridos*/}
-            {isModalOpen && modalType === "credenciais-invalidas" && (
-                <ModalOneOption
-                    iconName="circulo-erro" 
-                    modalText="Credenciais inválidas!
+        {isModalOpen && modalType === "credenciais-invalidas" && (
+          <ModalOneOption
+            iconName="circulo-erro"
+            modalText="Credenciais inválidas!
                               Cheque os dados inseridos e
                               tente novamente"
-                    buttonText="Tentar novamente"
-                    onClick={() => setIsModalOpen(false)}
-                />
-            )}
+            buttonText="Tentar novamente"
+            onClick={() => setIsModalOpen(false)}
+          />
+        )}
 
       </section>
     </div>
