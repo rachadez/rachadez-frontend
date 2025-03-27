@@ -1,9 +1,16 @@
 .nav-container {
     width: 100%;
+    height: 150px;
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     padding: 10px;
+    box-sizing: border-box;
+}
+
+.nav-container img {
+    width: 15%;
+    height: auto;
 }
 
 .custom-menubar {
@@ -25,11 +32,16 @@
 
 .p-menubar .p-menuitem-icon {
     color: #2563eb;
-    margin-right: 10px;
+    margin-right: 25px;
     font-size: 22px;
 }
 
-@media screen and (max-width: 960px) {  
+@media (max-width: 1200px) {
+    .nav-container img {
+        width: 25%;
+        margin-left: -50px;
+    }
+
     .p-menubar-root-list {
         position: absolute !important;  
         top: 105% !important;  /* Fica logo abaixo do botão de menu */
@@ -44,12 +56,27 @@
     }
 
     .p-menubar .p-menuitem-link {
-        justify-content: center !important;  /* Centraliza os itens */
+        justify-content: center !important;
         padding: 15px !important;
     }
 
     .p-menubar .p-menuitem-icon {
         font-size: 24px !important;  
         margin-right: 10px !important;  
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-container img {
+        width: 40%;
+        margin-left: -50px;
+    }
+}
+
+@media (max-width: 468px) {
+
+    .nav-container img {
+        width: 60%; 
+        margin-left: -50px;
     }
 }
