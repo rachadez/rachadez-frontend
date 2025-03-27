@@ -33,29 +33,28 @@ const ReservaDetalhes = () => {
     const pageWidth = doc.internal.pageSize.getWidth();
     const imgWidth = 90;
     const imgHeight = 50;
-    const imgX = (pageWidth - imgWidth) / 2; 
+    const imgX = (pageWidth - imgWidth) / 2;
 
     doc.addImage(Logo, "PNG", imgX, 10, imgWidth, imgHeight);
 
-
     doc.setTextColor(11, 83, 184);
     doc.setFontSize(18);
-    doc.text("Reserva Quadra 1 - Vôlei", 20, 63); 
+    doc.text("Reserva Quadra 1 - Vôlei", 20, 63);
     doc.setTextColor(0, 0, 0);
     doc.setFontSize(12);
-    doc.text("01/01/2025 - 18:00h", 20, 72); 
+    doc.text("01/01/2025 - 18:00h", 20, 72);
 
-    const headers = [["Nome", "Curso/tipo", "CPF"]];
+    const headers = [["Nome", "Ocupação", "Email"]];
     const data = Array(10)
       .fill()
       .map((_, index) => [
         index % 2 === 0 ? "Alexandre Costa" : "José Canhoto da Silva Nunes Pereira",
-        index % 2 === 0 ? "Ciência da computação" : "COMUNIDADE",
-        index % 2 === 0 ? "123456789" : "111.111.111-11",
+        index % 2 === 0 ? "Aluno" : "Usuário Externo",
+        index % 2 === 0 ? "alexandre@exemplo.com" : "jose@exemplo.com",
       ]);
 
     autoTable(doc, {
-      startY: 80, 
+      startY: 80,
       head: headers,
       body: data,
       headStyles: {
@@ -121,8 +120,8 @@ const ReservaDetalhes = () => {
 
         <div className="titulos-reservas-reservaDetalhes">
           <span>Nome</span>
-          <span>Curso/tipo</span>
-          <span>CPF</span>
+          <span>Ocupação</span>
+          <span>Email</span>
         </div>
 
         <div className="lista-reservas-reservaDetalhes">
@@ -134,10 +133,10 @@ const ReservaDetalhes = () => {
                   {index % 2 === 0 ? "Alexandre Costa" : "José Canhoto da Silva Nunes Pereira"}
                 </span>
                 <span className={index === 0 ? "bold-text-reservaDetalhes" : ""}>
-                  {index % 2 === 0 ? "Ciência da computação" : "COMUNIDADE"}
+                  {index % 2 === 0 ? "Aluno" : "Usuário Externo"}
                 </span>
                 <span className={index === 0 ? "bold-text-reservaDetalhes" : ""}>
-                  {index % 2 === 0 ? "123456789" : "111.111.111-11"}
+                  {index % 2 === 0 ? "alexandre@exemplo.com" : "jose@exemplo.com"}
                 </span>
               </div>
             ))}

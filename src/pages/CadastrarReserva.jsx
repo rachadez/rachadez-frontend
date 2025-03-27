@@ -42,23 +42,18 @@ const CadastrarReserva = () => {
 
 
   const [selectedDate, setSelectedDate] = useState(null);
-
   const [newUfcgParticipant, setNewUfcgParticipant] = useState({ name: "", email: "" });
   const [newExternalParticipant, setNewExternalParticipant] = useState({ name: "", email: "" });
-
   const [showUfcgInput, setShowUfcgInput] = useState(false);
   const [showExternalInput, setShowExternalInput] = useState(false);
-
   const [ufcgParticipants, setUfcgParticipants] = useState([
     { name: "Fulano de Tal", email: "fulano.tal@curso.ufcg.edu.br" },
     { name: "Ciclano Bla Bla Bla da Silva", email: "ciclano.silva@curso.ufcg.edu.br" },
   ]);
-
   const [externalParticipants, setExternalParticipants] = useState([
     { name: "Fulano de Tal", email: "fulano.tal@example.com" },
     { name: "Ciclano Bla Bla Bla da Silva", email: "ciclano.silva@example.com" },
   ]);
-
   const [responsavel, setResponsavel] = useState(null);
 
   const removeUfcgParticipant = (index) => {
@@ -84,9 +79,7 @@ const CadastrarReserva = () => {
   return (
     <div className="container-cadastrar-reserva">
       <Header />
-
-      <MainContent title="Cadastrar Reserva" path={"/visualizar-reservas"}/>
-
+      <MainContent title="Cadastrar Reserva" path={"/visualizar-reservas"} />
       <section className="form-section">
         <div className="form-grid">
           <div className="input-group">
@@ -95,16 +88,13 @@ const CadastrarReserva = () => {
               <option>Esporte - Local</option>
             </select>
           </div>
-
           <div className="input-group">
             <label htmlFor="data-hora">DATA E HORA</label>
             <DateTimePicker selectedDate={selectedDate} onChange={setSelectedDate} />
           </div>
         </div>
-
         <div className="participants-section">
           <h3 className="section-title">PARTICIPANTES</h3>
-
           <div className="participant-group">
             <div className="title-and-button">
               <h4 className="sub-title">UFCG</h4>
@@ -112,8 +102,6 @@ const CadastrarReserva = () => {
                 <ion-icon name="add-circle-outline" className="add-button"></ion-icon>
               </div>
             </div>
-
-            {/* Formulário de entrada para UFCG */}
             {showUfcgInput && (
               <div className="participant-item">
                 <input
@@ -132,40 +120,40 @@ const CadastrarReserva = () => {
                   <ConfirmIcon
                     onClick={() => {
                       setUfcgParticipants([...ufcgParticipants, newUfcgParticipant]);
-                      setShowUfcgInput(false);  // Esconde os campos após confirmar
+                      setShowUfcgInput(false);
                       setNewUfcgParticipant({ name: "", email: "" });
                     }}
                   />
                   <CancelIcon
                     onClick={() => {
-                      setShowUfcgInput(false);  // Esconde os campos após negar
+                      setShowUfcgInput(false);
                       setNewUfcgParticipant({ name: "", email: "" });
                     }}
                   />
                 </div>
               </div>
             )}
-
             <div className="participant-list">
               {ufcgParticipants.map((participant, index) => (
-                <div key={index} className="participant-item">
-                  <span>{participant.name || "Novo Participante"}</span>
-                  <span className="participant-email">{participant.email}</span>
-                  <input
-                    type="checkbox"
-                    checked={responsavel?.participant === participant && responsavel?.type === 'ufcg'}
-                    onChange={() => handleResponsavelChange(participant, 'ufcg')}
-                  />
-                  <label className="responsavel-label">Marcar como responsável</label>
-                  <TrashIcon onClick={() => removeUfcgParticipant(index)} className="trash-icon" />
-                </div>
+                <React.Fragment key={index}>
+                  <div className="participant-item">
+                    <span>{participant.name || "Novo Participante"}</span>
+                    <span className="participant-email">{participant.email}</span>
+                    <div className="action-icons">
+                      <input
+                        type="checkbox"
+                        checked={responsavel?.participant === participant && responsavel?.type === 'ufcg'}
+                        onChange={() => handleResponsavelChange(participant, 'ufcg')}
+                      />
+                      <label className="responsavel-label">Marcar como responsável</label>
+                      <TrashIcon onClick={() => removeUfcgParticipant(index)} className="trash-icon" />
+                    </div>
+                  </div>
+                </React.Fragment>
               ))}
             </div>
-
             <div className="separator-line"></div>
           </div>
-
-          {/* Seção de participantes externos */}
           <div className="participant-group">
             <div className="title-and-button">
               <h4 className="sub-title">USUÁRIOS EXTERNOS</h4>
@@ -173,8 +161,6 @@ const CadastrarReserva = () => {
                 <ion-icon name="add-circle-outline" className="add-button"></ion-icon>
               </div>
             </div>
-
-            {/* Formulário de entrada para participantes externos */}
             {showExternalInput && (
               <div className="participant-item">
                 <input
@@ -193,40 +179,41 @@ const CadastrarReserva = () => {
                   <ConfirmIcon
                     onClick={() => {
                       setExternalParticipants([...externalParticipants, newExternalParticipant]);
-                      setShowExternalInput(false);  // Esconde os campos após confirmar
+                      setShowExternalInput(false);
                       setNewExternalParticipant({ name: "", email: "" });
                     }}
                   />
                   <CancelIcon
                     onClick={() => {
-                      setShowExternalInput(false);  // Esconde os campos após negar
+                      setShowExternalInput(false);
                       setNewExternalParticipant({ name: "", email: "" });
                     }}
                   />
                 </div>
               </div>
             )}
-
             <div className="participant-list">
               {externalParticipants.map((participant, index) => (
-                <div key={index} className="participant-item">
-                  <span>{participant.name || "Novo Participante"}</span>
-                  <span className="participant-email">{participant.email}</span>
-                  <input
-                    type="checkbox"
-                    checked={responsavel?.participant === participant && responsavel?.type === 'external'}
-                    onChange={() => handleResponsavelChange(participant, 'external')}
-                  />
-                  <label className="responsavel-label">Marcar como responsável</label>
-                  <TrashIcon onClick={() => removeExternalParticipant(index)} className="trash-icon" />
-                </div>
+                <React.Fragment key={index}>
+                  <div className="participant-item">
+                    <span>{participant.name || "Novo Participante"}</span>
+                    <span className="participant-email">{participant.email}</span>
+                    <div className="action-icons">
+                      <input
+                        type="checkbox"
+                        checked={responsavel?.participant === participant && responsavel?.type === 'external'}
+                        onChange={() => handleResponsavelChange(participant, 'external')}
+                      />
+                      <label className="responsavel-label">Marcar como responsável</label>
+                      <TrashIcon onClick={() => removeExternalParticipant(index)} className="trash-icon" />
+                    </div>
+                  </div>
+                </React.Fragment>
               ))}
             </div>
-
             <div className="separator-line"></div>
           </div>
         </div>
-
         <div className="submit-button-container">
           <button className="submit-button" onClick={handleCadastrarClick}>Cadastrar Reserva</button>
         </div>

@@ -1,11 +1,12 @@
 .edit-icon {
-    width: 24px; /* Ajuste o tamanho conforme necessário */
-    height: 24px; /* Ajuste o tamanho conforme necessário */
-    color: #0B53B8; /* Cor azul */
-    cursor: pointer; /* Mostrar cursor de ponteiro ao passar o mouse */
-    transition: transform 0.2s; /* Adicionar uma transição suave */
+    width: 24px; 
+    height: 24px; 
+    color: #0B53B8; 
+    cursor: pointer; 
+    transition: transform 0.2s; 
 }
 
 .edit-icon:hover {
-    transform: scale(1.1); /* Aumentar o ícone ao passar o mouse */
+    transform: scale(1.1); 
 }
+

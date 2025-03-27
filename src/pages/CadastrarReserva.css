@@ -30,9 +30,9 @@ body {
 }
 
 .responsavel-label {
-  font-size: 0.875rem; /* Tamanho pequeno */
-  color: gray; /* Cor cinza */
-  margin-right: 16px; /* Espaçamento uniforme */
+  font-size: 0.875rem;
+  color: gray;
+  margin-right: 16px; 
 }
 
 @media (min-width: 768px) {
@@ -124,14 +124,15 @@ label {
 
 .participant-item span {
   flex: 1;
-  margin-right: 16px; /* Espaçamento uniforme */
+  margin-right: 16px; 
+  
   text-overflow: ellipsis;
   overflow: hidden;
   word-wrap: break-word;
 }
 
 .participant-email {
-  margin-right: 16px; /* Espaçamento uniforme */
+  margin-right: 16px; 
   color: #6b7280;
   word-wrap: break-word;
 }
@@ -142,15 +143,15 @@ label {
 }
 
 .participant-item input[type="checkbox"] {
-  margin-right: 8px; /* Espaçamento uniforme */
+  margin-right: 8px;
 }
 
 .participant-item .responsavel-label {
-  margin-right: 46px; /* Espaçamento uniforme */
+  margin-right: 46px; 
 }
 
 .participant-item .trash-icon {
-  margin-left: 32px; /* Espaçamento aumentado */
+  margin-left: 32px; 
 }
 
 .input-row {
@@ -216,7 +217,6 @@ label {
 }
 
 @media (max-width: 767px) {
-
   .form-grid {
     flex-direction: column;
     justify-content: flex-start;
@@ -234,21 +234,19 @@ label {
     align-items: flex-start;
   }
 
-  .participant-item input {
+  .participant-item span,
+  .participant-item input[type="text"],
+  .participant-item input[type="email"],
+  .participant-item input[type="checkbox"],
+  .participant-item label {
     width: 100%;
-    padding: 0.5rem;
     margin-right: 0;
-    border: 1px solid #d1d5db;
-    border-radius: 0.375rem;
+    margin-bottom: 0.5rem;
   }
 
-  .participant-item span,
-  .participant-email,
-  .participant-item input[type="checkbox"],
-  .participant-item .responsavel-label,
-  .participant-item .trash-icon {
-    margin-right: 0;
-    margin-bottom: 8px;
+  .action-icons {
+    width: 100%;
+    justify-content: flex-start;
   }
 
   .participants-section {
@@ -259,5 +257,14 @@ label {
   .submit-button {
     width: 100%;
     padding: 1rem;
+  }
+
+  .add-button {
+    font-size: 1.5rem;
+  }
+
+  .participant-item .trash-icon {
+    width: 112px;
+    height: 72px;
   }
 }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./EditarReserva.css";
 import TrashIcon from "./components/TrashIcon/TrashIcon";
-import EditIcon from "./components/EditIcon/EditIcon"; 
+import EditIcon from "./components/EditIcon/EditIcon";
 import DateTimePicker from "./components/DateTimePicker/DateTimePicker";
 import ConfirmIcon from "./components/ConfirmIcon/ConfirmIcon";
 import CancelIcon from "./components/CancelIcon/CancelIcon";
@@ -41,7 +41,7 @@ const EditarReserva = () => {
     const [selectedDate, setSelectedDate] = useState(null);
 
     const [newUfcgParticipant, setNewUfcgParticipant] = useState({ name: "", email: "" });
-    const [newExternalParticipant, setNewExternalParticipant] = useState({ name: "", cpf: "" });
+    const [newExternalParticipant, setNewExternalParticipant] = useState({ name: "", email: "" });
 
     const [showUfcgInput, setShowUfcgInput] = useState(false);
     const [showExternalInput, setShowExternalInput] = useState(false);
@@ -52,19 +52,26 @@ const EditarReserva = () => {
     ]);
 
     const [externalParticipants, setExternalParticipants] = useState([
-        { name: "Fulano de Tal", cpf: "111.111.111-11" },
-        { name: "Ciclano Bla Bla Bla da Silva", cpf: "222.222.222-22" },
+        { name: "Fulano de Tal", email: "fulano.tal@example.com" },
+        { name: "Ciclano Bla Bla Bla da Silva", email: "ciclano.silva@example.com" },
     ]);
 
     const [editingUfcgIndex, setEditingUfcgIndex] = useState(null);
     const [editingExternalIndex, setEditingExternalIndex] = useState(null);
+    const [responsavel, setResponsavel] = useState(null);
 
     const removeUfcgParticipant = (index) => {
         setUfcgParticipants(ufcgParticipants.filter((_, i) => i !== index));
+        if (responsavel && responsavel.index === index && responsavel.type === 'ufcg') {
+            setResponsavel(null);
+        }
     };
 
     const removeExternalParticipant = (index) => {
         setExternalParticipants(externalParticipants.filter((_, i) => i !== index));
+        if (responsavel && responsavel.index === index && responsavel.type === 'external') {
+            setResponsavel(null);
+        }
     };
 
     const addUfcgParticipant = () => {
@@ -76,7 +83,7 @@ const EditarReserva = () => {
     const addExternalParticipant = () => {
         setShowExternalInput(true);
         setEditingExternalIndex(null);
-        setNewExternalParticipant({ name: "", cpf: "" });
+        setNewExternalParticipant({ name: "", email: "" });
     };
 
     const editUfcgParticipant = (index) => {
@@ -112,14 +119,18 @@ const EditarReserva = () => {
             setExternalParticipants([...externalParticipants, newExternalParticipant]);
         }
         setShowExternalInput(false);
-        setNewExternalParticipant({ name: "", cpf: "" });
+        setNewExternalParticipant({ name: "", email: "" });
+    };
+
+    const handleResponsavelChange = (participant, type) => {
+        setResponsavel({ participant, type });
     };
 
     return (
         <div className="container-editar-reserva">
             <Header />
 
-            <MainContent title="Editar Reserva" path={"/admin-detalhes-reserva"}/>
+            <MainContent title="Editar Reserva" path={"/admin-detalhes-reserva"} />
 
             <section className="form-section">
                 <div className="form-grid">
@@ -189,6 +200,12 @@ const EditarReserva = () => {
                                         <span className="participant-email">{participant.email}</span>
                                         <div className="action-icons">
                                             <EditIcon onClick={() => editUfcgParticipant(index)} className="edit-icon" />
+                                            <input
+                                                type="checkbox"
+                                                checked={responsavel?.participant === participant && responsavel?.type === 'ufcg'}
+                                                onChange={() => handleResponsavelChange(participant, 'ufcg')}
+                                            />
+                                            <label className="responsavel-label">Marcar como responsável</label>
                                             <TrashIcon onClick={() => removeUfcgParticipant(index)} className="trash-icon" />
                                         </div>
                                     </div>
@@ -216,10 +233,10 @@ const EditarReserva = () => {
                                     onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, name: e.target.value })}
                                 />
                                 <input
-                                    type="text"
-                                    placeholder="CPF"
-                                    value={newExternalParticipant.cpf}
-                                    onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, cpf: e.target.value })}
+                                    type="email"
+                                    placeholder="Email"
+                                    value={newExternalParticipant.email}
+                                    onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, email: e.target.value })}
                                 />
                                 <div className="action-buttons">
                                     <ConfirmIcon onClick={confirmExternalParticipant} />
@@ -240,10 +257,10 @@ const EditarReserva = () => {
                                                 onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, name: e.target.value })}
                                             />
                                             <input
-                                                type="text"
-                                                placeholder="CPF"
-                                                value={newExternalParticipant.cpf}
-                                                onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, cpf: e.target.value })}
+                                                type="email"
+                                                placeholder="Email"
+                                                value={newExternalParticipant.email}
+                                                onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, email: e.target.value })}
                                             />
                                             <div className="action-buttons">
                                                 <ConfirmIcon onClick={confirmExternalParticipant} />
@@ -253,9 +270,15 @@ const EditarReserva = () => {
                                     )}
                                     <div className="participant-item">
                                         <span>{participant.name || "Novo Participante"}</span>
-                                        <span className="participant-cpf">{participant.cpf}</span>
+                                        <span className="participant-email">{participant.email}</span>
                                         <div className="action-icons">
                                             <EditIcon onClick={() => editExternalParticipant(index)} className="edit-icon" />
+                                            <input
+                                                type="checkbox"
+                                                checked={responsavel?.participant === participant && responsavel?.type === 'external'}
+                                                onChange={() => handleResponsavelChange(participant, 'external')}
+                                            />
+                                            <label className="responsavel-label">Marcar como responsável</label>
                                             <TrashIcon onClick={() => removeExternalParticipant(index)} className="trash-icon" />
                                         </div>
                                     </div>
@@ -265,6 +288,7 @@ const EditarReserva = () => {
 
                         <div className="separator-line"></div>
                     </div>
+                    
                 </div>
 
                 <div>
