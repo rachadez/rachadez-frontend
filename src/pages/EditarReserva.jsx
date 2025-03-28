@@ -318,7 +318,7 @@ const EditarReserva = () => {
                     iconName="calendario-check" 
                     modalText="Reserva atualizada com sucesso!"
                     buttonText="Voltar"
-                    buttonPath={"/visualizar-reservas"}
+                    buttonPath={"/admin-detalhes-reserva"}
                 />
             )}
 
