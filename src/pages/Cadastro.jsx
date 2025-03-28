@@ -30,7 +30,7 @@ function Cadastro() {
   return (
     <div className="cadastro-page">
       <Header />
-      <MainContent path={"/"} title={"Faça seu cadastro!"} subtitle={"Certifique-se de informar seus dados corretamente. Somente membros da comunidade da UFCG (alunos, professores e servidores) podem se cadastrar."}/>
+      <MainContent title={"Faça seu cadastro!"} subtitle={"Certifique-se de informar seus dados corretamente. Somente membros da comunidade da UFCG (alunos, professores e servidores) podem se cadastrar."} path={"/login"}/>
   
       <div className="form-wrapper">
         <div className="form-container">
@@ -59,9 +59,6 @@ function Cadastro() {
   
         <div className="button">
           <DefaultButton label={"Realizar cadastro"} onClick={handleCadastroClick} />
-          <a href="#" className="link">
-            Não possuo matrícula &gt;
-          </a>
         </div>
       </div>
 
