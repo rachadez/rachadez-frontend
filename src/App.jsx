@@ -17,6 +17,7 @@ import AdminUsuariosVisualizar from './pages/AdminUsuariosVisualizar';
 import AdminVisualizarUsuario from './pages/AdminVisualizarUsuario';
 import AdminUsuariosMenuBanimento from './pages/AdminUsuariosMenuBanimento';
 import AdminUsuariosBanir from './pages/AdminUsuariosBanir';
+import AdminUsuariosVisualizarBanidos from './pages/AdminUsuariosVisualizarBanidos';
 
 
 function App() {
@@ -65,6 +66,8 @@ function App() {
         <Route path='/admin-usuarios-menu-banimento' element={<AdminUsuariosMenuBanimento />} />
 
         <Route path="/admin-banir-usuarios" element={<AdminUsuariosBanir />} />
+
+        <Route path="/admin-visualizar-usuarios-banidos" element={<AdminUsuariosVisualizarBanidos />} />
 
       </Routes>
     </Router>
