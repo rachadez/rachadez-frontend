@@ -14,6 +14,9 @@ import ModalOneOption from "./components/Modal/ModalOneOption";
 const CadastrarReserva = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");
+  const [ufcgParticipantInputs, setUfcgParticipantInputs] = useState([]);
+  const [externalParticipantInputs, setExternalParticipantInputs] = useState([]);
+
 
   const handleCadastrarClick = () => {
     const horarioAgendado = false; // Substitua isso pela lógica para verificar se há reserva no horário
@@ -42,10 +45,6 @@ const CadastrarReserva = () => {
 
 
   const [selectedDate, setSelectedDate] = useState(null);
-  const [newUfcgParticipant, setNewUfcgParticipant] = useState({email: "" });
-  const [newExternalParticipant, setNewExternalParticipant] = useState({email: "" });
-  const [showUfcgInput, setShowUfcgInput] = useState(false);
-  const [showExternalInput, setShowExternalInput] = useState(false);
   const [ufcgParticipants, setUfcgParticipants] = useState([
     { name: "Fulano de Tal", email: "fulano.tal@curso.ufcg.edu.br" },
     { name: "Ciclano Bla Bla Bla da Silva", email: "ciclano.silva@curso.ufcg.edu.br" },
@@ -65,12 +64,13 @@ const CadastrarReserva = () => {
   };
 
   const addUfcgParticipant = () => {
-    setShowUfcgInput(true);
+    setUfcgParticipantInputs([...ufcgParticipantInputs, { email: "" }]);
   };
-
+  
   const addExternalParticipant = () => {
-    setShowExternalInput(true);
+    setExternalParticipantInputs([...externalParticipantInputs, { email: "" }]);
   };
+  
 
   const handleResponsavelChange = (participant, type) => {
     setResponsavel({ participant, type });
@@ -102,37 +102,33 @@ const CadastrarReserva = () => {
                 <ion-icon name="add-circle-outline" className="add-button"></ion-icon>
               </div>
             </div>
-            {showUfcgInput && (
-              <div className="participant-item">
-                {/* <input
-                  type="text"
-                  placeholder="Nome"
-                  value={newUfcgParticipant.name}
-                  onChange={(e) => setNewUfcgParticipant({ ...newUfcgParticipant, name: e.target.value })}
-                /> */}
+            {ufcgParticipantInputs.map((participant, index) => (
+              <div key={index} className="participant-item">
                 <input
                   type="email"
                   placeholder="Email"
-                  value={newUfcgParticipant.email}
-                  onChange={(e) => setNewUfcgParticipant({ ...newUfcgParticipant, email: e.target.value })}
+                  value={participant.email}
+                  onChange={(e) => {
+                    const updatedInputs = [...ufcgParticipantInputs];
+                    updatedInputs[index].email = e.target.value;
+                    setUfcgParticipantInputs(updatedInputs);
+                  }}
                 />
                 <div className="action-buttons">
                   <ConfirmIcon
                     onClick={() => {
-                      setUfcgParticipants([...ufcgParticipants, newUfcgParticipant]);
-                      setShowUfcgInput(false);
-                      setNewUfcgParticipant({email: "" });
+                      setUfcgParticipants([...ufcgParticipants, participant]);
+                      setUfcgParticipantInputs(ufcgParticipantInputs.filter((_, i) => i !== index));
                     }}
                   />
                   <CancelIcon
                     onClick={() => {
-                      setShowUfcgInput(false);
-                      setNewUfcgParticipant({email: "" });
+                      setUfcgParticipantInputs(ufcgParticipantInputs.filter((_, i) => i !== index));
                     }}
                   />
                 </div>
               </div>
-            )}
+            ))}
             <div className="participant-list">
               {ufcgParticipants.map((participant, index) => (
                 <React.Fragment key={index}>
@@ -161,37 +157,33 @@ const CadastrarReserva = () => {
                 <ion-icon name="add-circle-outline" className="add-button"></ion-icon>
               </div>
             </div>
-            {showExternalInput && (
-              <div className="participant-item">
-                {/* <input
-                  type="text"
-                  placeholder="Nome"
-                  value={newExternalParticipant.name}
-                  onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, name: e.target.value })}
-                /> */}
+            {externalParticipantInputs.map((participant, index) => (
+              <div key={index} className="participant-item">
                 <input
                   type="email"
                   placeholder="Email"
-                  value={newExternalParticipant.email}
-                  onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, email: e.target.value })}
+                  value={participant.email}
+                  onChange={(e) => {
+                    const updatedInputs = [...externalParticipantInputs];
+                    updatedInputs[index].email = e.target.value;
+                    setExternalParticipantInputs(updatedInputs);
+                  }}
                 />
                 <div className="action-buttons">
                   <ConfirmIcon
                     onClick={() => {
-                      setExternalParticipants([...externalParticipants, newExternalParticipant]);
-                      setShowExternalInput(false);
-                      setNewExternalParticipant({email: "" });
+                      setExternalParticipants([...externalParticipants, participant]);
+                      setExternalParticipantInputs(externalParticipantInputs.filter((_, i) => i !== index));
                     }}
                   />
                   <CancelIcon
                     onClick={() => {
-                      setShowExternalInput(false);
-                      setNewExternalParticipant({email: "" });
+                      setExternalParticipantInputs(externalParticipantInputs.filter((_, i) => i !== index));
                     }}
                   />
                 </div>
               </div>
-            )}
+            ))}
             <div className="participant-list">
               {externalParticipants.map((participant, index) => (
                 <React.Fragment key={index}>
