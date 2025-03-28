@@ -4,6 +4,7 @@ import DefaultButton from "./components/Buttons/DefaultButton";
 import InputTemplate from "./components/InputTemplate/InputTemplate";
 import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
+import InputReadOnly from "./components/InputReadOnly/InputReadOnly";
 
 function AdminCadastroUsuarioExterno() {
 
@@ -21,7 +22,7 @@ function AdminCadastroUsuarioExterno() {
             <InputTemplate type="text" label="CPF" placeholder="123.456.789-00" />
           </div>
           <div className="form-group">
-            <InputTemplate type="text" label="Ocupação" placeholder="Usuário Externo" />
+            <InputReadOnly type="text" label="Tipo de Usuário" />
           </div>
           <div className="form-group">
             <InputTemplate type="email" label="E-mail" placeholder="email@gmail.com" />
