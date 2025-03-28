@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./CadastrarReserva.css";
-import ConfigIcon from "./components/ConfigIcon/ConfigIcon";
+import ConfigIcon from "./components/LogoutIcon/LogoutIcon";
 import TrashIcon from "./components/TrashIcon/TrashIcon";
 import ArrowIcon from "./components/ArrowIcon/ArrowIcon";
 import DateTimePicker from "./components/DateTimePicker/DateTimePicker";
