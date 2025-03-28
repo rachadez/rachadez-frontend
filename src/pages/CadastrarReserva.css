@@ -235,7 +235,6 @@ label {
   }
 
   .participant-item span,
-  .participant-item input[type="text"],
   .participant-item input[type="email"],
   .participant-item input[type="checkbox"],
   .participant-item label {

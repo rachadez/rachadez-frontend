@@ -42,8 +42,8 @@ const CadastrarReserva = () => {
 
 
   const [selectedDate, setSelectedDate] = useState(null);
-  const [newUfcgParticipant, setNewUfcgParticipant] = useState({ name: "", email: "" });
-  const [newExternalParticipant, setNewExternalParticipant] = useState({ name: "", email: "" });
+  const [newUfcgParticipant, setNewUfcgParticipant] = useState({email: "" });
+  const [newExternalParticipant, setNewExternalParticipant] = useState({email: "" });
   const [showUfcgInput, setShowUfcgInput] = useState(false);
   const [showExternalInput, setShowExternalInput] = useState(false);
   const [ufcgParticipants, setUfcgParticipants] = useState([
@@ -104,12 +104,12 @@ const CadastrarReserva = () => {
             </div>
             {showUfcgInput && (
               <div className="participant-item">
-                <input
+                {/* <input
                   type="text"
                   placeholder="Nome"
                   value={newUfcgParticipant.name}
                   onChange={(e) => setNewUfcgParticipant({ ...newUfcgParticipant, name: e.target.value })}
-                />
+                /> */}
                 <input
                   type="email"
                   placeholder="Email"
@@ -121,13 +121,13 @@ const CadastrarReserva = () => {
                     onClick={() => {
                       setUfcgParticipants([...ufcgParticipants, newUfcgParticipant]);
                       setShowUfcgInput(false);
-                      setNewUfcgParticipant({ name: "", email: "" });
+                      setNewUfcgParticipant({email: "" });
                     }}
                   />
                   <CancelIcon
                     onClick={() => {
                       setShowUfcgInput(false);
-                      setNewUfcgParticipant({ name: "", email: "" });
+                      setNewUfcgParticipant({email: "" });
                     }}
                   />
                 </div>
@@ -163,12 +163,12 @@ const CadastrarReserva = () => {
             </div>
             {showExternalInput && (
               <div className="participant-item">
-                <input
+                {/* <input
                   type="text"
                   placeholder="Nome"
                   value={newExternalParticipant.name}
                   onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, name: e.target.value })}
-                />
+                /> */}
                 <input
                   type="email"
                   placeholder="Email"
@@ -180,13 +180,13 @@ const CadastrarReserva = () => {
                     onClick={() => {
                       setExternalParticipants([...externalParticipants, newExternalParticipant]);
                       setShowExternalInput(false);
-                      setNewExternalParticipant({ name: "", email: "" });
+                      setNewExternalParticipant({email: "" });
                     }}
                   />
                   <CancelIcon
                     onClick={() => {
                       setShowExternalInput(false);
-                      setNewExternalParticipant({ name: "", email: "" });
+                      setNewExternalParticipant({email: "" });
                     }}
                   />
                 </div>
