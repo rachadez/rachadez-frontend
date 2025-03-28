@@ -6,6 +6,7 @@ import InputTemplate from "./components/InputTemplate/InputTemplate";
 import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
 import ModalOneOption from "./components/Modal/ModalOneOption";
+import SelectInput from "./components/SelectInput/SelectInput";
 
 function Cadastro() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,10 +42,7 @@ function Cadastro() {
             <InputTemplate type="text" label="CPF" placeholder="123.456.789-00" />
           </div>
           <div className="form-group">
-            <label>Ocupação</label>
-            <select>
-              <option>Selecione</option>
-            </select>
+            <SelectInput label="Ocupação" />
           </div>
           <div className="form-group">
             <InputTemplate type="email" label="E-mail acadêmico" placeholder="email@estudante.ufcg.edu.br" />
