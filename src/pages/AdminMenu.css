@@ -25,6 +25,18 @@ body {
   justify-items: center;
 }
 
+.cards-container-menu-banimento {
+  width: 40%;
+  margin: 100px auto;
+  display: grid;
+  justify-content: center;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0px;
+  justify-items: center;
+  gap: 40px;
+}
+
+
 @media (max-width: 1200px) {
   .container-options {
     flex-direction: row;
@@ -38,6 +50,13 @@ body {
     margin-top: 2rem;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); 
     gap: 30px; 
+  }
+
+  .cards-container-menu-banimento {
+    padding: 0 5rem;
+    margin-top: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 50px;
   }
 }
 
@@ -54,6 +73,7 @@ body {
     margin-top: 2rem;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
+  
 }
 
 @media (max-width: 480px) {
@@ -69,6 +89,13 @@ body {
   .cards-container {
     padding: 0 5rem;
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); 
+  }
+
+  .cards-container-menu-banimento {
+    padding: 0 5rem;
+    margin-top: 2rem;
+    gap: 40px;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 
 }
