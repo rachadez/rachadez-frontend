@@ -13,7 +13,7 @@ export default function MenuBar() {
             label: 'FAZER LOGIN',
             icon: 'pi pi-sign-in',
             command: () => {
-                navigate('/login-aluno')
+                navigate('/login')
             }
         }
     ];

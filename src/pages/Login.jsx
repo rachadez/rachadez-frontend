@@ -1,16 +1,26 @@
-import './LoginProfessor.css';
+import './Login.css';
 import DefaultButton from './components/Buttons/DefaultButton';
 import PasswordInput from './components/Password/PasswordInput';
 import { useNavigate } from 'react-router-dom';
 import InputTemplate from './components/InputTemplate/InputTemplate';
+import { useState } from "react";
+import ModalOneOption from "./components/Modal/ModalOneOption";
 
-function LoginProfessor() {
+function Login() {
     const navigate = useNavigate();
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalType, setModalType] = useState("");
+
+    const handleNaoSouDaUFCG = () => {
+        setIsModalOpen(true);
+        setModalType("usuario-externo");
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         // Aqui pode ir a lógica para autenticação.
-        navigate('/professor-home');
+        navigate('/home');
     };
 
     return (
@@ -25,24 +35,35 @@ function LoginProfessor() {
                     </div>
                 </div>
 
-                <div className="login-professor">
+                <div className="login">
                     <div className="right-section-elements">
                         <h1>Faça login no sistema</h1>
                         <form onSubmit={handleSubmit}>
-                            <InputTemplate type="cpf" placeholder="CPF" />
+                            <InputTemplate type="email" placeholder="email@ufcg.edu.br" />
                             <PasswordInput></PasswordInput>
                             <DefaultButton label={"Entrar"}></DefaultButton>
                         </form>
-                        <p>Esqueci minha senha </p>
-<p onClick={() => navigate("/cadastro")} style={{ cursor: "pointer" }}>
-        Ainda não tenho cadastro
-</p>   
+                        <p onClick={handleNaoSouDaUFCG} style={{ cursor: "pointer" }}>Não sou da UFCG</p>   
+                        <p style={{ cursor: "pointer" }}>Esqueci minha senha </p>
+                        <p onClick={() => navigate("/cadastro")} style={{ cursor: "pointer" }}>
+                            Ainda não tenho cadastro
+                        </p>
                     </div>
                 </div>
             </div>
+
+            {/* Modal exibido se o usuário clicar em "Não sou da UFCG" */}
+            {isModalOpen && modalType === "usuario-externo" && (
+                <ModalOneOption
+                    iconName="sucesso-check"
+                    modalText="Usuários Externos precisam ir presencialmente ao Complexo Esportivo da UFCG para criarem uma conta. Leve um documento de identificação válido!"
+                    buttonText="Entendido!"
+                    onClick={() => setIsModalOpen(false)}
+                />
+            )}
         </>
 
     );
 }
 
-export default LoginProfessor;
+export default Login;

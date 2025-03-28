@@ -1,7 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
-import LoginProfessor from './pages/LoginProfessor';
-import LoginAluno from './pages/LoginAluno';
+import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import CadastrarReserva from './pages/CadastrarReserva';
 import VisualizarReservas from './pages/VisualizarReservas';
@@ -28,8 +27,7 @@ function App() {
         <Route path="/" element={<Home />} />
 
         {/* Rotas de Login */}
-        <Route path="/login-professor" element={<LoginProfessor />} />
-        <Route path="/login-aluno" element={<LoginAluno />} />
+        <Route path="/login" element={<Login />} />
 
         {/* Páginas pós-login */}
         {/* Users */}
