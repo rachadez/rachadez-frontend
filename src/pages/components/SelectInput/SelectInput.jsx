@@ -1,35 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './SelectInput.css';
 
-const SelectInput = ({ label, value, onChange, error, setError }) => {
-    
-  const occupationOptions = ['Aluno', 'Professor', 'Servidor'];
-
-  const handleBlur = () => {
-    if (value === '') {
-      setError('Por favor, selecione uma ocupação');
-    }
-  };
-
+const SelectInput = ({ label, name, value, onChange, options }) => {
   return (
     <div className="select-container">
       <label>{label}</label>
       <select
+        name={name}
         value={value}
         onChange={onChange}
-        onBlur={handleBlur}
-        className={error ? 'error' : ''}
+        className={value === "" ? "error" : ""}
       >
         <option value="">Selecione</option>
-        {occupationOptions.map((option, index) => (
-          <option key={index} value={option}>{option}</option>
+        {options.map((option, index) => (
+          <option key={index} value={option.value}>
+            {option.label}
+          </option>
         ))}
       </select>
       <span className="select-icon">
-        {/* Ícone de seta do PrimeIcons */}
         <i className="pi pi-chevron-down"></i>
       </span>
-      {error && <span className="error-message">{error}</span>}
     </div>
   );
 };
