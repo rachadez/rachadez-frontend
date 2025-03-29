@@ -1,10 +1,10 @@
 .tabela-container {
     font-family: "Open Sans", sans-serif;
     width: 100%;
-    padding-left: 105px;
+    padding: 0 7rem 0 7rem;
     max-width: 100%;
     overflow-x: auto;
-    margin: 0 auto 80px auto;
+    margin: 10px auto 80px auto;
   }
   
   .tabela-header {
@@ -52,6 +52,13 @@
     justify-content: flex-start;
     max-width: 120px; /* Largura máxima */
     min-width: 100px;
+  }
+
+  .acoes-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 1.5rem;
+    gap: 0.75rem;
   }
   
   .linha-divisoria {
