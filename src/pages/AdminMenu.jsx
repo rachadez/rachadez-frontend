@@ -1,6 +1,6 @@
 import "./AdminMenu.css";
 import Header from "./components/Header/Header";
-import MainContent from "./components/MainContent/MainContent";
+import MainContentWithoutArrow from "./components/MainContentWithoutArrow/MainContentWithoutArrow";
 import { Calendar, Users } from "lucide-react";
 import Card from "./components/Cards/Card";
 
@@ -9,7 +9,7 @@ const AdminMenu = () => {
   return (
     <div className="container-admin-menu">
       <Header />
-      <MainContent title="Menu Principal - Administração" />
+      <MainContentWithoutArrow title="Menu Principal - Administração" />
 
       <div className="container-options">
       <Card 
