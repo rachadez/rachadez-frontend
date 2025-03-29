@@ -19,6 +19,7 @@ import AdminUsuariosMenuBanimento from './pages/AdminUsuariosMenuBanimento';
 import AdminUsuariosBanir from './pages/AdminUsuariosBanir';
 import AdminUsuariosVisualizarBanidos from './pages/AdminUsuariosVisualizarBanidos';
 import UserModalidade from './pages/UserModalidade';
+import UserHorarioModalidade from './pages/UserHorarioModalidade';
 
 function App() {
   return (
@@ -41,6 +42,9 @@ function App() {
         <Route path="/editar-reserva" element={<EditarReserva />} />
 
         <Route path="/user-reservar-modalidade" element={<UserModalidade />} />
+
+         {/* Rota dinâmica para cada modalidade e quadra */}
+         <Route path="/user-horario/:modalidade/:quadra" element={<UserHorarioModalidade />} />
 
         {/* Admin */}
         <Route path="/admin-menu" element={<AdminMenu />} />
