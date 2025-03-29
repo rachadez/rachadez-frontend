@@ -35,7 +35,7 @@ const UserVisualizarReserva = () => {
   return (
     <div className="container-cadastrar-reserva">
       <Header />
-      <MainContent title={reservaData.esporte} path={"/"} />
+      <MainContent title={reservaData.esporte} path={"/user-home"} />
       <section className="form-section">
         <div className="date-time-section">
           <div className="input-date-time">

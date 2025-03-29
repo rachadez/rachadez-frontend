@@ -80,7 +80,7 @@ const UserEditarReserva = () => {
   return (
     <div className="container-cadastrar-reserva">
       <Header />
-      <MainContent title={reservaData.esporte} subtitle={"Edite as informações desejadas"} path={"/"} />
+      <MainContent title={reservaData.esporte} subtitle={"Edite as informações desejadas"} path={"/user-home"} />
       <section className="form-section">
         <div className="date-time-section">
           <div className="input-date-time">
