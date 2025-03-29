@@ -48,6 +48,21 @@ body {
   width: 18%;
 }
 
+.input-date-time {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.view-date-time {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;;
+}
+
 label {
   display: block;
   font-size: 1.2rem;
@@ -69,6 +84,14 @@ label {
   outline: none;
   border-color: #0B53B8;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.date-time-section {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-left: 6rem;
 }
 
 .participants-section {
@@ -111,6 +134,7 @@ label {
 .participant-list {
   display: flex;
   flex-direction: column;
+  margin-bottom: 40px;
 }
 
 .participant-item {
@@ -171,7 +195,8 @@ label {
 .submit-button-container {
   display: flex;
   justify-content: center;
-  margin-top: 1.5rem;
+  margin-top: 0px;
+  margin-bottom: 1.5rem;
 }
 
 .submit-button {
