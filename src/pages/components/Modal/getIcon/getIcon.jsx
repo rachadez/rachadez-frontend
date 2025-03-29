@@ -4,7 +4,11 @@ import { CalendarCheck, CalendarClock, Trash, CalendarOff, CalendarX, XCircle } 
 const iconMapIconify = {
     "triangulo-amarelo": { icon: "basil:info-triangle-outline", color: "#FFA629" },
     "X": { icon: "ix:cancel", color: "red" },
-    "sucesso-check": { icon: "material-symbols:check", color: "#0B53B8" }
+    "sucesso-check": { icon: "material-symbols:check", color: "#0B53B8" },
+    "futebol": { icon: "emojione-monotone:soccer-ball", color: "#4a4a4a" },
+    "tennis": { icon: "emojione-monotone:tennis", color: "#4a4a4a" },
+    "volei": { icon: "emojione-monotone:volleyball", color: "#4a4a4a" },
+    "beach-tennis": { icon: "la:table-tennis", color: "#4a4a4a" },
 };
 
 const iconMapLucide = {

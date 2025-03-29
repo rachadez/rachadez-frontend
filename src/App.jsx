@@ -18,7 +18,7 @@ import AdminVisualizarUsuario from './pages/AdminVisualizarUsuario';
 import AdminUsuariosMenuBanimento from './pages/AdminUsuariosMenuBanimento';
 import AdminUsuariosBanir from './pages/AdminUsuariosBanir';
 import AdminUsuariosVisualizarBanidos from './pages/AdminUsuariosVisualizarBanidos';
-
+import UserModalidade from './pages/UserModalidade';
 
 function App() {
   return (
@@ -39,6 +39,8 @@ function App() {
         <Route path="/visualizar-reservas" element={<VisualizarReservas />} />
 
         <Route path="/editar-reserva" element={<EditarReserva />} />
+
+        <Route path="/user-reservar-modalidade" element={<UserModalidade />} />
 
         {/* Admin */}
         <Route path="/admin-menu" element={<AdminMenu />} />
