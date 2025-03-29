@@ -18,6 +18,9 @@ import AdminVisualizarUsuario from './pages/AdminVisualizarUsuario';
 import AdminUsuariosMenuBanimento from './pages/AdminUsuariosMenuBanimento';
 import AdminUsuariosBanir from './pages/AdminUsuariosBanir';
 import AdminUsuariosVisualizarBanidos from './pages/AdminUsuariosVisualizarBanidos';
+import UserHome from './pages/UserHome';
+import UserEditarReserva from './pages/UserEditarReserva';
+import UserVisualizarReserva from './pages/UserVisualizarReserva';
 import UserModalidade from './pages/UserModalidade';
 import UserHorarioModalidade from './pages/UserHorarioModalidade';
 import UserReservaParticipantes from './pages/UserReservaParticipantes';
@@ -32,15 +35,15 @@ function App() {
         {/* Rotas de Login */}
         <Route path="/login" element={<Login />} />
 
-        {/* Páginas pós-login */}
-        {/* Users */}
         <Route path="/cadastro" element={<Cadastro />} />
 
-        <Route path="/cadastrar-reserva" element={<CadastrarReserva />} />
+        {/* Páginas pós-login */}
+        {/* Users */}
+        <Route path="/user-home" element={<UserHome />} />
 
-        <Route path="/visualizar-reservas" element={<VisualizarReservas />} />
-
-        <Route path="/editar-reserva" element={<EditarReserva />} />
+        <Route path="/user-editar-reserva/:id" element={<UserEditarReserva />} />
+        
+        <Route path="/user-visualizar-reserva/:id" element={<UserVisualizarReserva />} />
 
         <Route path="/user-reserva-modalidade" element={<UserModalidade />} />
 
@@ -52,6 +55,12 @@ function App() {
         <Route path="/admin-menu" element={<AdminMenu />} />
 
         <Route path="/usuarios-menu" element={<AdminUsuariosMenu />} />
+        
+        <Route path="/cadastrar-reserva" element={<CadastrarReserva />} />
+
+        <Route path="/visualizar-reservas" element={<VisualizarReservas />} />
+
+        <Route path="/editar-reserva" element={<EditarReserva />} />
 
         <Route path="/admin-detalhes-reserva" element={<ReservaDetalhes />} />
           
