@@ -8,7 +8,17 @@ import DefaultButton from './components/Buttons/DefaultButton';
 const UserHorarioModalidade = () => {
     const [selectedTime, setSelectedTime] = useState(null);
     const { modalidade, quadra } = useParams();
-    const formattedModalidade = modalidade.charAt(0).toUpperCase() + modalidade.slice(1);
+    const correctAccents = (str) => {
+        const accents = {
+            'tenis': 'Tênis',
+            'volei': 'Vôlei',
+            'beach-tennis': 'Beach Tennis',
+            'society': 'Society',
+        };
+        return accents[str.toLowerCase()] || str;
+    };
+    
+    const formattedModalidade = correctAccents(modalidade);
     const formattedQuadra = quadra.replace('quadra', '').trim();
 
     const horarios = {
