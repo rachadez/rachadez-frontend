@@ -40,7 +40,7 @@ const UserHome = () => {
   return (
     <>
       <Header />
-      <MainContentWithoutArrow title={"Minhas reservas"} buttonText={"Cadastrar reserva"} path={"/"} />
+      <MainContentWithoutArrow title={"Minhas reservas"} buttonText={"Cadastrar reserva"} path={"/user-reserva-modalidade"} />
       {/* <MainContentWithoutArrow title={"Minhas reservas"}/> */}
 
       <TableList cabecalho={cabecalho} dados={reservas} dadosEdit={reservasEditaveis} hideAcoes handleView={handleView} handleEdit={handleEdit} handleDelete={handleDelete}></TableList>
