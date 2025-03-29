@@ -6,12 +6,12 @@ import './UserModalidade.css'
 
 const UserModalidade = () => {
     const modalidades = [
-        { icon: getCustomIcon("futebol"), title: "Society", path: "/user-horario/society/quadra1", disabled: false },
-        { icon: getCustomIcon("tennis"), title: "Tênis", path: "/user-horario/tenis/quadra1", disabled: false },
-        { icon: getCustomIcon("volei"), title: "Vôlei de areia 1", path: "/user-horario/volei/quadra1", disabled: false },
-        { icon: getCustomIcon("volei"), title: "Vôlei de areia 2", path: "/user-horario/volei/quadra2", disabled: true },
-        { icon: getCustomIcon("beach-tennis"), title: "Beach tennis 1", path: "/user-horario/beach-tennis/quadra1", disabled: false },
-        { icon: getCustomIcon("beach-tennis"), title: "Beach tennis 2", path: "/user-horario/beach-tennis/quadra2", disabled: true },
+        { icon: getCustomIcon("futebol"), title: "Society", path: "/user-reserva-horario/society/quadra1", disabled: false },
+        { icon: getCustomIcon("tennis"), title: "Tênis", path: "/user-reserva-horario/tenis/quadra1", disabled: false },
+        { icon: getCustomIcon("volei"), title: "Vôlei de areia 1", path: "/user-reserva-horario/volei/quadra1", disabled: false },
+        { icon: getCustomIcon("volei"), title: "Vôlei de areia 2", path: "/user-reserva-horario/volei/quadra2", disabled: true },
+        { icon: getCustomIcon("beach-tennis"), title: "Beach tennis 1", path: "/user-reserva-horario/beach-tennis/quadra1", disabled: false },
+        { icon: getCustomIcon("beach-tennis"), title: "Beach tennis 2", path: "/user-reserva-horario/beach-tennis/quadra2", disabled: true },
       ];
 
     return (

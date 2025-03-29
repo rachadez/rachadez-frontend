@@ -4,10 +4,15 @@ import './UserHorarioModalidade.css';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
 import DefaultButton from './components/Buttons/DefaultButton';
+import ModalOneOption from './components/Modal/ModalOneOption';
 
 const UserHorarioModalidade = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedTime, setSelectedTime] = useState(null);
+    const [selectedDate, setSelectedDate] = useState("");
+    
     const { modalidade, quadra } = useParams();
+
     const correctAccents = (str) => {
         const accents = {
             'tenis': 'Tênis',
@@ -48,17 +53,30 @@ const UserHorarioModalidade = () => {
         setSelectedTime(time.time);
       };
 
+      const handleAvancar = () => {
+        if (!selectedDate || !selectedTime) {
+            setIsModalOpen(true);
+            return;
+        }
+        window.location.href = `/user-reserva-participantes/${modalidade}/${quadra}`;
+    };
+
     return (
         <div className="horario-modalidade-container">
             <Header />
-            <MainContent title={`${formattedModalidade} - Quadra ${formattedQuadra}`} subtitle="Horários disponíveis" path={"/user-reservar-modalidade"}/>
+            <MainContent title={`${formattedModalidade} - Quadra ${formattedQuadra}`} subtitle="Horários disponíveis" path={"/user-reserva-modalidade"}/>
     
             <div className="container-agendamento">
                 <h2>Agende um horário</h2>
                 <div className="container-form-agendamento">
                     <div className="date-container">
                         <label htmlFor="date">Data</label>
-                        <input type="date" id="date" />
+                        <input 
+                            type="date" 
+                            id="date" 
+                            value={selectedDate} 
+                            onChange={(e) => setSelectedDate(e.target.value)}
+                        />
                     </div>
 
                 <div className="horario-container">
@@ -108,9 +126,20 @@ const UserHorarioModalidade = () => {
                         </div>
                     </div>
                 </div>
-                <DefaultButton label="Avançar" />
+                <DefaultButton label="Avançar" onClick={handleAvancar} />
                 </div>
             </div>
+
+            { /* Modal exibido quando o usuario nao seleciona nenhum horário/data */}
+            {isModalOpen && (
+                <ModalOneOption 
+                    iconName="triangulo-amarelo"
+                    modalText="Por favor, selecione um horário e uma data para prosseguir"
+                    buttonText="Tentar novamente."
+                    onClick={() => setIsModalOpen(false)}
+                />
+            )}
+                
         </div>
       );
 }
