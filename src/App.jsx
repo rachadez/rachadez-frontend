@@ -39,9 +39,9 @@ function App() {
         {/* Users */}
         <Route path="/user-home" element={<UserHome />} />
 
-        <Route path="/user-editar-reserva" element={<UserEditarReserva />} />
+        <Route path="/user-editar-reserva/:id" element={<UserEditarReserva />} />
         
-        <Route path="/user-visualizar-reserva" element={<UserVisualizarReserva />} />
+        <Route path="/user-visualizar-reserva/:id" element={<UserVisualizarReserva />} />
 
         {/* Admin */}
         <Route path="/admin-menu" element={<AdminMenu />} />
