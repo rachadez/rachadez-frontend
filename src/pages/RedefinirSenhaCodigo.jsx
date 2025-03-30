@@ -2,39 +2,36 @@ import React from "react";
 import MainContent from "./components/MainContent/MainContent";
 import InputTemplate from "./components/InputTemplate/InputTemplate";
 import DefaultButton from "./components/Buttons/DefaultButton";
-import "./ReSenha.css";
-import { useNavigate } from "react-router-dom";
 
-const RecuperarSenha = () => {
-  const navigate = useNavigate();
-
+const CodigoRedefinirSenha = () => {
   return (
     <section className="senha">
       <MainContent
         title={"Problemas para entrar?"}
         subtitle={
-          "Insira os dados abaixo. Um código para recuperar sua senha será enviado para seu e-mail. Lembre-se de checar o spam."
+          "Um código de confirmação foi enviado por e-mail"
         }
-        path={"/login"}
       />
 
       <div className="form-wrapper">
         <div className="form-container">
           <div className="form-group">
             <InputTemplate
-              type="email"
-              label="E-mail acadêmico"
-              placeholder="email@estudante.ufcg.edu.br"
+              type="text"
+              label="Digite o código recebido"
+              placeholder="Código"
             />
           </div>
         </div>
 
         <div className="button">
-          <DefaultButton label={"Receber código"} onClick={() => navigate(`/redefinir-senha`)}/>
+          <DefaultButton label={"Enviar"} />
         </div>
+
+        <a>Reenviar código</a>
       </div>
     </section>
   );
 };
 
-export default RecuperarSenha;
+export default CodigoRedefinirSenha;

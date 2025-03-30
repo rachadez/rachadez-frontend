@@ -1,0 +1,16 @@
+.reservation-not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #717171;
+  margin-top: -3rem;
+  margin-bottom: 6rem;
+}
+
+.reservation-not-found p {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  color: #717171;
+}

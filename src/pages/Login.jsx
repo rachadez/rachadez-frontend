@@ -98,7 +98,7 @@ function Login() {
                         </form>
                         {errorMessage && <p className="error-message">{errorMessage}</p>}
                         <p onClick={handleNaoSouDaUFCG} style={{ cursor: "pointer" }}>Não sou da UFCG</p>
-                        <p style={{ cursor: "pointer" }}>Esqueci minha senha</p>
+                        <p onClick={() => navigate("/recuperar-senha")} style={{ cursor: "pointer" }}>Esqueci minha senha</p>
                         <p onClick={() => navigate("/cadastro")} style={{ cursor: "pointer" }}>
                             Ainda não tenho cadastro
                         </p>

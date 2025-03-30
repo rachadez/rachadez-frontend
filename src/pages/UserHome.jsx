@@ -3,6 +3,8 @@ import Header from "./components/Header/Header";
 import TableList from "./components/TableList/TableList";
 import { useNavigate } from "react-router-dom";
 import MainContentWithoutArrow from "./components/MainContentWithoutArrow/MainContentWithoutArrow";
+import { CalendarSearch } from "lucide-react";
+import "./UserHome.css"
 
 const UserHome = () => {
   const navigate = useNavigate();
@@ -41,9 +43,15 @@ const UserHome = () => {
     <>
       <Header />
       <MainContentWithoutArrow title={"Minhas reservas"} buttonText={"Cadastrar reserva"} path={"/user-reserva-modalidade"} />
-      {/* <MainContentWithoutArrow title={"Minhas reservas"}/> */}
 
       <TableList cabecalho={cabecalho} dados={reservas} dadosEdit={reservasEditaveis} hideAcoes handleView={handleView} handleEdit={handleEdit} handleDelete={handleDelete}></TableList>
+
+      {dados.length === 0 && (
+        <div className="reservation-not-found">
+          <CalendarSearch color="#717171" size={350} strokeWidth={0.1}/>
+          <p>Nenhuma reserva encontrada :(</p>
+        </div>
+      )}
     </>
   );
 };
