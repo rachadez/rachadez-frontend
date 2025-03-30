@@ -21,7 +21,11 @@ import AdminUsuariosVisualizarBanidos from './pages/AdminUsuariosVisualizarBanid
 import UserHome from './pages/UserHome';
 import UserEditarReserva from './pages/UserEditarReserva';
 import UserVisualizarReserva from './pages/UserVisualizarReserva';
-
+import RecuperarSenha from './pages/RecuperarSenha';
+import RedefinirSenha from './pages/RedefinirSenha';
+import UserModalidade from './pages/UserModalidade';
+import UserHorarioModalidade from './pages/UserHorarioModalidade';
+import UserReservaParticipantes from './pages/UserReservaParticipantes';
 
 function App() {
   return (
@@ -35,6 +39,10 @@ function App() {
 
         <Route path="/cadastro" element={<Cadastro />} />
 
+        <Route path="/recuperar-senha" element={<RecuperarSenha/>} />
+
+        <Route path="/redefinir-senha" element={<RedefinirSenha/>} />
+
         {/* Páginas pós-login */}
         {/* Users */}
         <Route path="/user-home" element={<UserHome />} />
@@ -42,6 +50,12 @@ function App() {
         <Route path="/user-editar-reserva/:id" element={<UserEditarReserva />} />
         
         <Route path="/user-visualizar-reserva/:id" element={<UserVisualizarReserva />} />
+
+        <Route path="/user-reserva-modalidade" element={<UserModalidade />} />
+
+         {/* Rota dinâmica para cada modalidade e quadra */}
+         <Route path="/user-reserva-horario/:modalidade/:quadra" element={<UserHorarioModalidade />} />
+         <Route path="/user-reserva-participantes/:modalidade/:quadra" element={<UserReservaParticipantes />} />
 
         {/* Admin */}
         <Route path="/admin-menu" element={<AdminMenu />} />

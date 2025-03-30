@@ -23,7 +23,7 @@
 }
 
 .card:hover .card-icon {
-  color: white;
+  color: white !important;
 }
 
 .card p {

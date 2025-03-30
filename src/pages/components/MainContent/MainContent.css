@@ -26,6 +26,7 @@
 }
 
 .subtitle {
+    width: 32rem;
     display: flex;
     margin-top: 10px;
     font-size: 1rem;

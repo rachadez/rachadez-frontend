@@ -1,0 +1,102 @@
+.body {
+    font-family: "Open Sans", sans-serif;
+}
+
+.container-agendamento {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5rem 1rem;
+    font-family: Arial, sans-serif;
+    width: 50rem;
+    margin: 3rem auto;
+    border: 1px solid black;
+    border-radius: 1rem;
+}
+
+.container-agendamento h2 {
+   align-items: left;
+}
+
+.date-container {
+    margin-bottom: 20px;
+}
+ 
+.date-container input[type="date"] {
+    width: 100%;
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.container-form-agendamento {
+    width: 70%;
+    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+.field {
+    margin-bottom: 20px;
+}
+
+.field label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #98959D;
+    font-size: 0.8rem;
+}
+
+.timeslot {
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.time-option {
+    width: 8rem;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s;
+    background-color: #007AFF40;
+    border: 1px solid #007AFF40;
+}
+
+.time-option.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    background-color: white;
+    color: #007AFF80;
+}
+
+.time-option.selected {
+    background-color: #0B53B8;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .container-agendamento {
+        width: 80%;
+        padding: 3rem 1rem;
+        gap: 1.5rem;
+    }
+
+    .container-form-agendamento {
+        width: 90%;
+    }
+
+    .timeslot {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .time-option {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
