@@ -2,14 +2,14 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import "./PasswordInput.css";
 
-const PasswordInput = ({ value, onChange, showToggle = true }) => {
+const PasswordInput = ({ value, onChange, showToggle = true, placeholder = "Senha" }) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="password-container">
       <input
         type={showPassword ? "text" : "password"} // Alterna entre texto e senha
-        placeholder="Senha"
+        placeholder={placeholder}
         className="password-input"
         value={value} // Propaga o valor do estado do componente pai
         onChange={onChange} // Propaga o evento onChange para o componente pai
