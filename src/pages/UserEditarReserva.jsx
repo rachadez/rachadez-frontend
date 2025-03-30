@@ -189,7 +189,7 @@ const UserEditarReserva = () => {
             iconName="calendario-check"
             modalText="Reserva realizada com sucesso"
             buttonText="Voltar"
-            buttonPath={"/visualizar-reservas"}
+            buttonPath={"/user-home"}
           />
         )}
 
