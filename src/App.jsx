@@ -21,6 +21,8 @@ import AdminUsuariosVisualizarBanidos from './pages/AdminUsuariosVisualizarBanid
 import UserHome from './pages/UserHome';
 import UserEditarReserva from './pages/UserEditarReserva';
 import UserVisualizarReserva from './pages/UserVisualizarReserva';
+import RecuperarSenha from './pages/RecuperarSenha';
+import RedefinirSenha from './pages/RedefinirSenha';
 import UserModalidade from './pages/UserModalidade';
 import UserHorarioModalidade from './pages/UserHorarioModalidade';
 import UserReservaParticipantes from './pages/UserReservaParticipantes';
@@ -36,6 +38,10 @@ function App() {
         <Route path="/login" element={<Login />} />
 
         <Route path="/cadastro" element={<Cadastro />} />
+
+        <Route path="/recuperar-senha" element={<RecuperarSenha/>} />
+
+        <Route path="/redefinir-senha" element={<RedefinirSenha/>} />
 
         {/* Páginas pós-login */}
         {/* Users */}
