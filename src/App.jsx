@@ -22,10 +22,11 @@ import UserHome from './pages/UserHome';
 import UserEditarReserva from './pages/UserEditarReserva';
 import UserVisualizarReserva from './pages/UserVisualizarReserva';
 import RecuperarSenha from './pages/RecuperarSenha';
-import RedefinirSenha from './pages/RedefinirSenha';
+import RedefinirSenhaCodigo from './pages/RedefinirSenhaCodigo';
 import UserModalidade from './pages/UserModalidade';
 import UserHorarioModalidade from './pages/UserHorarioModalidade';
 import UserReservaParticipantes from './pages/UserReservaParticipantes';
+import RedefinirSenha from './pages/RedefinirSenha';
 
 function App() {
   return (
@@ -40,6 +41,8 @@ function App() {
         <Route path="/cadastro" element={<Cadastro />} />
 
         <Route path="/recuperar-senha" element={<RecuperarSenha/>} />
+
+        {/* <Route path="/redefinir-senha-codigo" element={<RedefinirSenhaCodigo/>} /> */}
 
         <Route path="/redefinir-senha" element={<RedefinirSenha/>} />
 
