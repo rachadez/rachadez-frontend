@@ -3,7 +3,6 @@ import MainContent from "./components/MainContent/MainContent";
 import InputTemplate from "./components/InputTemplate/InputTemplate";
 import DefaultButton from "./components/Buttons/DefaultButton";
 import "./ReSenha.css";
-import Header from "./components/Header/Header";
 import { useNavigate } from "react-router-dom";
 
 const RecuperarSenha = () => {
@@ -16,6 +15,7 @@ const RecuperarSenha = () => {
         subtitle={
           "Insira os dados abaixo. Um código para recuperar sua senha será enviado para seu e-mail. Lembre-se de checar o spam."
         }
+        path={"/login"}
       />
 
       <div className="form-wrapper">
