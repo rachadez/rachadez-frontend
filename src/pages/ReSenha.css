@@ -13,6 +13,23 @@
   padding-bottom: 2rem;
 }
 
+.senha .password-group {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  max-width: 100%;
+  padding-top: 3.5rem;
+  padding-bottom: 2rem;
+  gap: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.senha .password-group label {
+    color: #0b53b8;
+    font-size: 20px;
+    font-weight: 500;
+  }
+
 .senha .form-container label {
   color: #0b53b8;
   font-size: 20px;
@@ -37,12 +54,12 @@
 }
 
 .senha a {
-    color: #0b53b8;
-    font-weight: 600;
+  color: #0b53b8;
+  font-weight: 600;
 }
 
 @media (max-width: 1080px) {
-    .senha .form-container {
+  .senha .form-container {
     grid-template-columns: repeat(2, 1fr);
     justify-content: center;
   }
@@ -53,7 +70,7 @@
 }
 
 @media (max-width: 800px) {
-    .senha .form-container {
+  .senha .form-container {
     grid-template-columns: 1fr;
   }
 
