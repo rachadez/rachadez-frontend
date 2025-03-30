@@ -28,9 +28,13 @@ function AdminUsuariosVisualizarBanidos() {
           throw new Error("Token não encontrado. Faça login novamente.");
         }
 
-        const response = await axios.get("http://127.0.0.1:8000/v1/users/block", {
+        const response = await axios.get("http://127.0.0.1:8000/v1/block", {
           headers: {
             Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho
+          },
+          params: {
+            offset: 0, // Define o valor padrão para offset
+            limit: 100, // Define o valor padrão para limit
           },
         });
 
@@ -55,17 +59,30 @@ function AdminUsuariosVisualizarBanidos() {
   const handleDesbanirUsuario = async () => {
     try {
       const token = localStorage.getItem("access_token"); // Obtém o token do localStorage
-      await axios.patch(`http://127.0.0.1:8000/v1/users/unblock/${selectedUserId}`, {}, {
+
+      if (!selectedUserId) {
+        throw new Error("Nenhum usuário selecionado para desbanir.");
+      }
+
+      const response = await axios.patch(`http://127.0.0.1:8000/v1/unblock/${selectedUserId}`, {}, {
         headers: {
           Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho
         },
       });
+
+      console.log("Usuário desbanido com sucesso:", response.data);
+
       // Atualiza a lista de usuários após o desbloqueio
       setUsuarios((prevUsuarios) => prevUsuarios.filter((usuario) => usuario.id !== selectedUserId));
       setModalType("usuario-restaurado"); // Exibe o modal de sucesso
     } catch (error) {
       console.error("Erro ao desbanir usuário:", error);
-      setErrorMessage("Erro ao desbanir o usuário. Tente novamente mais tarde.");
+
+      if (error.response && error.response.status === 422) {
+        setErrorMessage("Erro nos dados enviados para o servidor. Verifique a configuração da API.");
+      } else {
+        setErrorMessage("Erro ao desbanir o usuário. Tente novamente mais tarde.");
+      }
     }
   };
 
@@ -133,3 +150,5 @@ function AdminUsuariosVisualizarBanidos() {
 }
 
 export default AdminUsuariosVisualizarBanidos;
+
+

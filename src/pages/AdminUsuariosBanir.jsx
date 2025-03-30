@@ -9,9 +9,8 @@ function AdminUsuariosBanir() {
   const [usuarios, setUsuarios] = useState([]); // Estado para armazenar os usuários
   const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
 
-  const cabecalho = ["Nome", "CPF", "Ocupação", "Telefone"];
+  const cabecalho = ["Nome", "CPF", "Ocupação", "Telefone", "Ações"];
 
-  // Função para buscar os usuários da API
   // Função para buscar os usuários da API
   useEffect(() => {
     const fetchUsuarios = async () => {
@@ -42,26 +41,24 @@ function AdminUsuariosBanir() {
   const handleBanir = async (userId) => {
     try {
       const token = localStorage.getItem("access_token"); // Obtém o token do localStorage
-      await axios.patch(`http://127.0.0.1:8000/v1/users/block/${userId}`, {}, {
+      await axios.patch(`http://127.0.0.1:8000/v1/block/${userId}`, {}, {
         headers: {
           Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho
         },
       });
+
+      console.log(`Usuário ${userId} banido com sucesso.`);
+
       // Atualiza a lista de usuários após o bloqueio
-      const response = await axios.get("http://127.0.0.1:8000/v1/users/", {
-        params: {
-          offset: 0,
-          limit: 100,
-        },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const usuariosNaoBanidos = response.data.filter((usuario) => usuario.is_active);
-      setUsuarios(usuariosNaoBanidos); // Atualiza o estado com os dados filtrados
+      setUsuarios((prevUsuarios) => prevUsuarios.filter((usuario) => usuario.id !== userId));
     } catch (error) {
       console.error("Erro ao banir usuário:", error);
-      setErrorMessage("Erro ao banir o usuário. Tente novamente mais tarde.");
+
+      if (error.response && error.response.status === 422) {
+        setErrorMessage("Erro nos dados enviados para o servidor. Verifique a configuração da API.");
+      } else {
+        setErrorMessage("Erro ao banir o usuário. Tente novamente mais tarde.");
+      }
     }
   };
 
@@ -99,3 +96,4 @@ function AdminUsuariosBanir() {
 }
 
 export default AdminUsuariosBanir;
+

@@ -9,84 +9,19 @@ import axios from "axios";
 
 function AdminCadastroUsuarioExterno() {
   const [usuario, setUsuario] = useState({
-    full_name: "Nicolas Kevin",
-    cpf: "64245678978",
+    full_name: "",
+    cpf: "",
     occupation: "EXTERNO", // Campo fixo
-    email: "nicolaskevin2511@gmail.com",
-    password: "senha123",
-    phone: "11912345678",
+    email: "",
+    password: "",
+    phone: "",
   });
   const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
   const [successMessage, setSuccessMessage] = useState(""); // Estado para mensagens de sucesso
 
-  // Função para lidar com o envio do formulário
-  const verificarDuplicidade = async () => {
-    try {
-      const token = localStorage.getItem("access_token");
-
-      // Verifica se o CPF já existe
-      const responseCPF = await axios.get(`http://127.0.0.1:8000/v1/users/`, {
-        params: { cpf: usuario.cpf },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (responseCPF.data.length > 0) {
-        setErrorMessage("CPF já cadastrado. Use outro CPF.");
-        return false;
-      }
-
-      // Verifica se o e-mail já existe
-      const responseEmail = await axios.get(`http://127.0.0.1:8000/v1/users/`, {
-        params: { email: usuario.email },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (responseEmail.data.length > 0) {
-        setErrorMessage("E-mail já cadastrado. Use outro e-mail.");
-        return false;
-      }
-
-      return true;
-    } catch (error) {
-      console.error("Erro ao verificar duplicidade:", error);
-      setErrorMessage("Erro ao verificar CPF ou e-mail. Tente novamente.");
-      return false;
-    }
-  };
-
   const handleSubmit = async () => {
     try {
-      // Validação de CPF
-      const validarCPF = (cpf) => {
-        const regex = /^\d{11}$/; // Verifica se o CPF tem 11 dígitos
-        return regex.test(cpf);
-      };
-
-      if (!validarCPF(usuario.cpf)) {
-        setErrorMessage("CPF inválido. Verifique o formato.");
-        return;
-      }
-
-      // Validação de e-mail
-      const validarEmail = (email) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Verifica o formato do e-mail
-        return regex.test(email);
-      };
-
-      if (!validarEmail(usuario.email)) {
-        setErrorMessage("E-mail inválido. Verifique o formato.");
-        return;
-      }
-
-      // Verifica duplicidade de CPF e e-mail
-      const duplicidadeValida = await verificarDuplicidade();
-      if (!duplicidadeValida) return;
-
-      console.log("Dados enviados:", usuario); // Verifica os dados enviados
+      console.log("Tentando cadastrar com os dados:", usuario); // Loga os dados enviados no console
       const token = localStorage.getItem("access_token"); // Obtém o token do localStorage
 
       const dadosParaEnvio = {
@@ -96,7 +31,10 @@ function AdminCadastroUsuarioExterno() {
         email: usuario.email,
         password: usuario.password,
         phone: usuario.phone,
+        is_internal: false, // Define explicitamente que o usuário não é interno
       };
+
+      console.log("Dados enviados para o backend:", dadosParaEnvio);
 
       const response = await axios.post("http://127.0.0.1:8000/v1/users/", dadosParaEnvio, {
         headers: {
@@ -120,8 +58,12 @@ function AdminCadastroUsuarioExterno() {
     } catch (error) {
       console.error("Erro ao cadastrar usuário:", error);
 
+      if (error.response) {
+        console.error("Resposta do backend:", error.response.data); // Loga a resposta do backend
+      }
+
       if (error.response && error.response.status === 400) {
-        setErrorMessage("Erro nos dados enviados. Verifique os campos e tente novamente.");
+        setErrorMessage(error.response.data.detail || "Erro nos dados enviados. Verifique os campos e tente novamente.");
       } else {
         setErrorMessage("Erro ao cadastrar o usuário. Tente novamente mais tarde.");
       }
@@ -160,7 +102,7 @@ function AdminCadastroUsuarioExterno() {
             />
           </div>
           <div className="form-group">
-            <InputReadOnly label="Tipo de Usuário" value="UsuarioExterno" />
+            <InputReadOnly label="Tipo de Usuário" value={usuario.occupation} />
           </div>
           <div className="form-group">
             <InputTemplate
@@ -203,3 +145,4 @@ function AdminCadastroUsuarioExterno() {
 }
 
 export default AdminCadastroUsuarioExterno;
+

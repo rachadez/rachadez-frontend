@@ -39,15 +39,42 @@ function AdminEditarUsuario() {
     try {
       console.log("Dados enviados:", usuario); // Verifica os dados enviados
       const token = localStorage.getItem("access_token");
-      await axios.patch(`http://127.0.0.1:8000/v1/users/${id}`, usuario, {
+
+      // Prepara os dados para envio, garantindo que todos os campos obrigatórios estejam presentes
+      const dadosParaEnvio = {
+        email: usuario.email,
+        cpf: usuario.cpf,
+        phone: usuario.phone,
+        occupation: usuario.occupation,
+        is_active: usuario.is_active ?? true, // Define como ativo por padrão, se não estiver definido
+        is_admin: usuario.is_admin ?? false, // Define como não administrador por padrão
+        is_internal: usuario.is_internal ?? true, // Define como interno por padrão
+        full_name: usuario.full_name,
+        password: usuario.password || undefined, // Envia a senha apenas se for alterada
+      };
+
+      console.log("Dados formatados para envio:", dadosParaEnvio);
+
+      // Envia a requisição PATCH para o backend
+      const response = await axios.patch(`http://127.0.0.1:8000/v1/users/${id}`, dadosParaEnvio, {
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
       });
+
+      console.log("Resposta do backend:", response.data);
+
+      // Redireciona para a página de listagem após salvar
       navigate("/admin-editar-usuarios");
     } catch (error) {
       console.error("Erro ao salvar alterações:", error);
-      setErrorMessage("Erro ao salvar as alterações. Tente novamente mais tarde.");
+
+      if (error.response && error.response.status === 422) {
+        setErrorMessage("Erro nos dados enviados. Verifique os campos e tente novamente.");
+      } else {
+        setErrorMessage("Erro ao salvar as alterações. Tente novamente mais tarde.");
+      }
     }
   };
 

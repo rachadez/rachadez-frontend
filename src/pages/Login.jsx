@@ -24,10 +24,6 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Depuração: Verifique os valores de email e password
-        console.log("Email:", email);
-        console.log("Password:", password);
-
         // Validação básica no frontend
         if (!email || !password) {
             setErrorMessage("Por favor, preencha todos os campos.");
@@ -52,9 +48,15 @@ function Login() {
             if (response.status === 200) {
                 // Login bem-sucedido
                 const { access_token } = response.data;
-                console.log("Token recebido:", access_token); // Log para verificar o token recebido
+            
                 localStorage.setItem("access_token", access_token); // Armazena o token no localStorage
-                navigate("/admin-menu"); // Redireciona para a página inicial
+
+                // Verifica o tipo de usuário com base no e-mail
+                if (email === "admin@complexo.ufcg.edu.br") {
+                    navigate("/admin-menu"); // Redireciona para o menu do administrador
+                } else {
+                    navigate("/user-home"); // Redireciona para a página do usuário comum
+                }
             }
         } catch (error) {
             // Exibe mensagem de erro detalhada, se disponível
