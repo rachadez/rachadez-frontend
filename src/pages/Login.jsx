@@ -52,6 +52,7 @@ function Login() {
             if (response.status === 200) {
                 // Login bem-sucedido
                 const { access_token } = response.data;
+                console.log("Token recebido:", access_token); // Log para verificar o token recebido
                 localStorage.setItem("access_token", access_token); // Armazena o token no localStorage
                 navigate("/admin-menu"); // Redireciona para a página inicial
             }

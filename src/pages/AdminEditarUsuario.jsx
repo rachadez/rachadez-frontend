@@ -1,70 +1,127 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./Cadastro.css";
 import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
 import { UserRoundSearch } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import InputTemplateEdit from "./components/InputTemplate/InputTemplateEdit";
 import DefaultButton from "./components/Buttons/DefaultButton";
+import axios from "axios";
 
 function AdminEditarUsuario() {
-  let { id } = useParams();
+  const { id } = useParams(); // Obtém o ID do usuário da URL
+  const navigate = useNavigate();
+  const [usuario, setUsuario] = useState(null); // Estado para armazenar os dados do usuário
+  const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
 
-  const usuarios = [
-    {
-      id: 1,
-      nome: 'Maria do Rosário',
-      cpf: '987.654.321-00',
-      ocupacao: 'Usuário Externo',
-      telefone: '(83) 9 97777 1202',
-      email: "maria@gmail.com",
-      senha: "senha456"
+  // Busca os dados do usuário ao carregar a página
+  useEffect(() => {
+    const fetchUsuario = async () => {
+      try {
+        const token = localStorage.getItem("access_token"); // Obtém o token do localStorage
+        const response = await axios.get(`http://127.0.0.1:8000/v1/users/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho
+          },
+        });
+        setUsuario(response.data); // Atualiza o estado com os dados do usuário
+      } catch (error) {
+        console.error("Erro ao buscar usuário:", error);
+        setErrorMessage("Erro ao carregar os dados do usuário. Tente novamente mais tarde.");
+      }
+    };
+
+    fetchUsuario();
+  }, [id]);
+
+  // Função para salvar as alterações
+  const handleSave = async () => {
+    try {
+      console.log("Dados enviados:", usuario); // Verifica os dados enviados
+      const token = localStorage.getItem("access_token");
+      await axios.patch(`http://127.0.0.1:8000/v1/users/${id}`, usuario, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      navigate("/admin-editar-usuarios");
+    } catch (error) {
+      console.error("Erro ao salvar alterações:", error);
+      setErrorMessage("Erro ao salvar as alterações. Tente novamente mais tarde.");
     }
-  ]
+  };
 
-  const usuario = usuarios.find(user => user.id == id);
-  
   if (!usuario) {
     return (
-        <div className="cadastro-page">
-            <Header />
-            <MainContent path={"/admin-editar-usuarios"} title={"Usuário não encontrado"} subtitle={"Não foi possível encontrar esse usuário."}/>
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", padding: "70px"}}>
-              <UserRoundSearch color="#0B53B8" size={300} strokeWidth={1}/>
-            </div>
-        </div>
+      <div className="cadastro-page">
+        <Header />
+        <MainContent
+          path={"/admin-editar-usuarios"}
+          title={"Carregando..."}
+          subtitle={"Aguarde enquanto os dados do usuário são carregados."}
+        />
+      </div>
     );
   }
 
   return (
     <div className="cadastro-page">
       <Header />
-      <MainContent path={"/admin-editar-usuarios"} title={"Editando usuário"} subtitle={"Você pode editar quaisquer campos que desejar. Tome as devidas precauções ao efetuar esta operação."}/>
-  
+      <MainContent
+        path={"/admin-editar-usuarios"}
+        title={"Editando usuário"}
+        subtitle={"Você pode editar quaisquer campos que desejar. Tome as devidas precauções ao efetuar esta operação."}
+      />
+
       <div className="form-wrapper">
-      <div className="form-container">
-        <div className="form-group">
-            <InputTemplateEdit label="Nome completo" value={usuario.nome} />
+        <div className="form-container">
+          <div className="form-group">
+            <InputTemplateEdit
+              label="Nome completo"
+              value={usuario.full_name}
+              onChange={(e) => setUsuario({ ...usuario, full_name: e.target.value })}
+            />
+          </div>
+          <div className="form-group">
+            <InputTemplateEdit
+              label="CPF"
+              value={usuario.cpf}
+              onChange={(e) => setUsuario({ ...usuario, cpf: e.target.value })}
+            />
+          </div>
+          <div className="form-group">
+            <InputTemplateEdit
+              label="Ocupação"
+              value={usuario.occupation}
+              onChange={(e) => setUsuario({ ...usuario, occupation: e.target.value })}
+            />
+          </div>
+          <div className="form-group">
+            <InputTemplateEdit
+              label="E-mail"
+              value={usuario.email}
+              onChange={(e) => setUsuario({ ...usuario, email: e.target.value })}
+            />
+          </div>
+          <div className="form-group">
+            <InputTemplateEdit
+              type="password"
+              label="Senha"
+              value={usuario.password || ""}
+              onChange={(e) => setUsuario({ ...usuario, password: e.target.value })}
+            />
+          </div>
+          <div className="form-group">
+            <InputTemplateEdit
+              label="Telefone"
+              value={usuario.phone}
+              onChange={(e) => setUsuario({ ...usuario, phone: e.target.value })}
+            />
+          </div>
         </div>
-        <div className="form-group">
-            <InputTemplateEdit label="CPF" value={usuario.cpf}/>
-        </div>
-        <div className="form-group">
-            <InputTemplateEdit label="Ocupação" value={usuario.ocupacao}/>
-        </div>
-        <div className="form-group">
-            <InputTemplateEdit label="E-mail" value={usuario.email}/>
-        </div>
-        <div className="form-group">
-            <InputTemplateEdit type="password" label="Senha" value={usuario.senha}/>
-        </div>
-        <div className="form-group">
-            <InputTemplateEdit label="Telefone" value={usuario.telefone}/>
-        </div>
-    </div>
 
         <div className="button">
-          <DefaultButton label={"Finalizar edição"} />
+          <DefaultButton label={"Finalizar edição"} onClick={handleSave} />
         </div>
       </div>
     </div>

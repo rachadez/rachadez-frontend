@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './InputReadOnly.css';
 
-const InputReadOnly = ({ label, type = 'text' }) => {
+const InputReadOnly = ({ label, type = 'text', value }) => {
   const [error, setError] = useState('');
 
   // Não há necessidade de lidar com mudança de valor aqui,
@@ -20,8 +20,9 @@ const InputReadOnly = ({ label, type = 'text' }) => {
         onBlur={handleBlur}
         type={type}
         className={error ? 'error' : ''}
+        value={value} // Define o valor selecionado
       >
-        <option value="UsuarioExterno" selected>Usuário Externo</option>
+        <option value="UsuarioExterno">Usuário Externo</option>
       </select>
       {error && <span className="error-message-read-only">{error}</span>}
     </div>
