@@ -78,21 +78,26 @@ const UserReservaParticipantes = () => {
         ...reservaData.participantesExternos.map((p) => p.email),
       ];
 
-      // Buscar UUIDs dos participantes
+      // Buscar UUIDs dos participantes usando o novo endpoint
       const participants = await Promise.all(
         emails.map(async (email) => {
-          const response = await axios.get(`http://127.0.0.1:8000/v1/users/email/${email}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
+          try {
+            const response = await axios.get(`http://127.0.0.1:8000/v1/users/user-id/${email}`, {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            });
 
-          // Verifica se o UUID é uma string válida
-          if (!response.data.id || typeof response.data.id !== "string") {
-            throw new Error(`UUID inválido para o email: ${email}`);
+            // Verifica se o UUID está presente na resposta
+            if (!response.data || !response.data.user_id || typeof response.data.user_id !== "string") {
+              throw new Error(`UUID inválido para o email: ${email}`);
+            }
+
+            return response.data.user_id; // Retorna o UUID do participante
+          } catch (error) {
+            console.error(`Erro ao buscar UUID para o email ${email}:`, error);
+            throw new Error(`Não foi possível encontrar o usuário com o email: ${email}`);
           }
-
-          return response.data.id; // Retorna apenas o UUID como string
         })
       );
 
