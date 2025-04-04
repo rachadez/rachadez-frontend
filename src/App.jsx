@@ -70,14 +70,12 @@ function App() {
         <Route path="/visualizar-reservas" element={<VisualizarReservas />} />
 
         <Route path="/editar-reserva" element={<EditarReserva />} />
-
-        <Route path="/admin-detalhes-reserva" element={<ReservaDetalhes />} />
           
         <Route path="/cadastrar-usuario-ufcg" element={<AdminCadastroUsuarioUFCG />} />
         
         <Route path="/cadastrar-usuario-externo" element={<AdminCadastroUsuarioExterno />} />
           
-        <Route path="/admin-detalhes-reserva" element={<ReservaDetalhes />} />
+        <Route path="/admin-detalhes-reserva/:id" element={<ReservaDetalhes />} />
 
         <Route path="/admin-editar-usuarios" element={<AdminUsuariosEditar />} />
       

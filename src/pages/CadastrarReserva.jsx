@@ -95,20 +95,35 @@ const CadastrarReserva = () => {
     }
   };
 
+  const subtractHours = (date, hours) => {
+    const newDate = new Date(date);
+    newDate.setHours(newDate.getHours() - hours);
+    return newDate;
+  };
+
   // Função para cadastrar reserva
   const handleCadastrarReserva = async () => {
     try {
       const token = localStorage.getItem("access_token");
 
-      // Dados fixos para teste
+      // Remove duplicados dos participantes
+      const uniqueParticipants = [...new Set([
+        ...(responsavel?.id ? [responsavel.id] : []), // Inclui o responsável se existir
+        ...ufcgParticipants.map((p) => p.id), // IDs dos participantes da UFCG
+        ...externalParticipants.map((p) => p.id), // IDs dos participantes externos
+      ])];
+
+      // Ajusta os horários subtraindo 3 horas
+      const adjustedStartDate = subtractHours(new Date(selectedDate), 3).toISOString();
+      const adjustedEndDate = subtractHours(new Date(endDate), 3).toISOString();
+
+      // Dados dinâmicos para envio
       const dadosParaEnvio = {
-        responsible_user_id: "8919a659-09ad-44a5-a40e-f2b1a1f6ff45",
-        arena_id: 6, 
-        start_date: "2025-04-02T18:00:00.000Z", 
-        end_date: "2025-04-02T19:00:00.000Z",
-        participants: [
-          "8919a659-09ad-44a5-a40e-f2b1a1f6ff45",
-        ],
+        responsible_user_id: responsavel?.id || "", // Garante que seja uma string válida
+        arena_id: String(arenaId), // Converte para string
+        start_date: adjustedStartDate, // Data e hora de início ajustada
+        end_date: adjustedEndDate, // Data e hora de término ajustada
+        participants: uniqueParticipants, // Lista de participantes únicos
       };
 
       console.log("Dados enviados para o backend:", dadosParaEnvio);

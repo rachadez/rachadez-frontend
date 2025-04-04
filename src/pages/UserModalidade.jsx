@@ -1,37 +1,73 @@
+import React, { useEffect, useState } from "react";
 import Card from "./components/Cards/Card";
 import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
 import getCustomIcon from "./components/Modal/getIcon/getIcon";
-import './UserModalidade.css'
+import axios from "axios";
+import './UserModalidade.css';
 
 const UserModalidade = () => {
-    const modalidades = [
-        { icon: getCustomIcon("futebol"), title: "Society", path: "/user-reserva-horario/society/quadra1", disabled: false },
-        { icon: getCustomIcon("tennis"), title: "Tênis", path: "/user-reserva-horario/tenis/quadra1", disabled: false },
-        { icon: getCustomIcon("volei"), title: "Vôlei de areia 1", path: "/user-reserva-horario/volei/quadra1", disabled: false },
-        { icon: getCustomIcon("volei"), title: "Vôlei de areia 2", path: "/user-reserva-horario/volei/quadra2", disabled: true },
-        { icon: getCustomIcon("beach-tennis"), title: "Beach tennis 1", path: "/user-reserva-horario/beach-tennis/quadra1", disabled: false },
-        { icon: getCustomIcon("beach-tennis"), title: "Beach tennis 2", path: "/user-reserva-horario/beach-tennis/quadra2", disabled: true },
-      ];
+  const [modalidades, setModalidades] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
 
-    return (
-      <div className="container-user-modalidade">
-        <Header />
-        <MainContent title="Modalidade" subtitle="As modalidades que possuem mais de uma quadra são identificadas por números no título, indicando qual quadra está disponível para reserva. Por exemplo: 'Vôlei de areia 1' e 'Vôlei de areia 2' se referem a duas quadras diferentes." path={"/user-home"}/>
-  
-        <div className="modalidade-cards-container">
-            {modalidades.map((modalidade, index) => (
-            <Card
-                key={index}
-                icon={modalidade.icon}
-                title={modalidade.title}
-                path={modalidade.path}
-                disabled={modalidade.disabled}
-            />
-            ))}   
-        </div>
-      </div>
-    );
+  // Função para buscar as arenas disponíveis
+  const fetchArenas = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await axios.get("http://127.0.0.1:8000/v1/arenas/", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      console.log("Resposta do backend:", response.data);
+
+      // Acessa a propriedade `data` que contém a lista de arenas
+      const arenas = response.data.data.map((arena) => ({
+        icon: getCustomIcon(arena.type.toLowerCase()),
+        title: `${arena.name} - ${arena.type}`,
+        path: `/user-reserva-horario/${arena.type.toLowerCase()}/${arena.id}`, // Passa modalidade e ID da quadra
+        disabled: false,
+        id: arena.id,
+      }));
+
+      setModalidades(arenas);
+    } catch (error) {
+      console.error("Erro ao buscar arenas:", error);
+      setErrorMessage("Erro ao carregar as modalidades. Tente novamente mais tarde.");
+    }
   };
 
-  export default UserModalidade;
+  useEffect(() => {
+    fetchArenas();
+  }, []);
+
+  if (errorMessage) {
+    return <p className="error-message">{errorMessage}</p>;
+  }
+
+  return (
+    <div className="container-user-modalidade">
+      <Header />
+      <MainContent
+        title="Modalidade"
+        subtitle="As modalidades que possuem mais de uma quadra são identificadas por números no título, indicando qual quadra está disponível para reserva."
+        path={"/user-home"}
+      />
+
+      <div className="modalidade-cards-container">
+        {modalidades.map((modalidade, index) => (
+          <Card
+            key={index}
+            icon={modalidade.icon}
+            title={modalidade.title}
+            path={modalidade.path}
+            disabled={modalidade.disabled}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default UserModalidade;
