@@ -16,90 +16,55 @@ const UserEditarReserva = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
   const [isSaving, setIsSaving] = useState(false); // Estado para indicar se está salvando
+  const [reservaData, setReservaData] = useState(null);
 
   const fetchUserId = async () => {
     try {
-      const token = localStorage.getItem("access_token"); // Obtém o token do localStorage
+      const token = localStorage.getItem("access_token");
       if (!token) {
-        setErrorMessage("Usuário não autenticado. Faça login novamente.");
-        navigate("/login"); // Redireciona para a página de login
+        navigate("/login");
         return null;
       }
-
       const response = await axios.get("http://127.0.0.1:8000/v1/users/me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
-
-      return response.data.id; // Retorna o user_id
+      return response.data.id;
     } catch (error) {
       console.error("Erro ao buscar o ID do usuário:", error);
-      setErrorMessage("Erro ao carregar os dados do usuário. Tente novamente mais tarde.");
+      setErrorMessage("Erro ao carregar os dados do usuário.");
       return null;
     }
   };
 
   const fetchReserva = async (user_id) => {
     try {
-      const token = localStorage.getItem("access_token"); // Obtém o token do localStorage
+      const token = localStorage.getItem("access_token");
       const url = `http://127.0.0.1:8000/v1/reservations/${user_id}/${reservation_id}`;
-      console.log("URL da requisição:", url);
+      const response = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
 
-      const response = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      console.log("Resposta da API:", response.data); // Log da resposta completa da API
-
-      if (!response.data.participants || response.data.participants.length === 0) {
-        console.warn("Nenhum participante encontrado na reserva.");
-      }
-
-      // Atualiza os dados da reserva com os participantes corretamente
       setReservaData({
         esporte: response.data.sport || `Quadra ${response.data.arena_id}`,
         dataHora: new Date(response.data.start_date),
         participantesUFCG: response.data.participants
-          .filter((p) => p.occupation === "ALUNO") // Ajuste para occupation
-          .map((p) => ({ name: p.full_name, email: p.email })), // Use full_name e email
+          .filter((p) => p.occupation === "ALUNO")
+          .map((p) => ({ name: p.full_name, email: p.email })),
         participantesExternos: response.data.participants
-          .filter((p) => p.occupation === "EXTERNO") // Ajuste para occupation
-          .map((p) => ({ name: p.full_name, email: p.email })), // Use full_name e email
-      });
-
-      console.log("Dados processados da reserva:", {
-        esporte: response.data.sport || `Quadra ${response.data.arena_id}`,
-        dataHora: new Date(response.data.start_date),
-        participantesUFCG: response.data.participants.filter((p) => p.occupation === "ALUNO"),
-        participantesExternos: response.data.participants.filter((p) => p.occupation === "EXTERNO"),
+          .filter((p) => p.occupation === "EXTERNO")
+          .map((p) => ({ name: p.full_name, email: p.email })),
       });
     } catch (error) {
       console.error("Erro ao buscar os dados da reserva:", error);
-      if (error.response) {
-        console.error("Detalhes do erro:", error.response.data);
-      }
-      if (error.response && error.response.status === 404) {
-        setErrorMessage("Reserva não encontrada.");
-      } else if (error.response && error.response.status === 405) {
-        setErrorMessage("Método não permitido. Verifique a configuração do backend.");
-      } else {
-        setErrorMessage("Erro ao carregar os dados da reserva. Tente novamente mais tarde.");
-      }
+      setErrorMessage("Erro ao carregar os dados da reserva.");
     }
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      const user_id = await fetchUserId(); // Busca o user_id do usuário logado
-      console.log("User ID retornado:", user_id); // Log do user_id
+      const user_id = await fetchUserId();
       if (user_id) {
-        await fetchReserva(user_id); // Busca os dados da reserva
+        await fetchReserva(user_id);
       }
     };
-
     fetchData();
   }, [reservation_id]);
 
@@ -130,28 +95,21 @@ const UserEditarReserva = () => {
     setModalType("reserva-realizada");
   };
 
-  const [reservaData, setReservaData] = useState({
-    esporte: "Esporte X",
-    dataHora: new Date("2025-01-01T18:30:00"),
-    participantesUFCG: [
-      { name: "Fulano de Tal", email: "fulano.tal@curso.ufcg.edu.br" },
-      { name: "Ciclano Bla Bla Bla da Silva", email: "ciclano.silva@curso.ufcg.edu.br" },
-    ],
-    participantesExternos: [
-      { name: "Fulano de Tal", email: "fulano.tal@example.com" },
-      { name: "Ciclano Bla Bla Bla da Silva", email: "ciclano.silva@example.com" },
-    ],
-  });
-
   const handleDateChange = (date) => {
     setReservaData((prev) => ({ ...prev, dataHora: date }));
   };
 
   const removeParticipant = (index, type) => {
-    setReservaData((prev) => ({
-      ...prev,
-      [type]: prev[type].filter((_, i) => i !== index),
-    }));
+    try {
+      const updatedParticipants = reservaData[type].filter((_, i) => i !== index);
+
+      setReservaData((prev) => ({
+        ...prev,
+        [type]: updatedParticipants,
+      }));
+    } catch (error) {
+      console.error("Erro ao remover participante:", error);
+    }
   };
 
   const addParticipantInput = (type) => {
@@ -170,73 +128,64 @@ const UserEditarReserva = () => {
     setList(list.filter((_, i) => i !== index));
   };
 
+  const subtractHours = (date, hours) => {
+    return new Date(date.getTime() - hours * 60 * 60 * 1000);
+  };
+
   const handleSaveChanges = async () => {
     setIsSaving(true);
     try {
       const token = localStorage.getItem("access_token");
+      const emails = [
+        ...reservaData.participantesUFCG.map((p) => p.email),
+        ...reservaData.participantesExternos.map((p) => p.email),
+      ];
 
-      // Função para buscar ID de usuário pelo e-mail
-      const fetchUserIdByEmail = async (email) => {
-        try {
-          const response = await axios.get(`http://127.0.0.1:8000/v1/users/user-id/${email}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          return response.data; // Retorna o UUID do usuário
-        } catch (error) {
-          console.error(`Erro ao buscar ID do usuário com e-mail ${email}:`, error);
-          return null; // Retorna null se não conseguir buscar o ID
-        }
-      };
+      console.log("Emails dos participantes:", emails); // Log dos emails
 
-      // Buscar IDs para os participantes UFCG
-      const ufcgParticipants = await Promise.all(
-        reservaData.participantesUFCG.map(async (p) => {
-          const userId = await fetchUserIdByEmail(p.email);
-          return userId ? { id: userId, type: "UFCG" } : null;
+      const participants = await Promise.all(
+        emails.map(async (email) => {
+          try {
+            const response = await axios.get(`http://127.0.0.1:8000/v1/users/user-id/${email}`, {
+              headers: { Authorization: `Bearer ${token}` },
+            });
+            if (!response.data || !response.data.user_id || typeof response.data.user_id !== "string") {
+              throw new Error(`UUID inválido para o email: ${email}`);
+            }
+            return response.data.user_id;
+          } catch (error) {
+            console.error(`Erro ao buscar UUID para o email ${email}:`, error);
+            throw new Error(`Não foi possível encontrar o usuário com o email: ${email}`);
+          }
         })
       );
 
-      // Buscar IDs para os participantes externos (se necessário)
-      const externalParticipants = await Promise.all(
-        reservaData.participantesExternos.map(async (p) => {
-          const userId = await fetchUserIdByEmail(p.email);
-          return userId ? { id: userId, type: "EXTERNAL" } : null;
-        })
-      );
+      console.log("UUIDs dos participantes:", participants); // Log dos UUIDs
 
-      // Filtrar participantes válidos
-      const validParticipants = [...ufcgParticipants, ...externalParticipants].filter(Boolean);
+      const startDate = reservaData.dataHora;
+      const endDate = new Date(startDate.getTime() + 5400000);
+      const adjustedStartDate = subtractHours(new Date(startDate), 3).toISOString();
+      const adjustedEndDate = subtractHours(new Date(endDate), 3).toISOString();
 
-      // Criar payload para requisição de atualização
       const payload = {
-        start_date: reservaData.dataHora.toISOString(),
-        end_date: new Date(reservaData.dataHora.getTime() + 3600000).toISOString(),
-        participants: validParticipants,
+        start_date: adjustedStartDate,
+        end_date: adjustedEndDate,
+        participants: participants,
       };
 
-      // Fazer requisição PUT para atualizar a reserva
+      console.log("Payload enviado para a API:", payload); // Log do payload completo
+
       await axios.put(`http://127.0.0.1:8000/v1/reservations/${reservation_id}`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      setModalType("reserva-realizada");
-      setIsModalOpen(true);
+      navigate(`/reserva/${reservation_id}`);
     } catch (error) {
       console.error("Erro ao salvar as alterações:", error);
-      setErrorMessage("Erro ao salvar as alterações. Tente novamente.");
+      setErrorMessage("Erro ao salvar as alterações.");
     } finally {
       setIsSaving(false);
     }
-  };
-
-
-  const handleParticipantChange = (index, type, field, value) => {
-    setReservaData((prev) => ({
-      ...prev,
-      [type]: prev[type].map((participant, i) =>
-        i === index ? { ...participant, [field]: value } : participant
-      ),
-    }));
   };
 
   if (errorMessage) {
