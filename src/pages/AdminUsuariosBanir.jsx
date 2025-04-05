@@ -9,7 +9,7 @@ function AdminUsuariosBanir() {
   const [usuarios, setUsuarios] = useState([]); // Estado para armazenar os usuários
   const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
 
-  const cabecalho = ["Nome", "CPF", "Ocupação", "Telefone", "Ações"];
+  const cabecalho = ["Nome", "CPF", "Ocupação", "Telefone"];
 
   // Função para buscar os usuários da API
   useEffect(() => {
