@@ -56,7 +56,13 @@ function AdminUsuariosExcluir() {
       setSuccessModalOpen(true);
     } catch (error) {
       console.error("Erro ao excluir usuário:", error);
-      setErrorMessage("Erro ao excluir o usuário. Tente novamente mais tarde.");
+
+      if (error.response && error.response.data && error.response.data.detail) {
+        setErrorMessage(error.response.data.detail);
+      } else {
+        setErrorMessage("Erro ao excluir o usuário. Tente novamente mais tarde.");
+      }
+      
       setIsModalOpen(true);
     } finally {
       setShowConfirmModal(false);
