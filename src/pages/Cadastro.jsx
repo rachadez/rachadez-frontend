@@ -59,15 +59,21 @@ function Cadastro() {
         occupation: "",
       }));
     }
+    
+    const cleanedFormData = {
+      ...formData,
+      cpf: formData.cpf.replace(/\D/g, ""),
+      phone: formData.phone.replace(/\D/g, ""),
+    };
 
     // Validação dos campos obrigatórios
     if (
-      !formData.full_name ||
-      !formData.cpf ||
-      !formData.phone ||
-      !formData.occupation ||
-      !formData.email ||
-      !formData.password
+      !cleanedFormData.full_name ||
+      !cleanedFormData.cpf ||
+      !cleanedFormData.phone ||
+      !cleanedFormData.occupation ||
+      !cleanedFormData.email ||
+      !cleanedFormData.password
     ) {
       setErrorMessage("Por favor, preencha todos os campos obrigatórios.");
       setModalType("erro");
@@ -75,14 +81,8 @@ function Cadastro() {
       return;
     }
 
-    const cleanedFormData = {
-      ...formData,
-      cpf: formData.cpf.replace(/\D/g, ""),
-      phone: formData.phone.replace(/\D/g, ""),
-    };
-
     try {
-      const response = await axios.post("http://127.0.0.1:8000/v1/users/signup", formData, {
+      const response = await axios.post("http://127.0.0.1:8000/v1/users/signup", cleanedFormData, {
         headers: {
           "Content-Type": "application/json",
         },
