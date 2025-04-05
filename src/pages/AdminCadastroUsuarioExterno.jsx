@@ -19,6 +19,35 @@ function AdminCadastroUsuarioExterno() {
   const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
   const [successMessage, setSuccessMessage] = useState(""); // Estado para mensagens de sucesso
 
+  const formatCPF = (value) => {
+    const digits = value.replace(/\D/g, "").slice(0, 11);
+    return digits
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+  };
+  
+  const formatPhone = (value) => {
+    const digits = value.replace(/\D/g, "").slice(0, 11);
+    return digits
+      .replace(/^(\d{2})(\d)/g, "($1) $2")
+      .replace(/(\d{5})(\d{4})$/, "$1-$2");
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    let formattedValue = value;
+  
+    if (name === "cpf") {
+      formattedValue = formatCPF(value);
+    }
+    if (name === "phone") {
+      formattedValue = formatPhone(value);
+    }
+  
+    setUsuario({ ...usuario, [name]: formattedValue });
+  };  
+
   const handleSubmit = async () => {
     try {
       console.log("Tentando cadastrar com os dados:", usuario); // Loga os dados enviados no console
@@ -26,11 +55,11 @@ function AdminCadastroUsuarioExterno() {
 
       const dadosParaEnvio = {
         full_name: usuario.full_name,
-        cpf: usuario.cpf,
+        cpf: usuario.cpf.replace(/\D/g, ""),
         occupation: usuario.occupation,
         email: usuario.email,
         password: usuario.password,
-        phone: usuario.phone,
+        phone: usuario.phone.replace(/\D/g, ""),
         is_internal: false, // Define explicitamente que o usuário não é interno
       };
 
@@ -86,49 +115,54 @@ function AdminCadastroUsuarioExterno() {
           <div className="form-group">
             <InputTemplate
               type="text"
-              label="Nome completo"
+              label="Nome completo *"
+              name="full_name"
               placeholder="Nome"
               value={usuario.full_name}
-              onChange={(e) => setUsuario({ ...usuario, full_name: e.target.value })}
+              onChange={handleInputChange}
             />
           </div>
           <div className="form-group">
             <InputTemplate
               type="text"
-              label="CPF"
+              label="CPF *"
+              name="cpf"
               placeholder="123.456.789-00"
               value={usuario.cpf}
-              onChange={(e) => setUsuario({ ...usuario, cpf: e.target.value })}
+              onChange={handleInputChange}
             />
           </div>
           <div className="form-group">
-            <InputReadOnly label="Tipo de Usuário" value={usuario.occupation} />
+            <InputReadOnly label="Tipo de Usuário *" value={usuario.occupation} />
           </div>
           <div className="form-group">
             <InputTemplate
               type="email"
-              label="E-mail"
+              label="E-mail *"
+              name="email"
               placeholder="email@gmail.com"
               value={usuario.email}
-              onChange={(e) => setUsuario({ ...usuario, email: e.target.value })}
+              onChange={handleInputChange}
             />
           </div>
           <div className="form-group">
             <InputTemplate
               type="password"
-              label="Senha"
+              label="Senha *"
+              name="password"
               placeholder="**********"
               value={usuario.password}
-              onChange={(e) => setUsuario({ ...usuario, password: e.target.value })}
+              onChange={handleInputChange}
             />
           </div>
           <div className="form-group">
             <InputTemplate
               type="text"
-              label="Telefone"
+              label="Telefone *"
+              name="phone"
               placeholder="(00) 91234-5678"
               value={usuario.phone}
-              onChange={(e) => setUsuario({ ...usuario, phone: e.target.value })}
+              onChange={handleInputChange}
             />
           </div>
         </div>

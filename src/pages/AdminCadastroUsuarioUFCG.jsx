@@ -8,34 +8,68 @@ import SelectInput from "./components/SelectInput/SelectInput";
 import axios from "axios";
 
 function AdminCadastroUsuarioUFCG() {
+  const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
+  const [successMessage, setSuccessMessage] = useState(""); // Estado para mensagens de sucesso
+
   // Lista de opções para o campo "Ocupação"
   const ocupacoes = [
     { value: "ALUNO", label: "Aluno" },
     { value: "PROFESSOR", label: "Professor" },
     { value: "SERVIDOR", label: "Técnico Administrativo" },
-  ];
+  ];  
 
   // Estados para armazenar os dados do formulário
   const [usuario, setUsuario] = useState({
     full_name: "",
     cpf: "",
-    occupation: "",
+    occupation: " ",
     email: "",
     password: "",
     phone: "",
   });
 
-  const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
-  const [successMessage, setSuccessMessage] = useState(""); // Estado para mensagens de sucesso
+  const formatCPF = (value) => {
+    const digits = value.replace(/\D/g, "").slice(0, 11);
+    return digits
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+  };
+  
+  const formatPhone = (value) => {
+    const digits = value.replace(/\D/g, "").slice(0, 11);
+    return digits
+      .replace(/^(\d{2})(\d)/g, "($1) $2")
+      .replace(/(\d{5})(\d{4})$/, "$1-$2");
+  };
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    let formattedValue = value;
+  
+    if (name === "cpf") {
+      formattedValue = formatCPF(value);
+    }
+    if (name === "phone") {
+      formattedValue = formatPhone(value);
+    }
+  
+    setUsuario({ ...usuario, [name]: formattedValue });
+  };  
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const ocupacaoFinal = usuario.occupation === " " ? "" : usuario.occupation;
 
     try {
       const token = localStorage.getItem("access_token"); // Obtém o token do localStorage
 
       const dadosParaEnvio = {
         ...usuario,
+        cpf: usuario.cpf.replace(/\D/g, ""),
+        phone: usuario.phone.replace(/\D/g, ""),
+        occupation: ocupacaoFinal,
         is_active: true, // Define o usuário como ativo
         is_admin: false, // Define que o usuário não é administrador
         is_internal: true, // Define que o usuário é interno
@@ -58,7 +92,7 @@ function AdminCadastroUsuarioUFCG() {
       setUsuario({
         full_name: "",
         cpf: "",
-        occupation: "",
+        occupation: " ",
         email: "",
         password: "",
         phone: "",
@@ -90,63 +124,69 @@ function AdminCadastroUsuarioUFCG() {
           <div className="form-group">
             <InputTemplate
               type="text"
-              label="Nome completo"
+              label="Nome completo *"
+              name="full_name"
               placeholder="Nome"
               value={usuario.full_name}
-              onChange={(e) => setUsuario({ ...usuario, full_name: e.target.value })}
+              onChange={handleInputChange}
             />
           </div>
           <div className="form-group">
             <InputTemplate
               type="text"
-              label="CPF"
+              label="CPF *"
+              name="cpf"
               placeholder="123.456.789-00"
               value={usuario.cpf}
-              onChange={(e) => setUsuario({ ...usuario, cpf: e.target.value })}
+              onChange={handleInputChange}
             />
           </div>
           <div className="form-group">
             <SelectInput
-              label="Ocupação"
+              label="Ocupação *"
+              name="occupation"
               options={ocupacoes}
               value={usuario.occupation}
-              onChange={(e) => setUsuario({ ...usuario, occupation: e.target.value })}
+              onChange={handleInputChange}
             />
           </div>
           <div className="form-group">
             <InputTemplate
               type="email"
-              label="E-mail acadêmico"
+              label="E-mail acadêmico *"
+              name="email"
               placeholder="email@estudante.ufcg.edu.br"
               value={usuario.email}
-              onChange={(e) => setUsuario({ ...usuario, email: e.target.value })}
+              onChange={handleInputChange}
             />
           </div>
           <div className="form-group">
             <InputTemplate
               type="password"
-              label="Senha"
+              label="Senha *"
+              name="password"
               placeholder="**********"
               value={usuario.password}
-              onChange={(e) => setUsuario({ ...usuario, password: e.target.value })}
+              onChange={handleInputChange}
             />
           </div>
           <div className="form-group">
             <InputTemplate
               type="text"
-              label="Telefone"
+              label="Telefone *"
+              name="phone"
               placeholder="(00) 91234-5678"
               value={usuario.phone}
-              onChange={(e) => setUsuario({ ...usuario, phone: e.target.value })}
+              onChange={handleInputChange}
             />
+          </div>
+
+          <div className="button-user-interno">
+            <DefaultButton label={"Cadastrar"} type="submit" />
           </div>
 
           {errorMessage && <p className="error-message">{errorMessage}</p>}
           {successMessage && <p className="success-message">{successMessage}</p>}
-
-          <div className="button">
-            <DefaultButton label={"Cadastrar"} type="submit" />
-          </div>
         </form>
       </div>
     </div>

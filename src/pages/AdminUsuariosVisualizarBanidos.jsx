@@ -16,7 +16,7 @@ function AdminUsuariosVisualizarBanidos() {
   const [selectedUserId, setSelectedUserId] = useState(null); // Armazena o ID do usuário selecionado
   const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
 
-  const cabecalho = ["Nome", "CPF", "Ocupação", "Telefone", "Ações"];
+  const cabecalho = ["Nome", "CPF", "Ocupação", "Telefone"];
 
   // Função para buscar os usuários banidos da API
   useEffect(() => {
