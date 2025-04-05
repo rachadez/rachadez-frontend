@@ -17,7 +17,7 @@ function Cadastro() {
     full_name: "",
     cpf: "",
     phone: "",
-    occupation: "",
+    occupation: " ",
     email: "",
     password: "",
   });
@@ -25,10 +25,41 @@ function Cadastro() {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    let formattedValue = value;
+
+    if (name === "cpf") {
+      formattedValue = formatCPF(value);
+    }
+    if (name === "phone") {
+      formattedValue = formatPhone(value);
+    }
+    
+    setFormData({ ...formData, [name]: formattedValue });
   };
 
+  const formatCPF = (value) => {
+    const digits = value.replace(/\D/g, "").slice(0, 11);
+    return digits
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d)/, "$1.$2")
+      .replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+  };
+  
+  const formatPhone = (value) => {
+    const digits = value.replace(/\D/g, "").slice(0, 11);
+    return digits
+      .replace(/^(\d{2})(\d)/g, "($1) $2")
+      .replace(/(\d{5})(\d{4})$/, "$1-$2");
+  };  
+
   const handleCadastroClick = async () => {
+    if (formData.occupation === " ") {
+      setFormData((prevData) => ({
+        ...prevData,
+        occupation: "",
+      }));
+    }
+
     // Validação dos campos obrigatórios
     if (
       !formData.full_name ||
@@ -43,6 +74,12 @@ function Cadastro() {
       setIsModalOpen(true);
       return;
     }
+
+    const cleanedFormData = {
+      ...formData,
+      cpf: formData.cpf.replace(/\D/g, ""),
+      phone: formData.phone.replace(/\D/g, ""),
+    };
 
     try {
       const response = await axios.post("http://127.0.0.1:8000/v1/users/signup", formData, {
@@ -92,7 +129,7 @@ function Cadastro() {
           <div className="form-group">
             <InputTemplate
               type="text"
-              label="Nome completo"
+              label="Nome completo *"
               placeholder="Nome"
               name="full_name"
               value={formData.full_name}
@@ -102,7 +139,7 @@ function Cadastro() {
           <div className="form-group">
             <InputTemplate
               type="text"
-              label="CPF"
+              label="CPF *"
               placeholder="123.456.789-00"
               name="cpf"
               value={formData.cpf}
@@ -111,7 +148,7 @@ function Cadastro() {
           </div>
           <div className="form-group">
             <SelectInput
-              label="Ocupação"
+              label="Ocupação *"
               name="occupation"
               value={formData.occupation}
               onChange={handleInputChange}
@@ -125,7 +162,7 @@ function Cadastro() {
           <div className="form-group">
             <InputTemplate
               type="email"
-              label="E-mail acadêmico"
+              label="E-mail acadêmico *"
               placeholder="email@estudante.ufcg.edu.br"
               name="email"
               value={formData.email}
@@ -135,7 +172,7 @@ function Cadastro() {
           <div className="form-group">
             <InputTemplate
               type="password"
-              label="Senha"
+              label="Senha *"
               placeholder="**********"
               name="password"
               value={formData.password}
@@ -145,7 +182,7 @@ function Cadastro() {
           <div className="form-group">
             <InputTemplate
               type="text"
-              label="Telefone"
+              label="Telefone *"
               placeholder="(00) 91234-5678"
               name="phone"
               value={formData.phone}
