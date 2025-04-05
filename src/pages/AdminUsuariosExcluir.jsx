@@ -11,11 +11,20 @@ function AdminUsuariosExcluir() {
   const [usuarios, setUsuarios] = useState([]); // Estado para armazenar os usuários
   const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [modalType, setModalType] = useState(""); // 'erro', 'confirmacao', 'sucesso'
   const [selectedUserId, setSelectedUserId] = useState(null);
-  const [successModalOpen, setSuccessModalOpen] = useState(false);
 
   const cabecalho = ["Nome", "CPF", "Ocupação", "Telefone"]; // Removida a coluna "Ações"
+
+  const abrirModal = (type) => {
+    setModalType(type);
+    setIsModalOpen(true);
+  };
+
+  const fecharModal = () => {
+    setModalType("");
+    setIsModalOpen(false);
+  };
 
   // Função para buscar os usuários da API
   useEffect(() => {
@@ -35,7 +44,7 @@ function AdminUsuariosExcluir() {
       } catch (error) {
         console.error("Erro ao buscar usuários:", error);
         setErrorMessage("Erro ao carregar os usuários. Tente novamente mais tarde.");
-        setIsModalOpen(true);
+        abrirModal("erro");
       }
     };
 
@@ -53,7 +62,7 @@ function AdminUsuariosExcluir() {
       });
       // Atualiza a lista de usuários após a exclusão
       setUsuarios((prev) => prev.filter((u) => u.id !== selectedUserId));
-      setSuccessModalOpen(true);
+      abrirModal("sucesso");
     } catch (error) {
       console.error("Erro ao excluir usuário:", error);
 
@@ -62,11 +71,10 @@ function AdminUsuariosExcluir() {
       } else {
         setErrorMessage("Erro ao excluir o usuário. Tente novamente mais tarde.");
       }
-      
-      setIsModalOpen(true);
+
+      abrirModal("erro");
     } finally {
-      setShowConfirmModal(false);
-      setSelectedUserId(null); 
+      setSelectedUserId(null);
     }
   };
 
@@ -81,8 +89,8 @@ function AdminUsuariosExcluir() {
         label="Excluir"
         className="delete-button"
         onClick={() => {
-          setSelectedUserId(usuario.id); //  guarda o ID
-          setShowConfirmModal(true);     //  mostra o modal
+          setSelectedUserId(usuario.id);
+          abrirModal("confirmacao");
         }}
       />
     ),
@@ -99,35 +107,35 @@ function AdminUsuariosExcluir() {
 
       <TableList cabecalho={cabecalho} dados={dados} />
 
-      {isModalOpen && (
+      {isModalOpen && modalType === "erro" && (
         <ModalOneOption
           iconName="X"
           modalText={errorMessage}
           buttonText="Tentar novamente"
-          onClick={() => setIsModalOpen(false)}
+          onClick={fecharModal}
         />
       )}
 
-    {showConfirmModal && (
-      <ModalTwoOptions
-        iconName="triangulo-amarelo"
-        modalText="Tem certeza que deseja excluir este usuário?"
-        buttonTextOne="Excluir"
-        buttonColorOne="red"
-        buttonTextTwo="Cancelar"
-        onClickButtonOne={handleDelete}
-        onClickButtonTwo={() => setShowConfirmModal(false)}
+      {isModalOpen && modalType === "confirmacao" && (
+        <ModalTwoOptions
+          iconName="triangulo-amarelo"
+          modalText="Tem certeza que deseja excluir este usuário?"
+          buttonTextOne="Excluir"
+          buttonColorOne="red"
+          buttonTextTwo="Cancelar"
+          onClickButtonOne={handleDelete}
+          onClickButtonTwo={fecharModal}
         />
       )}
 
-    {successModalOpen && (
-      <ModalOneOption
-        iconName="sucesso-check"
-        modalText={"Usuário deletado com sucesso!"}
-        buttonText="Fechar"
-        onClick={() => setSuccessModalOpen(false)}
-      />
-    )}
+      {isModalOpen && modalType === "sucesso" && (
+        <ModalOneOption
+          iconName="sucesso-check"
+          modalText="Usuário deletado com sucesso!"
+          buttonText="Fechar"
+          onClick={fecharModal}
+        />
+      )}
     </>
   );
 }

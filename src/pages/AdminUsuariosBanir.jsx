@@ -4,62 +4,71 @@ import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
 import TableList from "./components/TableList/TableList";
 import axios from "axios";
+import ModalTwoOptions from "./components/Modal/ModalTwoOptions";
+import ModalOneOption from "./components/Modal/ModalOneOption";
 
 function AdminUsuariosBanir() {
   const [usuarios, setUsuarios] = useState([]); // Estado para armazenar os usuários
   const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
+  const [modalType, setModalType] = useState(""); // '', 'confirm', 'success', 'error'
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   const cabecalho = ["Nome", "CPF", "Ocupação", "Telefone", "Ações"];
 
   // Função para buscar os usuários da API
+
   useEffect(() => {
     const fetchUsuarios = async () => {
       try {
-        const token = localStorage.getItem("access_token"); // Obtém o token do localStorage
+        const token = localStorage.getItem("access_token");
         const response = await axios.get("http://127.0.0.1:8000/v1/users/", {
-          params: {
-            offset: 0,
-            limit: 100, // Limite de usuários a serem buscados
-          },
-          headers: {
-            Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho
-          },
+          params: { offset: 0, limit: 100 },
+          headers: { Authorization: `Bearer ${token}` },
         });
-        // Filtra usuários não banidos, caso o backend não faça isso automaticamente
+
         const usuariosNaoBanidos = response.data.filter((usuario) => usuario.is_active);
-        setUsuarios(usuariosNaoBanidos); // Atualiza o estado com os dados filtrados
+        setUsuarios(usuariosNaoBanidos);
       } catch (error) {
         console.error("Erro ao buscar usuários:", error);
         setErrorMessage("Erro ao carregar os usuários. Tente novamente mais tarde.");
+        setModalType("error");
+        setIsModalOpen(true);
       }
     };
 
     fetchUsuarios();
   }, []);
 
+  const abrirModal = (type) => {
+    setModalType(type);
+    setIsModalOpen(true);
+  };
+
+  const fecharModal = () => {
+    setIsModalOpen(false);
+    setModalType("");
+    setSelectedUserId(null);
+  };
+
   // Função para banir um usuário
-  const handleBanir = async (userId) => {
+  const handleBanir = async () => {
     try {
-      const token = localStorage.getItem("access_token"); // Obtém o token do localStorage
-      await axios.patch(`http://127.0.0.1:8000/v1/block/${userId}`, {}, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho
-        },
+      const token = localStorage.getItem("access_token");
+      await axios.patch(`http://127.0.0.1:8000/v1/block/${selectedUserId}`, {}, {
+        headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log(`Usuário ${userId} banido com sucesso.`);
-
-      // Atualiza a lista de usuários após o bloqueio
-      setUsuarios((prevUsuarios) => prevUsuarios.filter((usuario) => usuario.id !== userId));
+      setUsuarios((prevUsuarios) =>
+        prevUsuarios.filter((usuario) => usuario.id !== selectedUserId)
+      );
+      abrirModal("success"); 
     } catch (error) {
       console.error("Erro ao banir usuário:", error);
-
-      if (error.response && error.response.status === 422) {
-        setErrorMessage("Erro nos dados enviados para o servidor. Verifique a configuração da API.");
-      } else {
-        setErrorMessage("Erro ao banir o usuário. Tente novamente mais tarde.");
-      }
-    }
+      const detail = error.response?.data?.detail;
+      setErrorMessage(detail || "Erro ao banir o usuário. Tente novamente mais tarde.");
+      abrirModal("error");
+    } 
   };
 
   // Mapeia os dados da API para o formato esperado pela tabela
@@ -72,7 +81,10 @@ function AdminUsuariosBanir() {
       <DeleteButton
         label="Banir"
         className="delete-button"
-        onClick={() => handleBanir(usuario.id)} // Chama a função de banir
+        onClick={() => {
+          setSelectedUserId(usuario.id);
+          abrirModal("confirm");
+        }}
       />
     ),
   }));
@@ -86,10 +98,40 @@ function AdminUsuariosBanir() {
         path={"/admin-usuarios-menu-banimento"}
       />
 
-      {errorMessage ? (
-        <p className="error-message">{errorMessage}</p> // Exibe mensagem de erro, se houver
-      ) : (
-        <TableList cabecalho={cabecalho} dados={dados} />
+      <TableList cabecalho={cabecalho} dados={dados} />
+      
+
+      {/* Modal de confirmação */}
+      {isModalOpen && modalType === "confirm" && (
+        <ModalTwoOptions
+          iconName="triangulo-amarelo"
+          modalText="Tem certeza que deseja banir este usuário?"
+          buttonTextOne="Banir"
+          buttonColorOne="red"
+          buttonTextTwo="Cancelar"
+          onClickButtonOne={handleBanir}
+          onClickButtonTwo={fecharModal}
+        />
+      )}
+
+      {/* Modal de sucesso */}
+      {isModalOpen && modalType === "success" && (
+        <ModalOneOption
+          iconName="sucesso-check"
+          modalText="Usuário banido com sucesso!"
+          buttonText="Fechar"
+          onClick={fecharModal}
+        />
+      )}
+
+      {/* Modal de erro */}
+      {isModalOpen && modalType === "error" && (
+        <ModalOneOption
+          iconName="X"
+          modalText={errorMessage}
+          buttonText="Fechar"
+          onClick={fecharModal}
+        />
       )}
     </>
   );
