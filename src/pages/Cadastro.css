@@ -52,8 +52,9 @@ select {
 .cadastro-page .button-user-interno {
   width: 330px;
   display: flex;
+  align-items: center;
+  justify-content: center;
   grid-column: 1 / -1;
-  margin-bottom: 60px;
 }
 
 .form-wrapper {

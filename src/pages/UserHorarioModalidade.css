@@ -24,6 +24,10 @@
     justify-content: center;
 }
 
+.regras-agendamento .default-button {
+    max-width: 300px;
+}
+
 .regras-conteudo h4 {
     color: #0B53B8;
     margin-top: 1.5rem;
@@ -31,11 +35,6 @@
 
 .regras-conteudo p {
     max-width: 95%;
-}
-
-.default-button {
-    max-width: 300px;
-    align-self: center;
 }
 
 .date-container {
