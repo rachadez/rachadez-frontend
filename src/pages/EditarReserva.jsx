@@ -275,7 +275,7 @@ const EditarReserva = () => {
     return (
         <div className="container-editar-reserva">
             <Header />
-            <MainContent title="Editar Reserva" path={"/admin-detalhes-reserva"} />
+            <MainContent title="Editar Reserva" path={`/admin-detalhes-reserva/${reservation_id}`} />
             <section className="form-section">
                 <div className="form-grid">
                     <div className="input-group">
