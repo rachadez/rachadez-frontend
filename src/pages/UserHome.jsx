@@ -112,12 +112,11 @@ const UserHome = () => {
           cabecalho={cabecalho}
           dados={reservas.map((reserva) => ({
             id: reserva.id, // Certifique-se de que o ID está sendo passado
-            tipo: `Quadra ${reserva.arena_id}`,
             data: new Date(reserva.start_date).toLocaleDateString(),
             hora: new Date(reserva.start_date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
             participantes: reserva.participants.length,
           }))}
-          hideAcoes={false} // Garante que os botões de ação sejam exibidos
+          hideAcoes={true} // Garante que os botões de ação sejam exibidos
           handleView={handleView}
           handleEdit={handleEdit}
           handleDelete={handleDelete}
