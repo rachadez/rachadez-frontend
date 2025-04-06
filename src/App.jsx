@@ -73,7 +73,7 @@ function App() {
 
         <Route path="/visualizar-reservas" element={<VisualizarReservas />} />
 
-        <Route path="/editar-reserva" element={<EditarReserva />} />
+        <Route path="/editar-reserva/:id" element={<EditarReserva />} />
           
         <Route path="/cadastrar-usuario-ufcg" element={<AdminCadastroUsuarioUFCG />} />
         

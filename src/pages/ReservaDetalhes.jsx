@@ -158,7 +158,7 @@ const ReservaDetalhes = () => {
         <div className="button-container-reservaDetalhes">
           <SecondaryButton
             label="Editar"
-            onClick={() => navigate(`/user-editar-reserva/${reservation_id}`)}
+            onClick={() => navigate(`/editar-reserva/${reservation_id}`)}
             className="secondary-button-reservaDetalhes"
           />
           <SecondaryButton

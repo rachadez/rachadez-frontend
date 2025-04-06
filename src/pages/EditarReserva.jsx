@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./EditarReserva.css";
 import TrashIcon from "./components/TrashIcon/TrashIcon";
 import EditIcon from "./components/EditIcon/EditIcon";
@@ -9,188 +9,291 @@ import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
 import ModalTwoOptions from "./components/Modal/ModalTwoOptions";
 import ModalOneOption from "./components/Modal/ModalOneOption";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const EditarReserva = () => {
+    const { id: reservation_id } = useParams();
+    const navigate = useNavigate();
+    const [errorMessage, setErrorMessage] = useState("");
+    const [isSaving, setIsSaving] = useState(false);
+    const [reservaData, setReservaData] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalType, setModalType] = useState("");
-  
-    const handleUpdateClick = () => {
-        const horarioAgendado = false; // Substitua isso pela lógica para verificar se há reserva no horário
-        const horarioIndisponivel = false; // substitua para a logica de checar se o horario esta disponivel
-        const credenciaisInvalidas = false; /* substitua para a lógica de checar se o usuario responsavel é permitido 
-                                            ou há qualquer outro problema com os dados inseridos*/
+    const [showUfcgInput, setShowUfcgInput] = useState(false);
+    const [showExternalInput, setShowExternalInput] = useState(false);
+    const [newUfcgParticipant, setNewUfcgParticipant] = useState({ name: "", email: "" });
+    const [newExternalParticipant, setNewExternalParticipant] = useState({ name: "", email: "" });
+    const [editingUfcgIndex, setEditingUfcgIndex] = useState(null);
+    const [editingExternalIndex, setEditingExternalIndex] = useState(null);
 
-        if (horarioAgendado) {
-            setModalType("sobrescrever-horario");
-        } else if (horarioIndisponivel) {
-            setModalType("horario-indisponivel");
-        } else if (credenciaisInvalidas) {
-            setModalType("credenciais-invalidas");
-        } else {
-            setModalType("confirmar-edicoes");
+    const fetchUserId = async () => {
+        try {
+            const token = localStorage.getItem("access_token");
+            if (!token) {
+                console.log("Token de acesso não encontrado. Redirecionando para login.");
+                navigate("/login");
+                return null;
+            }
+            console.log("Buscando ID do usuário com token:", token);
+            const response = await axios.get("http://127.0.0.1:8000/v1/users/me", {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            console.log("ID do usuário recebido:", response.data.id);
+            return response.data.id;
+        } catch (error) {
+            console.error("Erro ao buscar o ID do usuário:", error);
+            setErrorMessage("Erro ao carregar os dados do usuário.");
+            return null;
         }
+    };
 
+    const fetchReserva = async (user_id) => {
+        try {
+            const token = localStorage.getItem("access_token");
+            const url = `http://127.0.0.1:8000/v1/reservations/${user_id}/${reservation_id}`;
+            const response = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
+
+            setReservaData({
+                esporte: response.data.sport || `Quadra ${response.data.arena_id}`,
+                dataHora: new Date(response.data.start_date),
+                participantesUFCG: response.data.participants
+                    ? response.data.participants.filter((p) => p.occupation === "ALUNO").map((p) => ({ name: p.full_name, email: p.email }))
+                    : [],
+                participantesExternos: response.data.participants
+                    ? response.data.participants.filter((p) => p.occupation === "EXTERNO").map((p) => ({ name: p.full_name, email: p.email }))
+                    : [],
+                arenaId: response.data.arena_id,
+            });
+        } catch (error) {
+            console.error("Erro ao buscar os dados da reserva:", error);
+            setErrorMessage("Erro ao carregar os dados da reserva.");
+        }
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const user_id = await fetchUserId();
+            if (user_id) {
+                await fetchReserva(user_id);
+            }
+        };
+        fetchData();
+    }, [reservation_id]);
+
+    const handleUpdateClick = () => {
+        setModalType("confirmar-edicoes");
         setIsModalOpen(true);
     };
 
     const handleAtualizarReserva = () => {
-        //add logica de atualizar reserva
-        setModalType("reserva-atualizada");
+        handleEditarReserva();
+        setIsModalOpen(false);
     };
 
-    const [selectedDate, setSelectedDate] = useState(null);
+    const handleEditarClick = async () => {
+        if (!reservaData || !reservaData.dataHora || !reservaData.arenaId) {
+            setErrorMessage("Por favor, selecione data e hora.");
+            return;
+        }
 
-    const [newUfcgParticipant, setNewUfcgParticipant] = useState({ name: "", email: "" });
-    const [newExternalParticipant, setNewExternalParticipant] = useState({ name: "", email: "" });
+        const startDate = reservaData.dataHora.toISOString();
+        const endDate = new Date(reservaData.dataHora.getTime() + 60 * 60 * 1000).toISOString();
 
-    const [showUfcgInput, setShowUfcgInput] = useState(false);
-    const [showExternalInput, setShowExternalInput] = useState(false);
+        try {
+            const token = localStorage.getItem("access_token");
+            const checkResponse = await axios.post(
+                `http://127.0.0.1:8000/v1/reservations/arena/${reservaData.arenaId}`,
+                { start_date: startDate, end_date: endDate },
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
 
-    const [ufcgParticipants, setUfcgParticipants] = useState([
-        { name: "Fulano de Tal", email: "fulano.tal@curso.ufcg.edu.br" },
-        { name: "Ciclano Bla Bla Bla da Silva", email: "ciclano.silva@curso.ufcg.edu.br" },
-    ]);
-
-    const [externalParticipants, setExternalParticipants] = useState([
-        { name: "Fulano de Tal", email: "fulano.tal@example.com" },
-        { name: "Ciclano Bla Bla Bla da Silva", email: "ciclano.silva@example.com" },
-    ]);
-
-    const [editingUfcgIndex, setEditingUfcgIndex] = useState(null);
-    const [editingExternalIndex, setEditingExternalIndex] = useState(null);
-    const [responsavel, setResponsavel] = useState(null);
-
-    const removeUfcgParticipant = (index) => {
-        setUfcgParticipants(ufcgParticipants.filter((_, i) => i !== index));
-        if (responsavel && responsavel.index === index && responsavel.type === 'ufcg') {
-            setResponsavel(null);
+            if (checkResponse.data) {
+                setModalType("sobrescrever-horario");
+            } else {
+                setModalType("confirmar-cadastro");
+            }
+            setIsModalOpen(true);
+        } catch (error) {
+            console.error("Erro ao verificar horário:", error);
+            setErrorMessage("Erro ao verificar horário. Tente novamente.");
         }
     };
 
-    const removeExternalParticipant = (index) => {
-        setExternalParticipants(externalParticipants.filter((_, i) => i !== index));
-        if (responsavel && responsavel.index === index && responsavel.type === 'external') {
-            setResponsavel(null);
+    const subtractHours = (date, hours) => {
+        return new Date(date.getTime() - hours * 60 * 60 * 1000);
+    };
+
+    const handleEditarReserva = async () => {
+        setIsSaving(true);
+        try {
+            const token = localStorage.getItem("access_token");
+            console.log("Token obtido do localStorage:", token);
+
+            if (!token) {
+                console.error("Token não encontrado");
+                setErrorMessage("Token não encontrado, faça login novamente.");
+                return;
+            }
+
+            console.log("Cabeçalho Authorization:", { Authorization: `Bearer ${token}` });
+
+            const emails = [
+                ...reservaData.participantesUFCG.map((p) => p.email),
+                ...reservaData.participantesExternos.map((p) => p.email),
+            ];
+
+            console.log("Emails dos participantes:", emails);
+
+            const participants = await Promise.all(
+                emails.map(async (email) => {
+                    try {
+                        const response = await axios.get(`http://127.0.0.1:8000/v1/users/user-id/${email}`, {
+                            headers: { Authorization: `Bearer ${token}` },
+                        });
+                        console.log(`UUID para o email ${email} recebido:`, response.data.user_id);
+                        return response.data.user_id;
+                    } catch (error) {
+                        console.error(`Erro ao buscar UUID para o email ${email}:`, error);
+                        if (error.response) {
+                            console.error("Dados da resposta:", error.response.data);
+                            setErrorMessage(`Erro ao buscar usuário ${email}: ${error.response.data.detail || error.message}`);
+                        } else {
+                            setErrorMessage(`Erro ao buscar usuário ${email}.`);
+                        }
+                        throw error;
+                    }
+                })
+            );
+
+            console.log("UUIDs dos participantes:", participants);
+
+            const startDate = reservaData.dataHora;
+            const endDate = new Date(startDate.getTime() + 5400000);
+            const adjustedStartDate = subtractHours(new Date(startDate), 3).toISOString();
+            const adjustedEndDate = subtractHours(new Date(endDate), 3).toISOString();
+
+            const payload = {
+                start_date: adjustedStartDate,
+                end_date: adjustedEndDate,
+                participants: participants,
+            };
+
+            console.log("Payload da requisição PUT:", payload);
+
+            const response = await axios.put(`http://127.0.0.1:8000/v1/reservations/${reservation_id}`, payload, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            console.log("Reserva editada com sucesso. Resposta:", response.data);
+            navigate(`/reserva/${reservation_id}`);
+        } catch (error) {
+            console.error("Erro ao salvar as alterações:", error);
+            if (error.response) {
+                console.error("Dados da resposta:", error.response.data);
+                setErrorMessage(`Erro ao salvar: ${error.response.data.detail || error.message}`);
+            } else {
+                setErrorMessage("Erro ao salvar as alterações.");
+            }
+        } finally {
+            setIsSaving(false);
         }
     };
 
-    const addUfcgParticipant = () => {
-        setShowUfcgInput(true);
-        setEditingUfcgIndex(null);
-        setNewUfcgParticipant({ name: "", email: "" });
+    const removeParticipant = (index, type) => {
+        try {
+            const updatedParticipants = reservaData[type].filter((_, i) => i !== index);
+            setReservaData((prev) => ({ ...prev, [type]: updatedParticipants }));
+        } catch (error) {
+            console.error("Erro ao remover participante:", error);
+        }
     };
 
-    const addExternalParticipant = () => {
-        setShowExternalInput(true);
-        setEditingExternalIndex(null);
-        setNewExternalParticipant({ name: "", email: "" });
+    const handleDateChange = (date) => {
+        setReservaData((prev) => ({ ...prev, dataHora: date }));
     };
 
-    const editUfcgParticipant = (index) => {
-        setShowUfcgInput(true);
-        setEditingUfcgIndex(index);
-        setNewUfcgParticipant(ufcgParticipants[index]);
-    };
-
-    const editExternalParticipant = (index) => {
-        setShowExternalInput(true);
-        setEditingExternalIndex(index);
-        setNewExternalParticipant(externalParticipants[index]);
-    };
-
-    const confirmUfcgParticipant = () => {
-        if (editingUfcgIndex !== null) {
-            const updatedParticipants = [...ufcgParticipants];
-            updatedParticipants[editingUfcgIndex] = newUfcgParticipant;
-            setUfcgParticipants(updatedParticipants);
+    const addParticipantInput = (type) => {
+        if (type === "participantesUFCG") {
+            setShowUfcgInput(true);
         } else {
-            setUfcgParticipants([...ufcgParticipants, newUfcgParticipant]);
+            setShowExternalInput(true);
         }
-        setShowUfcgInput(false);
-        setNewUfcgParticipant({ name: "", email: "" });
     };
 
-    const confirmExternalParticipant = () => {
-        if (editingExternalIndex !== null) {
-            const updatedParticipants = [...externalParticipants];
-            updatedParticipants[editingExternalIndex] = newExternalParticipant;
-            setExternalParticipants(updatedParticipants);
+    const confirmParticipant = (type) => {
+        setReservaData((prev) => ({
+            ...prev,
+            [type]: [...prev[type], type === "participantesUFCG" ? newUfcgParticipant : newExternalParticipant],
+        }));
+        if (type === "participantesUFCG") {
+            setShowUfcgInput(false);
+            setNewUfcgParticipant({ name: "", email: "" });
         } else {
-            setExternalParticipants([...externalParticipants, newExternalParticipant]);
+            setShowExternalInput(false);
+            setNewExternalParticipant({ name: "", email: "" });
         }
-        setShowExternalInput(false);
-        setNewExternalParticipant({ name: "", email: "" });
     };
 
-    const handleResponsavelChange = (participant, type) => {
-        setResponsavel({ participant, type });
+    const editParticipant = (index, type) => {
+        if (type === "participantesUFCG") {
+            setEditingUfcgIndex(index);
+            setNewUfcgParticipant(reservaData.participantesUFCG[index]);
+            setShowUfcgInput(true);
+        } else {
+            setEditingExternalIndex(index);
+            setNewExternalParticipant(reservaData.participantesExternos[index]);
+            setShowExternalInput(true);
+        }
     };
+
+    if (errorMessage) {
+        return <p className="error-message">{errorMessage}</p>;
+    }
+
+    if (!reservaData) {
+        return <p>Carregando dados da reserva...</p>;
+    }
 
     return (
         <div className="container-editar-reserva">
             <Header />
-
             <MainContent title="Editar Reserva" path={"/admin-detalhes-reserva"} />
-
             <section className="form-section">
                 <div className="form-grid">
                     <div className="input-group">
                         <label htmlFor="data-hora">DATA E HORA</label>
-                        <DateTimePicker selectedDate={selectedDate} onChange={setSelectedDate} />
+                        <DateTimePicker selectedDate={reservaData.dataHora} onChange={handleDateChange} />
                     </div>
                 </div>
-
                 <div className="participants-section">
                     <h3 className="section-title">PARTICIPANTES</h3>
-
                     <div className="participant-group">
                         <div className="title-and-button">
                             <h4 className="sub-title">UFCG</h4>
-                            <div className="add-button" onClick={addUfcgParticipant}>
+                            <div className="add-button" onClick={() => addParticipantInput("participantesUFCG")}>
                                 <ion-icon name="add-circle-outline" className="add-button"></ion-icon>
                             </div>
                         </div>
-
                         {showUfcgInput && editingUfcgIndex === null && (
                             <div className="participant-item">
-                                <input
-                                    type="text"
-                                    placeholder="Nome"
-                                    value={newUfcgParticipant.name}
-                                    onChange={(e) => setNewUfcgParticipant({ ...newUfcgParticipant, name: e.target.value })}
-                                />
-                                <input
-                                    type="email"
-                                    placeholder="Email"
-                                    value={newUfcgParticipant.email}
-                                    onChange={(e) => setNewUfcgParticipant({ ...newUfcgParticipant, email: e.target.value })}
-                                />
+                                <input type="text" placeholder="Nome" value={newUfcgParticipant.name} onChange={(e) => setNewUfcgParticipant({ ...newUfcgParticipant, name: e.target.value })} />
+                                <input type="email" placeholder="Email" value={newUfcgParticipant.email} onChange={(e) => setNewUfcgParticipant({ ...newUfcgParticipant, email: e.target.value })} />
                                 <div className="action-buttons">
-                                    <ConfirmIcon onClick={confirmUfcgParticipant} />
+                                    <ConfirmIcon onClick={() => confirmParticipant("participantesUFCG")} />
                                     <CancelIcon onClick={() => setShowUfcgInput(false)} />
                                 </div>
                             </div>
                         )}
-
                         <div className="participant-list">
-                            {ufcgParticipants.map((participant, index) => (
+                            {reservaData.participantesUFCG.map((participant, index) => (
                                 <React.Fragment key={index}>
                                     {showUfcgInput && editingUfcgIndex === index && (
                                         <div className="participant-item">
-                                            <input
-                                                type="text"
-                                                placeholder="Nome"
-                                                value={newUfcgParticipant.name}
-                                                onChange={(e) => setNewUfcgParticipant({ ...newUfcgParticipant, name: e.target.value })}
-                                            />
-                                            <input
-                                                type="email"
-                                                placeholder="Email"
-                                                value={newUfcgParticipant.email}
-                                                onChange={(e) => setNewUfcgParticipant({ ...newUfcgParticipant, email: e.target.value })}
-                                            />
+                                            <input type="text" placeholder="Nome" value={newUfcgParticipant.name} onChange={(e) => setNewUfcgParticipant({ ...newUfcgParticipant, name: e.target.value })} />
+                                            <input type="email" placeholder="Email" value={newUfcgParticipant.email} onChange={(e) => setNewUfcgParticipant({ ...newUfcgParticipant, email: e.target.value })} />
                                             <div className="action-buttons">
-                                                <ConfirmIcon onClick={confirmUfcgParticipant} />
+                                                <ConfirmIcon onClick={() => confirmParticipant("participantesUFCG")} />
                                                 <CancelIcon onClick={() => setShowUfcgInput(false)} />
                                             </div>
                                         </div>
@@ -199,71 +302,41 @@ const EditarReserva = () => {
                                         <span>{participant.name || "Novo Participante"}</span>
                                         <span className="participant-email">{participant.email}</span>
                                         <div className="action-icons">
-                                            <EditIcon onClick={() => editUfcgParticipant(index)} className="edit-icon" />
-                                            <input
-                                                type="checkbox"
-                                                checked={responsavel?.participant === participant && responsavel?.type === 'ufcg'}
-                                                onChange={() => handleResponsavelChange(participant, 'ufcg')}
-                                            />
-                                            <label className="responsavel-label">Marcar como responsável</label>
-                                            <TrashIcon onClick={() => removeUfcgParticipant(index)} className="trash-icon" />
+                                            <EditIcon onClick={() => editParticipant(index, "participantesUFCG")} className="edit-icon" />
+                                            <TrashIcon onClick={() => removeParticipant(index, "participantesUFCG")} className="trash-icon" />
                                         </div>
                                     </div>
                                 </React.Fragment>
                             ))}
                         </div>
-
                         <div className="separator-line"></div>
                     </div>
-
                     <div className="participant-group">
                         <div className="title-and-button">
                             <h4 className="sub-title">USUÁRIOS EXTERNOS</h4>
-                            <div className="add-button" onClick={addExternalParticipant}>
+                            <div className="add-button" onClick={() => addParticipantInput("participantesExternos")}>
                                 <ion-icon name="add-circle-outline" className="add-button"></ion-icon>
                             </div>
                         </div>
-
                         {showExternalInput && editingExternalIndex === null && (
                             <div className="participant-item">
-                                <input
-                                    type="text"
-                                    placeholder="Nome"
-                                    value={newExternalParticipant.name}
-                                    onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, name: e.target.value })}
-                                />
-                                <input
-                                    type="email"
-                                    placeholder="Email"
-                                    value={newExternalParticipant.email}
-                                    onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, email: e.target.value })}
-                                />
+                                <input type="text" placeholder="Nome" value={newExternalParticipant.name} onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, name: e.target.value })} />
+                                <input type="email" placeholder="Email" value={newExternalParticipant.email} onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, email: e.target.value })} />
                                 <div className="action-buttons">
-                                    <ConfirmIcon onClick={confirmExternalParticipant} />
+                                    <ConfirmIcon onClick={() => confirmParticipant("participantesExternos")} />
                                     <CancelIcon onClick={() => setShowExternalInput(false)} />
                                 </div>
                             </div>
                         )}
-
                         <div className="participant-list">
-                            {externalParticipants.map((participant, index) => (
+                            {reservaData.participantesExternos.map((participant, index) => (
                                 <React.Fragment key={index}>
                                     {showExternalInput && editingExternalIndex === index && (
                                         <div className="participant-item">
-                                            <input
-                                                type="text"
-                                                placeholder="Nome"
-                                                value={newExternalParticipant.name}
-                                                onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, name: e.target.value })}
-                                            />
-                                            <input
-                                                type="email"
-                                                placeholder="Email"
-                                                value={newExternalParticipant.email}
-                                                onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, email: e.target.value })}
-                                            />
+                                            <input type="text" placeholder="Nome" value={newExternalParticipant.name} onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, name: e.target.value })} />
+                                            <input type="email" placeholder="Email" value={newExternalParticipant.email} onChange={(e) => setNewExternalParticipant({ ...newExternalParticipant, email: e.target.value })} />
                                             <div className="action-buttons">
-                                                <ConfirmIcon onClick={confirmExternalParticipant} />
+                                                <ConfirmIcon onClick={() => confirmParticipant("participantesExternos")} />
                                                 <CancelIcon onClick={() => setShowExternalInput(false)} />
                                             </div>
                                         </div>
@@ -272,91 +345,80 @@ const EditarReserva = () => {
                                         <span>{participant.name || "Novo Participante"}</span>
                                         <span className="participant-email">{participant.email}</span>
                                         <div className="action-icons">
-                                            <EditIcon onClick={() => editExternalParticipant(index)} className="edit-icon" />
-                                            <input
-                                                type="checkbox"
-                                                checked={responsavel?.participant === participant && responsavel?.type === 'external'}
-                                                onChange={() => handleResponsavelChange(participant, 'external')}
-                                            />
-                                            <label className="responsavel-label">Marcar como responsável</label>
-                                            <TrashIcon onClick={() => removeExternalParticipant(index)} className="trash-icon" />
+                                            <EditIcon onClick={() => editParticipant(index, "participantesExternos")} className="edit-icon" />
+                                            <TrashIcon onClick={() => removeParticipant(index, "participantesExternos")} className="trash-icon" />
                                         </div>
                                     </div>
                                 </React.Fragment>
                             ))}
                         </div>
-
-                        <div className="separator-line"></div>
                     </div>
-                    
                 </div>
-
                 <div>
-            <div className="submit-button-container">
-                <button className="submit-button" onClick={handleUpdateClick}>
-                    Atualizar Reserva
-                </button>
-            </div>
+                    <div className="submit-button-container">
+                        <button className="submit-button" onClick={handleUpdateClick}>
+                            Atualizar Reserva
+                        </button>
+                    </div>
 
-            {/* Modal de sobrescrever Horário */}
-            {isModalOpen && modalType === "sobrescrever-horario" && (
-                <ModalTwoOptions
-                    iconName="triangulo-amarelo"
-                    modalText="Já existe uma reserva agendada para este horário. Deseja sobrescrever?"
-                    buttonTextOne="Sim"
-                    buttonColorOne="red"
-                    onClickButtonOne={handleAtualizarReserva}
+                    {/* Modal de sobrescrever Horário */}
+                    {isModalOpen && modalType === "sobrescrever-horario" && (
+                        <ModalTwoOptions
+                            iconName="triangulo-amarelo"
+                            modalText="Já existe uma reserva agendada para este horário. Deseja sobrescrever?"
+                            buttonTextOne="Sim"
+                            buttonColorOne="red"
+                            onClickButtonOne={handleAtualizarReserva}
+                            buttonTextTwo="Não"
+                            onClickButtonTwo={() => setIsModalOpen(false)}
+                        />
+                    )}
 
-                    buttonTextTwo="Não"
-                    onClickButtonTwo={() => setIsModalOpen(false)}
-                />
-            )}
+                    {/* Modal de reserva atualizada */}
+                    {isModalOpen && modalType === "reserva-atualizada" && (
+                        <ModalOneOption
+                            iconName="calendario-check"
+                            modalText="Reserva atualizada com sucesso!"
+                            buttonText="Voltar"
+                            buttonPath={"/admin-detalhes-reserva"}
+                        />
+                    )}
 
-            {/* Modal de reserva atualizada */}
-            {isModalOpen && modalType === "reserva-atualizada" && (
-                <ModalOneOption
-                    iconName="calendario-check" 
-                    modalText="Reserva atualizada com sucesso!"
-                    buttonText="Voltar"
-                    buttonPath={"/admin-detalhes-reserva"}
-                />
-            )}
+                    {/* Modal de Confirmação das Edições */}
+                    {isModalOpen && modalType === "confirmar-edicoes" && (
+                        <ModalTwoOptions
+                            iconName="calendario-relogio"
+                            modalText="Deseja confirmar suas edições?"
+                            buttonTextOne="Continuar editando"
+                            onClickButtonOne={() => setIsModalOpen(false)}
+                            buttonTextTwo="Confirmar"
+                            onClickButtonTwo={handleAtualizarReserva}
+                        />
+                    )}
 
-            {/* Modal de Confirmação das Edições */}
-            {isModalOpen && modalType === "confirmar-edicoes" && (
-                <ModalTwoOptions
-                    iconName="calendario-relogio"
-                    modalText="Deseja confirmar suas edições?"
-                    buttonTextOne="Continuar editando"
-                    onClickButtonOne={() => setIsModalOpen(false)}
-                    buttonTextTwo="Confirmar"
-                    onClickButtonTwo={handleAtualizarReserva}
-                />
-            )}
+                    {/* Modal de horário indisponivel */}
+                    {isModalOpen && modalType === "horario-indisponivel" && (
+                        <ModalOneOption
+                            iconName="calendario-erro"
+                            modalText="Data/horário escolhido indisponível. Tente novamente"
+                            buttonText="Tentar novamente"
+                            onClick={() => setIsModalOpen(false)}
+                        />
+                    )}
 
-            {/* Modal de horário indisponivel */}
-            {isModalOpen && modalType === "horario-indisponivel" && (
-                <ModalOneOption
-                    iconName="calendario-erro" 
-                    modalText="Data/horário escolhido indisponível. Tente novamente"
-                    buttonText="Tentar novamente"
-                    onClick={() => setIsModalOpen(false)}
-                />
-            )}
-
-            {/* Modal pra caso o usuario responsavel nao seja permitido ou haja qualquer 
-            problema com os dados inseridos */}
-            {isModalOpen && modalType === "credenciais-invalidas" && (
-                <ModalOneOption
-                    iconName="circulo-erro" 
-                    modalText="Credenciais inválidas!
+                    {/* Modal pra caso o usuario responsavel nao seja permitido ou haja qualquer
+                        problema com os dados inseridos */}
+                    {isModalOpen && modalType === "credenciais-invalidas" && (
+                        <ModalOneOption
+                            iconName="circulo-erro"
+                            modalText="Credenciais inválidas!
                             Cheque os dados inseridos e
                             tente novamente"
-                    buttonText="Tentar novamente"
-                    onClick={() => setIsModalOpen(false)}
-                />
-            )}
-        </div>
+                            buttonText="Tentar novamente"
+                            onClick={() => setIsModalOpen(false)}
+                        />
+                    )}
+                </div>
             </section>
         </div>
     );
