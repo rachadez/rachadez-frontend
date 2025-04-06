@@ -21,6 +21,17 @@ const UserReservaParticipantes = () => {
   const [modalType, setModalType] = useState("");
   const [ufcgParticipantInputs, setUfcgParticipantInputs] = useState([]);
   const [externalParticipantInputs, setExternalParticipantInputs] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const abrirModal = (tipo) => {
+    setModalType(tipo);
+    setIsModalOpen(true);
+  };
+  
+  const fecharModal = () => {
+    setModalType("");
+    setIsModalOpen(false);
+  };
 
   const [reservaData, setReservaData] = useState({
     participantesUFCG: [],
@@ -85,11 +96,15 @@ const UserReservaParticipantes = () => {
             });
 
             if (!response.data || !response.data.user_id || typeof response.data.user_id !== "string") {
+              setErrorMessage(response.data.details)
+              abrirModal("erro");
               throw new Error(`UUID inválido para o email: ${email}`);
             }
 
             return response.data.user_id;
           } catch (error) {
+            setErrorMessage(error.response.data.details);
+            abrirModal("erro");
             console.error(`Erro ao buscar UUID para o email ${email}:`, error);
             throw new Error(`Não foi possível encontrar o usuário com o email: ${email}`);
           }
@@ -115,17 +130,29 @@ const UserReservaParticipantes = () => {
         },
       });
 
-      setModalType("reserva-realizada");
-      setIsModalOpen(true);
+      abrirModal("sucesso")
     } catch (error) {
-      console.error("Erro ao criar a reserva:", error);
+      console.error("Erro ao cadastrar reserva:", error);
+      const detail = error?.response?.data?.detail;
+      let message = "Erro ao cadastrar reserva";
 
       if (error.response && error.response.data) {
-        console.error("Detalhes do erro:", error.response.data);
+       if (typeof detail === "string") {
+          message = detail;
+        } else if (Array.isArray(detail)) {
+          // Se for uma lista de erros, pega a primeira mensagem
+          message = detail[0]?.msg || message;
+        } else if (typeof detail === "object" && detail?.msg) {
+          // objeto com msg
+          message = detail.msg;
+        } 
+
+        setErrorMessage(message);
+      } else {
+        setErrorMessage("Erro ao cadastrar reserva. Tente novamente mais tarde.");
       }
 
-      setModalType("erro-inesperado");
-      setIsModalOpen(true);
+      abrirModal("erro");
     }
   };
 
@@ -240,32 +267,46 @@ const UserReservaParticipantes = () => {
             </div>
           </div>
           <div className="submit-button-container">
-            <button className="submit-button" onClick={handleCreateReservation}>
+            <button className="submit-button" onClick={() => abrirModal("confirmacao")}>
               Confirmar Reserva
             </button>
           </div>
+          {/* Modal de reserva realizada */}
+          {isModalOpen && modalType === "sucesso" && (
+            <ModalOneOption
+              iconName="calendario-check"
+              modalText="Reserva realizada com sucesso"
+              buttonText="Voltar"
+              buttonPath="/user-home"
+            />
+          )}
+
+          {/* Modal de erro */}
+          {isModalOpen && modalType === "erro" && (
+            <ModalOneOption
+              iconName="calendario-erro"
+              modalText={errorMessage}
+              buttonText="Tentar novamente"
+              onClick={() => setIsModalOpen(false)}
+            />
+          )}
+
+
+          {isModalOpen && modalType === "confirmacao" && (
+            <ModalTwoOptions
+              iconName="calendario-relogio"
+              modalText="Deseja confirmar a reserva?"
+              buttonTextOne="Confirmar"
+              onClickButtonOne={() => {
+                fecharModal(); 
+                handleCreateReservation();
+              }}
+              buttonTextTwo="Cancelar"
+              onClickButtonTwo={fecharModal}
+            />
+          )}
         </section>
       </div>
-
-      {/* Modal de reserva realizada */}
-      {isModalOpen && modalType === "reserva-realizada" && (
-        <ModalOneOption
-          iconName="calendario-check"
-          modalText="Reserva realizada com sucesso"
-          buttonText="Voltar"
-          buttonPath="/user-home"
-        />
-      )}
-
-      {/* Modal de erro inesperado */}
-      {isModalOpen && modalType === "erro-inesperado" && (
-        <ModalOneOption
-          iconName="calendario-erro"
-          modalText="Não foi possível realizar a reserva. Tente novamente"
-          buttonText="Tentar novamente"
-          onClick={() => setIsModalOpen(false)}
-        />
-      )}
     </div>
   );
 };

@@ -19,6 +19,7 @@ const ReservaDetalhes = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
+  const [userId, setUserId] = useState(null);
 
   const abrirModal = (tipo) => {
     setModalType(tipo);
@@ -66,7 +67,8 @@ const ReservaDetalhes = () => {
         },
       });
 
-      setReservaData(response.data); // Atualiza o estado com os dados da reserva
+      setReservaData(response.data);// Atualiza o estado com os dados da reserva
+      setUserId(response.data.responsible_user_id); // salva o responsável 
     } catch (error) {
       console.error("Erro ao buscar os dados da reserva:", error);
       setErrorMessage("Erro ao carregar os dados da reserva. Tente novamente mais tarde.");
@@ -78,7 +80,7 @@ const ReservaDetalhes = () => {
   const handleDeletaReserva = async () => {
     try {
       const token = localStorage.getItem("access_token"); // Obtém o token do localStorage
-      const url = `http://127.0.0.1:8000/v1/reservations/${reservation_id}`;
+      const url = `http://127.0.0.1:8000/v1/reservations/${userId}/${reservation_id}`;
       await axios.delete(url, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -88,7 +90,8 @@ const ReservaDetalhes = () => {
       setModalType("reserva-deletada");
     } catch (error) {
       console.error("Erro ao deletar a reserva:", error);
-      setErrorMessage("Erro ao deletar a reserva. Tente novamente mais tarde.");
+      setErrorMessage(error.response.data.detail);
+      abrirModal("erro");
     }
   };
 

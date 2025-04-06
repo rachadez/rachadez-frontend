@@ -266,8 +266,7 @@ const CadastrarReserva = () => {
           "Content-Type": "application/json",
         },
       });
-      console.log("passou aqui");
-  
+
       console.log("Reserva sobrescrita com sucesso:", response.data);
       fecharModal();
       abrirModal("sucesso-sobrescrita");
@@ -418,7 +417,7 @@ const CadastrarReserva = () => {
           </div>
         </div>
         <div className="submit-button-container">
-          <button className="submit-button" onClick={handleCadastrarReserva}>
+          <button className="submit-button" onClick={() => abrirModal("confirmacao")}>
             Cadastrar Reserva
           </button>
         </div>
@@ -469,6 +468,20 @@ const CadastrarReserva = () => {
           modalText={errorMessage || "Erro ao carregar dados."}
           buttonText="Voltar"
           buttonPath="/visualizar-reservas"
+        />
+      )}
+
+      {isModalOpen && modalType === "confirmacao" && (
+        <ModalTwoOptions
+          iconName="calendario-relogio"
+          modalText="Deseja confirmar a reserva?"
+          buttonTextOne="Confirmar"
+          onClickButtonOne={() => {
+            fecharModal(); 
+            handleCadastrarReserva();
+          }}
+          buttonTextTwo="Cancelar"
+          onClickButtonTwo={fecharModal}
         />
       )}
       </section>
