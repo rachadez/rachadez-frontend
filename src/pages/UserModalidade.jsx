@@ -5,10 +5,13 @@ import MainContent from "./components/MainContent/MainContent";
 import getCustomIcon from "./components/Modal/getIcon/getIcon";
 import axios from "axios";
 import './UserModalidade.css';
+import ModalOneOption from "./components/Modal/ModalOneOption";
 
 const UserModalidade = () => {
   const [modalidades, setModalidades] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState("");
 
   // Função para buscar as arenas disponíveis
   const fetchArenas = async () => {
@@ -34,7 +37,14 @@ const UserModalidade = () => {
       setModalidades(arenas);
     } catch (error) {
       console.error("Erro ao buscar arenas:", error);
-      setErrorMessage("Erro ao carregar as modalidades. Tente novamente mais tarde.");
+      
+      const backendErrorMessage =
+        error.response?.data?.detail ||
+        "Erro ao carregar as modalidades. Tente novamente mais tarde.";
+
+      setErrorMessage(backendErrorMessage);
+      setModalType("erro");
+      setIsModalOpen(true);
     }
   };
 
@@ -43,7 +53,16 @@ const UserModalidade = () => {
   }, []);
 
   if (errorMessage) {
-    return <p className="error-message">{errorMessage}</p>;
+    return (
+      isModalOpen && modalType === "erro" && (
+        <ModalOneOption
+          iconName="X"
+          modalText={errorMessage}
+          buttonText="Voltar"
+          buttonPath="/user-home"
+        />
+      )
+    );
   }
 
   return (
