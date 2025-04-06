@@ -7,12 +7,40 @@ import { useParams, useNavigate } from "react-router-dom";
 import InputTemplateEdit from "./components/InputTemplate/InputTemplateEdit";
 import DefaultButton from "./components/Buttons/DefaultButton";
 import axios from "axios";
+import ModalLoading from "./components/Modal/ModalLoading";
+import ModalOneOption from "./components/Modal/ModalOneOption";
+
 
 function AdminEditarUsuario() {
   const { id } = useParams(); // Obtém o ID do usuário da URL
   const navigate = useNavigate();
   const [usuario, setUsuario] = useState(null); // Estado para armazenar os dados do usuário
   const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState("");
+
+  const abrirModal = (type) => {
+    setModalType(type);
+    setIsModalOpen(true);
+  };
+
+  const fecharModal = () => {
+    setModalType("");
+    setIsModalOpen(false);
+  };
+
+  const traduzirMensagem = (mensagem) => {
+    const traducoes = {
+      "String should have at least 8 characters": "A senha deve ter pelo menos 8 caracteres",
+      "String should have at most 11 characters": "O telefone/cpf deve ter no máximo 11 dígitos",
+      "value is not a valid email address: There must be something after the @-sign.": "E-mail inválido: falta o domínio após o símbolo @",
+      "value is not a valid email address: An email address must have an @-sign.": "E-mail inválido: o endereço de e-mail deve conter o símbolo @",
+      "value is not a valid email address: The part after the @-sign is not valid. It should have a period.": "E-mail inválido: o domínio do e-mail deve conter um ponto, como '.com'",
+      "value is not a valid email address: An email address cannot end with a period.": "E-mail inválido: um endereço de e-mail não pode terminar com um ponto ('.')",
+      "Input should be 'ALUNO', 'SERVIDOR', 'PROFESSOR' or 'EXTERNO'": "Selecione uma ocupação válida: ALUNO, SERVIDOR, PROFESSOR ou EXTERNO.",
+    };
+    return traducoes[mensagem] || mensagem;
+  };
 
   // Busca os dados do usuário ao carregar a página
   useEffect(() => {
@@ -24,11 +52,20 @@ function AdminEditarUsuario() {
             Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho
           },
         });
+
         setUsuario(response.data); // Atualiza o estado com os dados do usuário
       } catch (error) {
         console.error("Erro ao buscar usuário:", error);
-        setErrorMessage("Erro ao carregar os dados do usuário. Tente novamente mais tarde.");
-      }
+        let mensagemBackend = "Erro ao buscar dados do usuário.";
+        const detalhe = error.response?.data?.detail;
+  
+        if (typeof detalhe === "string") {
+          mensagemBackend = detalhe;
+        }
+  
+        setErrorMessage(mensagemBackend);
+        abrirModal("erro");
+        }      
     };
 
     fetchUsuario();
@@ -36,6 +73,8 @@ function AdminEditarUsuario() {
 
   // Função para salvar as alterações
   const handleSave = async () => {
+    abrirModal("carregando")
+
     try {
       console.log("Dados enviados:", usuario);
       const token = localStorage.getItem("access_token");
@@ -65,17 +104,27 @@ function AdminEditarUsuario() {
 
       // Atualiza o estado com os dados atualizados recebidos do backend
       setUsuario(response.data);
+      fecharModal(); //fecha o loading
+      abrirModal("sucesso");
 
-      // Redireciona para a página de listagem após salvar
-      navigate("/admin-editar-usuarios");
     } catch (error) {
       console.error("Erro ao salvar alterações:", error);
-
-      if (error.response && error.response.status === 422) {
-        setErrorMessage("Erro nos dados enviados. Verifique os campos e tente novamente.");
-      } else {
-        setErrorMessage("Erro ao salvar as alterações. Tente novamente mais tarde.");
+      
+      let mensagemBackend = "Erro ao atualizar o usuário. Tente novamente mais tarde.";
+  
+      const detalhe = error.response?.data?.detail;
+  
+      if (detalhe) {
+        const mensagens = Array.isArray(detalhe)
+          ? detalhe.map((err) => traduzirMensagem(err.msg))
+          : [typeof detalhe === "string" ? traduzirMensagem(detalhe) : traduzirMensagem(detalhe?.msg)];
+  
+        mensagemBackend = mensagens[0];
       }
+
+      fecharModal(); // fecha o de loading
+      setErrorMessage(mensagemBackend);
+      abrirModal("erro"); 
     }
   };
 
@@ -152,6 +201,29 @@ function AdminEditarUsuario() {
           <DefaultButton label={"Finalizar edição"} onClick={handleSave} />
         </div>
       </div>
+
+
+      {isModalOpen && modalType === "erro" && (
+        <ModalOneOption
+          iconName="X"
+          modalText={errorMessage}
+          buttonText="Tentar novamente"
+          onClick={fecharModal}
+        />
+      )}
+
+      {isModalOpen && modalType === "sucesso" && (
+        <ModalOneOption
+          iconName="sucesso-check"
+          modalText="Usuário atualizado com sucesso!"
+          buttonText="Voltar"
+          buttonPath="/admin-editar-usuarios"
+        />
+      )}
+
+      {isModalOpen && modalType === "carregando" && (
+        <ModalLoading texto="Atualizando usuário..." />
+      )}
     </div>
   );
 }
