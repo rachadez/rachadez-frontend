@@ -14,30 +14,30 @@ import ModalLoading from "./components/Modal/ModalLoading";
 
 const ReservaDetalhes = () => {
   const navigate = useNavigate();
-  const { id: reservation_id } = useParams(); // Captura o reservation_id da URL
-  const [reservaData, setReservaData] = useState(null); // Estado para armazenar os dados da reserva
+  const { id: reservation_id } = useParams();
+  const [reservaData, setReservaData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");
-  const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
+  const [errorMessage, setErrorMessage] = useState("");
   const [userId, setUserId] = useState(null);
+  const [users, setUsers] = useState({});
 
   const abrirModal = (tipo) => {
     setModalType(tipo);
     setIsModalOpen(true);
   };
-  
+
   const fecharModal = () => {
     setModalType("");
     setIsModalOpen(false);
   };
 
-  // Função para buscar o user_id do usuário logado
   const fetchUserId = async () => {
     try {
-      const token = localStorage.getItem("access_token"); // Obtém o token do localStorage
+      const token = localStorage.getItem("access_token");
       if (!token) {
         setErrorMessage("Usuário não autenticado. Faça login novamente.");
-        navigate("/login"); // Redireciona para a página de login
+        navigate("/login");
         return null;
       }
 
@@ -47,7 +47,7 @@ const ReservaDetalhes = () => {
         },
       });
 
-      return response.data.id; // Retorna o user_id
+      return response.data.id;
     } catch (error) {
       console.error("Erro ao buscar o ID do usuário:", error);
       setErrorMessage("Erro ao carregar os dados do usuário. Tente novamente mais tarde.");
@@ -56,10 +56,9 @@ const ReservaDetalhes = () => {
     }
   };
 
-  // Função para buscar os detalhes da reserva
   const fetchReserva = async (user_id) => {
     try {
-      const token = localStorage.getItem("access_token"); // Obtém o token do localStorage
+      const token = localStorage.getItem("access_token");
       const url = `http://127.0.0.1:8000/v1/reservations/${user_id}/${reservation_id}`;
       const response = await axios.get(url, {
         headers: {
@@ -67,8 +66,8 @@ const ReservaDetalhes = () => {
         },
       });
 
-      setReservaData(response.data);// Atualiza o estado com os dados da reserva
-      setUserId(response.data.responsible_user_id); // salva o responsável 
+      setReservaData(response.data);
+      setUserId(response.data.responsible_user_id);
     } catch (error) {
       console.error("Erro ao buscar os dados da reserva:", error);
       setErrorMessage("Erro ao carregar os dados da reserva. Tente novamente mais tarde.");
@@ -76,10 +75,30 @@ const ReservaDetalhes = () => {
     }
   };
 
-  // Função para deletar a reserva
+  const fetchUsersData = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await axios.get("http://127.0.0.1:8000/v1/users/", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const usersMap = {};
+      response.data.forEach((user) => {
+        usersMap[user.id] = user;
+      });
+      setUsers(usersMap);
+    } catch (error) {
+      console.error("Erro ao buscar dados dos usuários:", error);
+      setErrorMessage("Erro ao carregar dados dos usuários. Tente novamente mais tarde.");
+      abrirModal("erro-loading");
+    }
+  };
+
   const handleDeletaReserva = async () => {
     try {
-      const token = localStorage.getItem("access_token"); // Obtém o token do localStorage
+      const token = localStorage.getItem("access_token");
       const url = `http://127.0.0.1:8000/v1/reservations/${userId}/${reservation_id}`;
       await axios.delete(url, {
         headers: {
@@ -95,12 +114,12 @@ const ReservaDetalhes = () => {
     }
   };
 
-  // useEffect para buscar os dados da reserva ao carregar o componente
   useEffect(() => {
     const fetchData = async () => {
-      const user_id = await fetchUserId(); // Busca o user_id do usuário logado
+      const user_id = await fetchUserId();
       if (user_id) {
-        await fetchReserva(user_id); // Busca os dados da reserva
+        await fetchReserva(user_id);
+        await fetchUsersData();
       }
     };
 
@@ -122,11 +141,18 @@ const ReservaDetalhes = () => {
     doc.text(`Reserva Quadra ${reservaData?.arena_id}`, 20, 63);
     doc.setTextColor(0, 0, 0);
     doc.setFontSize(12);
-    doc.text(`${new Date(reservaData?.start_date).toLocaleDateString()} - ${new Date(reservaData?.start_date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`, 20, 72);
+    doc.text(
+      `${new Date(reservaData?.start_date).toLocaleDateString()} - ${new Date(reservaData?.start_date).toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })}`,
+      20,
+      72
+    );
 
     const headers = [["Nome", "Ocupação", "Email"]];
     const data = reservaData?.participants.map((participant) => [
-      participant.name,
+      users[participant.id]?.full_name || participant.name,
       participant.occupation,
       participant.email,
     ]);
@@ -161,9 +187,7 @@ const ReservaDetalhes = () => {
   }
 
   if (!reservaData) {
-    return (
-      <ModalLoading texto="Carregando dados da reserva"/>
-    )
+    return <ModalLoading texto="Carregando dados da reserva" />;
   }
 
   return (
@@ -176,21 +200,16 @@ const ReservaDetalhes = () => {
             <h1 className="title-reservaDetalhes">Reserva Quadra {reservaData.arena_id}</h1>
           </div>
           <h2 className="subtitle-reservaDetalhes">
-            {new Date(reservaData.start_date).toLocaleDateString()} - {new Date(reservaData.start_date).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            {new Date(reservaData.start_date).toLocaleDateString()} - {new Date(reservaData.start_date).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
           </h2>
         </div>
 
         <div className="button-container-reservaDetalhes">
-          <SecondaryButton
-            label="Editar"
-            onClick={() => navigate(`/editar-reserva/${reservation_id}`)}
-            className="secondary-button-reservaDetalhes"
-          />
-          <SecondaryButton
-            label="Baixar PDF"
-            onClick={handleDownloadPDFClick}
-            className="secondary-button-reservaDetalhes"
-          />
+          <SecondaryButton label="Editar" onClick={() => navigate(`/editar-reserva/${reservation_id}`)} className="secondary-button-reservaDetalhes" />
+          <SecondaryButton label="Baixar PDF" onClick={handleDownloadPDFClick} className="secondary-button-reservaDetalhes" />
           <button
             className="delete-button-reservaDetalhes"
             onClick={() => {
@@ -206,7 +225,7 @@ const ReservaDetalhes = () => {
       <section className="section-reservas-reservaDetalhes">
         <div className="responsavel-reservaDetalhes">
           <span className="responsavel-flag-reservaDetalhes">(Responsável)</span>
-          <span className="responsavel-nome-reservaDetalhes">{reservaData.responsible_user_id}</span>
+          <span className="responsavel-nome-reservaDetalhes">{users[reservaData.responsible_user_id]?.full_name || "Responsável Desconhecido"}</span>
         </div>
 
         <div className="titulos-reservas-reservaDetalhes">
@@ -218,7 +237,7 @@ const ReservaDetalhes = () => {
         <div className="lista-reservas-reservaDetalhes">
           {reservaData.participants.map((participant, index) => (
             <div key={index} className="item-reserva-reservaDetalhes">
-              <span>{participant.name}</span>
+              <span>{users[participant.id]?.full_name || participant.name}</span>
               <span>{participant.occupation}</span>
               <span>{participant.email}</span>
             </div>
