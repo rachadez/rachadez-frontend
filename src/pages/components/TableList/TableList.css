@@ -46,12 +46,15 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
+  .dado-item button {
+    width: 150px;
+  }
   
   .botao-container {
     display: flex;
     justify-content: flex-start;
-    max-width: 120px; /* Largura máxima */
-    min-width: 100px;
+    width: 50px;
   }
 
   .acoes-container {
