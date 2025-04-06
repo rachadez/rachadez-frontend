@@ -15,7 +15,7 @@ const UserReservaParticipantes = () => {
   const navigate = useNavigate();
 
   // Dados recebidos via state do navigate
-  const { arenaId, startDate, endDate } = location.state || {};
+  const { arenaId, startDate, endDate, modalidade, quadra } = location.state || {};
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");
@@ -27,7 +27,7 @@ const UserReservaParticipantes = () => {
     setModalType(tipo);
     setIsModalOpen(true);
   };
-  
+
   const fecharModal = () => {
     setModalType("");
     setIsModalOpen(false);
@@ -96,7 +96,7 @@ const UserReservaParticipantes = () => {
             });
 
             if (!response.data || !response.data.user_id || typeof response.data.user_id !== "string") {
-              setErrorMessage(response.data.details)
+              setErrorMessage(response.data.details);
               abrirModal("erro");
               throw new Error(`UUID inválido para o email: ${email}`);
             }
@@ -130,14 +130,14 @@ const UserReservaParticipantes = () => {
         },
       });
 
-      abrirModal("sucesso")
+      abrirModal("sucesso");
     } catch (error) {
       console.error("Erro ao cadastrar reserva:", error);
       const detail = error?.response?.data?.detail;
       let message = "Erro ao cadastrar reserva";
 
       if (error.response && error.response.data) {
-       if (typeof detail === "string") {
+        if (typeof detail === "string") {
           message = detail;
         } else if (Array.isArray(detail)) {
           // Se for uma lista de erros, pega a primeira mensagem
@@ -145,7 +145,7 @@ const UserReservaParticipantes = () => {
         } else if (typeof detail === "object" && detail?.msg) {
           // objeto com msg
           message = detail.msg;
-        } 
+        }
 
         setErrorMessage(message);
       } else {
@@ -156,13 +156,17 @@ const UserReservaParticipantes = () => {
     }
   };
 
+  const constructReturnUrl = () => {
+    return `/user-reserva-horario/${modalidade}/${quadra}`;
+  };
+
   return (
     <div>
       <Header />
       <MainContent
         title="Adicionar Participantes"
         subtitle="Preencha a lista de participantes"
-        path="/user-reserva-horario"
+        path={constructReturnUrl()}
       />
 
       <div className="container-cadastrar-reserva">
@@ -209,10 +213,7 @@ const UserReservaParticipantes = () => {
                   <div key={index} className="participant-item">
                     <span>{participant.name || "Novo Participante"}</span>
                     <span className="participant-email">{participant.email}</span>
-                    <TrashIcon
-                      onClick={() => removeParticipant(index, "participantesUFCG")}
-                      className="trash-icon"
-                    />
+                    <TrashIcon onClick={() => removeParticipant(index, "participantesUFCG")} className="trash-icon" />
                   </div>
                 ))}
               </div>
@@ -257,10 +258,7 @@ const UserReservaParticipantes = () => {
                   <div key={index} className="participant-item">
                     <span>{participant.name || "Novo Participante"}</span>
                     <span className="participant-email">{participant.email}</span>
-                    <TrashIcon
-                      onClick={() => removeParticipant(index, "participantesExternos")}
-                      className="trash-icon"
-                    />
+                    <TrashIcon onClick={() => removeParticipant(index, "participantesExternos")} className="trash-icon" />
                   </div>
                 ))}
               </div>
@@ -291,14 +289,13 @@ const UserReservaParticipantes = () => {
             />
           )}
 
-
           {isModalOpen && modalType === "confirmacao" && (
             <ModalTwoOptions
               iconName="calendario-relogio"
               modalText="Deseja confirmar a reserva?"
               buttonTextOne="Confirmar"
               onClickButtonOne={() => {
-                fecharModal(); 
+                fecharModal();
                 handleCreateReservation();
               }}
               buttonTextTwo="Cancelar"
