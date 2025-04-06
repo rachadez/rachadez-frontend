@@ -52,6 +52,7 @@ function AdminCadastroUsuarioUFCG() {
   };
 
   const handleSubmit = async (e) => {
+    abrirModal("carregando");
     e.preventDefault();
 
     try {
@@ -73,7 +74,9 @@ function AdminCadastroUsuarioUFCG() {
         },
       });
 
+      fecharModal(); // fecha o loading
       abrirModal("sucesso");
+      console.log("Resposta da API:", response.data);
 
       // Limpa o formulário após o cadastro
       setUsuario({
@@ -99,8 +102,9 @@ function AdminCadastroUsuarioUFCG() {
       mensagemBackend = mensagens[0];
     }
 
+    fecharModal(); // fecha o de loading
     setErrorMessage(mensagemBackend);
-    abrirModal("erro");
+    abrirModal("erro"); 
     }
   };
 
@@ -191,6 +195,10 @@ function AdminCadastroUsuarioUFCG() {
           buttonText="Fechar"
           onClick={fecharModal}
         />
+      )}
+
+      {isModalOpen && modalType === "carregando" && (
+        <ModalLoading texto="Cadastrando usuário..." />
       )}
     </div>
   );

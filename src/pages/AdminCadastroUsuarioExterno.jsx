@@ -6,6 +6,8 @@ import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
 import InputReadOnly from "./components/InputReadOnly/InputReadOnly";
 import axios from "axios";
+import ModalOneOption from "./components/Modal/ModalOneOption";
+import ModalLoading from "./components/Modal/ModalLoading";
 
 function AdminCadastroUsuarioExterno() {
   const [usuario, setUsuario] = useState({
@@ -16,10 +18,37 @@ function AdminCadastroUsuarioExterno() {
     password: "",
     phone: "",
   });
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
-  const [successMessage, setSuccessMessage] = useState(""); // Estado para mensagens de sucesso
+
+  const abrirModal = (type) => {
+    setModalType(type);
+    setIsModalOpen(true);
+  };
+
+  const fecharModal = () => {
+    setModalType("");
+    setIsModalOpen(false);
+  };
+
+  const traduzirMensagem = (mensagem) => {
+    const traducoes = {
+      "String should have at least 8 characters": "A senha deve ter pelo menos 8 caracteres",
+      "String should have at most 11 characters": "O telefone/cpf deve ter no máximo 11 dígitos",
+      "value is not a valid email address: There must be something after the @-sign.": "E-mail inválido: falta o domínio após o símbolo @",
+      "value is not a valid email address: An email address must have an @-sign.": "E-mail inválido: o endereço de e-mail deve conter o símbolo @",
+      "value is not a valid email address: The part after the @-sign is not valid. It should have a period.": "E-mail inválido: o domínio do e-mail deve conter um ponto, como '.com'",
+      "value is not a valid email address: An email address cannot end with a period.": "E-mail inválido: um endereço de e-mail não pode terminar com um ponto ('.')",
+    };
+  
+    return traducoes[mensagem] || mensagem; // retorna a tradução, ou a original se não tiver
+  };
 
   const handleSubmit = async () => {
+    abrirModal("carregando");
+
     try {
       console.log("Tentando cadastrar com os dados:", usuario); // Loga os dados enviados no console
       const token = localStorage.getItem("access_token"); // Obtém o token do localStorage
@@ -42,8 +71,8 @@ function AdminCadastroUsuarioExterno() {
         },
       });
 
-      setSuccessMessage("Usuário cadastrado com sucesso!");
-      setErrorMessage(""); // Limpa mensagens de erro
+      fecharModal(); // fecha o loading
+      abrirModal("sucesso");
       console.log("Resposta da API:", response.data);
 
       // Limpa o formulário após o cadastro
@@ -57,19 +86,23 @@ function AdminCadastroUsuarioExterno() {
       });
     } catch (error) {
       console.error("Erro ao cadastrar usuário:", error);
-
-      if (error.response) {
-        console.error("Resposta do backend:", error.response.data); // Loga a resposta do backend
+   
+      let mensagemBackend = "Erro ao cadastrar o usuário. Tente novamente mais tarde.";
+  
+      const detalhe = error.response?.data?.detail;
+  
+      if (detalhe) {
+        const mensagens = Array.isArray(detalhe)
+          ? detalhe.map((err) => traduzirMensagem(err.msg))
+          : [typeof detalhe === "string" ? traduzirMensagem(detalhe) : traduzirMensagem(detalhe?.msg)];
+  
+        mensagemBackend = mensagens[0];
       }
 
-      if (error.response && error.response.status === 400) {
-        setErrorMessage(error.response.data.detail || "Erro nos dados enviados. Verifique os campos e tente novamente.");
-      } else {
-        setErrorMessage("Erro ao cadastrar o usuário. Tente novamente mais tarde.");
+      fecharModal(); // fecha o de loading
+      setErrorMessage(mensagemBackend);
+      abrirModal("erro"); 
       }
-
-      setSuccessMessage(""); // Limpa mensagens de sucesso
-    }
   };
 
   return (
@@ -132,14 +165,32 @@ function AdminCadastroUsuarioExterno() {
             />
           </div>
         </div>
-
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
-        {successMessage && <p className="success-message">{successMessage}</p>}
-
         <div className="button">
           <DefaultButton label={"Cadastrar"} onClick={handleSubmit} />
         </div>
       </div>
+
+      {isModalOpen && modalType === "erro" && (
+        <ModalOneOption
+          iconName="X"
+          modalText={errorMessage}
+          buttonText="Fechar"
+          onClick={fecharModal}
+        />
+      )}
+
+      {isModalOpen && modalType === "sucesso" && (
+        <ModalOneOption
+          iconName="sucesso-check"
+          modalText="Usuário cadastrado com sucesso!"
+          buttonText="Fechar"
+          onClick={fecharModal}
+        />
+      )}
+
+      {isModalOpen && modalType === "carregando" && (
+        <ModalLoading texto="Cadastrando usuário..." />
+      )}
     </div>
   );
 }
