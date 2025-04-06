@@ -50,6 +50,7 @@ const ReservaDetalhes = () => {
     } catch (error) {
       console.error("Erro ao buscar o ID do usuário:", error);
       setErrorMessage("Erro ao carregar os dados do usuário. Tente novamente mais tarde.");
+      abrirModal("erro-loading");
       return null;
     }
   };
