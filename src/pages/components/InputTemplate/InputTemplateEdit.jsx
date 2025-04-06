@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./InputTemplate.css";
 
-const InputTemplateEdit = ({ id, label, name, value, type = "text" }) => {
+const InputTemplateEdit = ({ id, label, name, value, type = "text", onChange }) => {
   const [error, setError] = useState("");
   const [formData, setFormData] = useState(value || "");
 
@@ -15,6 +15,7 @@ const InputTemplateEdit = ({ id, label, name, value, type = "text" }) => {
 
   const handleChange = (e) => {
     setFormData(e.target.value);
+    onChange(e.target.value); // Atualiza o valor da prop value
   };
 
   return (

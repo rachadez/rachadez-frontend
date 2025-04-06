@@ -1,13 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import MainContent from "./components/MainContent/MainContent";
 import InputTemplate from "./components/InputTemplate/InputTemplate";
 import DefaultButton from "./components/Buttons/DefaultButton";
 import "./ReSenha.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const RecuperarSenha = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
+  const handleRecuperarSenha = async () => {
+    try {
+      const encodedEmail = encodeURIComponent(email); // Codifica o email
+      console.log("Email codificado:", encodedEmail); // Adiciona o log
+
+      const response = await axios.post(
+        `http://127.0.0.1:8000/v1/password-recovery/${encodedEmail}` // Usa o email codificado
+      );
+
+      // ... (tratamento da resposta)
+    } catch (error) {
+      // ... (tratamento do erro)
+    }
+  };
+  
   return (
     <section className="senha">
       <MainContent
@@ -25,14 +44,19 @@ const RecuperarSenha = () => {
               type="email"
               label="E-mail acadêmico"
               placeholder="email@estudante.ufcg.edu.br"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
         </div>
 
         <div className="button">
-          <DefaultButton label={"Receber código"} onClick={() => navigate(`/redefinir-senha`)}/>
+          <DefaultButton label={"Receber código"} onClick={handleRecuperarSenha} />
         </div>
       </div>
+
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
+      {successMessage && <p className="success-message">{successMessage}</p>}
     </section>
   );
 };

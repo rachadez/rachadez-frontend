@@ -54,7 +54,6 @@ const UserReservaParticipantes = () => {
     try {
       const token = localStorage.getItem("access_token");
 
-      // Obter o ID do usuário logado
       const userResponse = await axios.get("http://127.0.0.1:8000/v1/users/me", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -63,7 +62,6 @@ const UserReservaParticipantes = () => {
 
       const responsibleUserId = userResponse.data.id;
 
-      // Validações
       if (!arenaId || isNaN(Number(arenaId))) {
         throw new Error("O ID da arena é inválido.");
       }
@@ -72,13 +70,11 @@ const UserReservaParticipantes = () => {
         throw new Error("As datas de início e término são obrigatórias.");
       }
 
-      // Obter os emails dos participantes
       const emails = [
         ...reservaData.participantesUFCG.map((p) => p.email),
         ...reservaData.participantesExternos.map((p) => p.email),
       ];
 
-      // Buscar UUIDs dos participantes usando o novo endpoint
       const participants = await Promise.all(
         emails.map(async (email) => {
           try {
@@ -88,12 +84,11 @@ const UserReservaParticipantes = () => {
               },
             });
 
-            // Verifica se o UUID está presente na resposta
             if (!response.data || !response.data.user_id || typeof response.data.user_id !== "string") {
               throw new Error(`UUID inválido para o email: ${email}`);
             }
 
-            return response.data.user_id; // Retorna o UUID do participante
+            return response.data.user_id;
           } catch (error) {
             console.error(`Erro ao buscar UUID para o email ${email}:`, error);
             throw new Error(`Não foi possível encontrar o usuário com o email: ${email}`);
@@ -101,18 +96,19 @@ const UserReservaParticipantes = () => {
         })
       );
 
-      // Monta os dados da reserva
+      // Adiciona o ID do responsável à lista de participantes
+      participants.unshift(responsibleUserId);
+
       const reservationData = {
-        responsible_user_id: responsibleUserId, // Adiciona o ID do usuário logado
-        arena_id: Number(arenaId), // Converte para número inteiro
+        responsible_user_id: responsibleUserId,
+        arena_id: Number(arenaId),
         start_date: startDate,
         end_date: endDate,
-        participants, // Envia os UUIDs como strings
+        participants,
       };
 
       console.log("Dados enviados:", reservationData);
 
-      // Envia a requisição para criar a reserva
       await axios.post("http://127.0.0.1:8000/v1/reservations/", reservationData, {
         headers: {
           Authorization: `Bearer ${token}`,

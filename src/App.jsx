@@ -27,6 +27,8 @@ import UserModalidade from './pages/UserModalidade';
 import UserHorarioModalidade from './pages/UserHorarioModalidade';
 import UserReservaParticipantes from './pages/UserReservaParticipantes';
 import RedefinirSenha from './pages/RedefinirSenha';
+import ConfirmEmail from "./pages/ConfirmEmail";
+
 
 function App() {
   return (
@@ -38,13 +40,15 @@ function App() {
         {/* Rotas de Login */}
         <Route path="/login" element={<Login />} />
 
+        <Route path="/confirm-email/:token" element={<ConfirmEmail />} />
+
         <Route path="/cadastro" element={<Cadastro />} />
 
         <Route path="/recuperar-senha" element={<RecuperarSenha/>} />
 
         {/* <Route path="/redefinir-senha-codigo" element={<RedefinirSenhaCodigo/>} /> */}
 
-        <Route path="/redefinir-senha" element={<RedefinirSenha/>} />
+        <Route path="/redefinir-senha/:token" element={<RedefinirSenha/>} />
 
         {/* Páginas pós-login */}
         {/* Users */}

@@ -37,25 +37,23 @@ function AdminEditarUsuario() {
   // Função para salvar as alterações
   const handleSave = async () => {
     try {
-      console.log("Dados enviados:", usuario); // Verifica os dados enviados
+      console.log("Dados enviados:", usuario);
       const token = localStorage.getItem("access_token");
 
-      // Prepara os dados para envio, garantindo que todos os campos obrigatórios estejam presentes
       const dadosParaEnvio = {
         email: usuario.email,
         cpf: usuario.cpf,
         phone: usuario.phone,
         occupation: usuario.occupation,
-        is_active: usuario.is_active ?? true, // Define como ativo por padrão, se não estiver definido
-        is_admin: usuario.is_admin ?? false, // Define como não administrador por padrão
-        is_internal: usuario.is_internal ?? true, // Define como interno por padrão
+        is_active: usuario.is_active ?? true,
+        is_admin: usuario.is_admin ?? false,
+        is_internal: usuario.is_internal ?? true,
         full_name: usuario.full_name,
-        password: usuario.password || undefined, // Envia a senha apenas se for alterada
+        password: usuario.password || undefined,
       };
 
       console.log("Dados formatados para envio:", dadosParaEnvio);
 
-      // Envia a requisição PATCH para o backend
       const response = await axios.patch(`http://127.0.0.1:8000/v1/users/${id}`, dadosParaEnvio, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -64,6 +62,9 @@ function AdminEditarUsuario() {
       });
 
       console.log("Resposta do backend:", response.data);
+
+      // Atualiza o estado com os dados atualizados recebidos do backend
+      setUsuario(response.data);
 
       // Redireciona para a página de listagem após salvar
       navigate("/admin-editar-usuarios");
@@ -106,28 +107,28 @@ function AdminEditarUsuario() {
             <InputTemplateEdit
               label="Nome completo"
               value={usuario.full_name}
-              onChange={(e) => setUsuario({ ...usuario, full_name: e.target.value })}
+              onChange={(e) => setUsuario({ ...usuario, full_name: e })} // Atualiza o estado usuario
             />
           </div>
           <div className="form-group">
             <InputTemplateEdit
               label="CPF"
               value={usuario.cpf}
-              onChange={(e) => setUsuario({ ...usuario, cpf: e.target.value })}
+              onChange={(e) => setUsuario({ ...usuario, cpf: e })} // Atualiza o estado usuario
             />
           </div>
           <div className="form-group">
             <InputTemplateEdit
               label="Ocupação"
               value={usuario.occupation}
-              onChange={(e) => setUsuario({ ...usuario, occupation: e.target.value })}
+              onChange={(e) => setUsuario({ ...usuario, occupation: e })} // Atualiza o estado usuario
             />
           </div>
           <div className="form-group">
             <InputTemplateEdit
               label="E-mail"
               value={usuario.email}
-              onChange={(e) => setUsuario({ ...usuario, email: e.target.value })}
+              onChange={(e) => setUsuario({ ...usuario, email: e })} // Atualiza o estado usuario
             />
           </div>
           <div className="form-group">
@@ -135,14 +136,14 @@ function AdminEditarUsuario() {
               type="password"
               label="Senha"
               value={usuario.password || ""}
-              onChange={(e) => setUsuario({ ...usuario, password: e.target.value })}
+              onChange={(e) => setUsuario({ ...usuario, password: e })} // Atualiza o estado usuario
             />
           </div>
           <div className="form-group">
             <InputTemplateEdit
               label="Telefone"
               value={usuario.phone}
-              onChange={(e) => setUsuario({ ...usuario, phone: e.target.value })}
+              onChange={(e) => setUsuario({ ...usuario, phone: e })} // Atualiza o estado usuario
             />
           </div>
         </div>

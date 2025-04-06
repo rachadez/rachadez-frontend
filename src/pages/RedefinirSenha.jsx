@@ -2,23 +2,49 @@ import React, { useState } from "react";
 import MainContent from "./components/MainContent/MainContent";
 import DefaultButton from "./components/Buttons/DefaultButton";
 import PasswordInput from "./components/Password/PasswordInput";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ModalOneOption from "./components/Modal/ModalOneOption";
+import axios from "axios";
 
 const RedefinirSenha = () => {
   const navigate = useNavigate();
+  const { token } = useParams();
   const [modalType, setModalType] = useState("");
   const [senha, setSenha] = useState("");
   const [confirmSenha, setConfirmSenha] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const handleResetPassword = async () => {
+    try {
+      const response = await axios.post(
+        "http://127.0.0.1:8000/v1/reset-password/",
+        {
+          token: token,
+          new_password: senha,
+        }
+      );
+
+      if (response.status === 200) {
+        setModalType("senha-redefinida");
+        setIsModalOpen(true);
+      } else {
+        setModalType("credenciais-invalidas");
+        setIsModalOpen(true);
+      }
+    } catch (error) {
+      console.error("Erro ao redefinir senha:", error);
+      setModalType("credenciais-invalidas");
+      setIsModalOpen(true);
+    }
+  };
+
   const validarSenhas = () => {
     if (senha !== confirmSenha) {
       setModalType("credenciais-invalidas");
+      setIsModalOpen(true);
     } else {
-      setModalType("senha-redefinida");
+      handleResetPassword();
     }
-    setIsModalOpen(true);
   };
 
   const handleFinalizar = () => {
@@ -29,9 +55,7 @@ const RedefinirSenha = () => {
     <section className="senha">
       <MainContent
         title={"Problemas para entrar?"}
-        subtitle={
-          "Por favor, insira sua nova senha e confirme-a nos campos abaixo."
-        }
+        subtitle={"Por favor, insira sua nova senha e confirme-a nos campos abaixo."}
         path={"/recuperar-senha"}
       />
 
@@ -75,9 +99,7 @@ const RedefinirSenha = () => {
       {isModalOpen && modalType === "credenciais-invalidas" && (
         <ModalOneOption
           iconName="circulo-erro"
-          modalText="Senha diferentes!
-                              Cheque os dados inseridos e
-                              tente novamente"
+          modalText="Senha diferentes! Cheque os dados inseridos e tente novamente"
           buttonText="Tentar novamente"
           onClick={() => setIsModalOpen(false)}
         />
