@@ -20,9 +20,9 @@ const UserHorarioModalidade = () => {
 
     const correctAccents = (str) => {
         const accents = {
-            'tenis': 'Tênis',
+            'tênis': 'Tênis',
             'volei': 'Vôlei',
-            'beach-tennis': 'Beach Tennis',
+            'beach_tennis': 'Beach Tennis',
             'society': 'Society',
         };
         return accents[str.toLowerCase()] || str;

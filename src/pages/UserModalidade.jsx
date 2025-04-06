@@ -59,7 +59,7 @@ const UserModalidade = () => {
         return {
           icon: getCustomIcon(tipoPadronizado),
           title: corrigirNome(arena.name),
-          path: `/user-reserva-horario/${tipoPadronizado}/${arena.id}`,
+          path: `/user-reserva-horario/${tipoOriginal}/${arena.id}`,
           disabled: false,
           id: arena.id,
         };
