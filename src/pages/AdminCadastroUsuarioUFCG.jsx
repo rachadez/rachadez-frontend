@@ -7,6 +7,7 @@ import MainContent from "./components/MainContent/MainContent";
 import SelectInput from "./components/SelectInput/SelectInput";
 import axios from "axios";
 import ModalOneOption from "./components/Modal/ModalOneOption";
+import ModalLoading from "./components/Modal/ModalLoading";
 
 function AdminCadastroUsuarioUFCG() {
   // Lista de opções para o campo "Ocupação"
@@ -46,6 +47,10 @@ function AdminCadastroUsuarioUFCG() {
       "String should have at most 11 characters": "O telefone/cpf deve ter no máximo 11 dígitos",
       "Invalid email: must have a domain of ufcg.edu.br.": "E-mail inválido: o domínio deve ser '*.ufcg.edu.br'.",
       "Input should be 'ALUNO', 'SERVIDOR', 'PROFESSOR' or 'EXTERNO'": "Selecione uma ocupação válida: Aluno, Servidor, Professor ou Externo.",
+      "value is not a valid email address: The part after the @-sign is not valid. It should have a period.": "E-mail inválido: o domínio do e-mail deve conter um ponto, como '.com'",
+      "value is not a valid email address: An email address cannot end with a period.": "E-mail inválido: um endereço de e-mail não pode terminar com um ponto ('.')",
+      "value is not a valid email address: An email address must have an @-sign.": "E-mail inválido: o endereço de e-mail deve conter o símbolo @",
+      "value is not a valid email address: There must be something after the @-sign.": "E-mail inválido: falta o domínio após o símbolo @",
     };
   
     return traducoes[mensagem] || mensagem; // retorna a tradução, ou a original se não tiver
