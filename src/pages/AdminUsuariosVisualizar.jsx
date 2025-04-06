@@ -7,21 +7,20 @@ import TableList from "./components/TableList/TableList";
 import axios from "axios";
 
 function AdminUsuariosVisualizar() {
-  const navigate = useNavigate(); // Hook para redirecionamento
-  const [usuarios, setUsuarios] = useState([]); // Estado para armazenar os usuários
-  const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
+  const navigate = useNavigate();
+  const [usuarios, setUsuarios] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const cabecalho = ["Nome", "CPF", "Ocupação", "Telefone"];
 
-  // Função para buscar os usuários da API
   useEffect(() => {
     const fetchUsuarios = async () => {
-      const token = localStorage.getItem("access_token"); // Obtém o token do localStorage
-      console.log("Token atual:", token); // Log para verificar o token
+      const token = localStorage.getItem("access_token");
+      console.log("Token atual:", token);
 
       if (!token) {
         setErrorMessage("Você não está autenticado. Faça login para acessar os usuários.");
-        navigate("/login"); // Redireciona para a página de login
+        navigate("/login");
         return;
       }
 
@@ -29,22 +28,24 @@ function AdminUsuariosVisualizar() {
         const response = await axios.get("http://127.0.0.1:8000/v1/users/", {
           params: {
             offset: 0,
-            limit: 100, // Limite de usuários a serem buscados
+            limit: 100,
           },
           headers: {
-            Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho
+            Authorization: `Bearer ${token}`,
           },
         });
-        setUsuarios(response.data); // Atualiza o estado com os dados retornados
+        // Filtra os usuários para excluir os administradores
+        const usuariosFiltrados = response.data.filter((usuario) => !usuario.is_admin);
+        setUsuarios(usuariosFiltrados);
       } catch (error) {
         if (error.response) {
           console.error("Erro na resposta da API:", error.response);
           if (error.response.status === 403) {
             const detail = error.response.data.detail || "Acesso negado.";
             setErrorMessage(`Erro: ${detail}`);
-            console.log("Detalhes do erro:", detail); // Log para depuração
-            localStorage.removeItem("access_token"); // Remove o token inválido
-            navigate("/login"); // Redireciona para a página de login
+            console.log("Detalhes do erro:", detail);
+            localStorage.removeItem("access_token");
+            navigate("/login");
           } else {
             setErrorMessage(`Erro ao carregar os usuários: ${error.response.data.detail || "Tente novamente mais tarde."}`);
           }
@@ -56,9 +57,8 @@ function AdminUsuariosVisualizar() {
     };
 
     fetchUsuarios();
-  }, [navigate]); // Adiciona navigate como dependência
+  }, [navigate]);
 
-  // Mapeia os dados da API para o formato esperado pela tabela
   const dados = usuarios.map((usuario) => ({
     nome: usuario.full_name,
     cpf: usuario.cpf,
@@ -82,12 +82,9 @@ function AdminUsuariosVisualizar() {
       />
 
       {errorMessage ? (
-        <p className="error-message">{errorMessage}</p> // Exibe mensagem de erro, se houver
+        <p className="error-message">{errorMessage}</p>
       ) : (
-        <TableList
-          cabecalho={cabecalho}
-          dados={dados}
-        />
+        <TableList cabecalho={cabecalho} dados={dados} />
       )}
     </>
   );

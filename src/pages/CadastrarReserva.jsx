@@ -19,10 +19,9 @@ const CadastrarReserva = () => {
   const [externalParticipantInputs, setExternalParticipantInputs] = useState([]);
   const [ufcgParticipants, setUfcgParticipants] = useState([]);
   const [externalParticipants, setExternalParticipants] = useState([]);
-  const [users, setUsers] = useState([]); // Lista de usuários cadastrados
-  const [responsavel, setResponsavel] = useState(null); // Participante responsável
+  const [users, setUsers] = useState([]);
+  const [responsavel, setResponsavel] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
   const [arenas, setArenas] = useState([]);
   const [arenaId, setArenaId] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
@@ -31,7 +30,7 @@ const CadastrarReserva = () => {
     setModalType(tipo);
     setIsModalOpen(true);
   };
-  
+
   const fecharModal = () => {
     setModalType("");
     setIsModalOpen(false);
@@ -46,20 +45,19 @@ const CadastrarReserva = () => {
 
   const getPerfil = async () => {
     const token = localStorage.getItem("access_token");
-  
+
     const response = await axios.get("http://127.0.0.1:8000/v1/users/me", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-  
+
     const user = response.data;
-  
+
     const isAdmin = user?.is_admin;
     return isAdmin;
   };
 
-  // Função para buscar arenas disponíveis
   const fetchArenas = async () => {
     try {
       const token = localStorage.getItem("access_token");
@@ -82,7 +80,6 @@ const CadastrarReserva = () => {
     }
   };
 
-  // Função para buscar usuários cadastrados
   const fetchUsers = async () => {
     try {
       const token = localStorage.getItem("access_token");
@@ -93,7 +90,7 @@ const CadastrarReserva = () => {
       });
 
       if (Array.isArray(response.data)) {
-        setUsers(response.data); // Atualiza a lista de usuários cadastrados
+        setUsers(response.data);
       } else {
         console.error("Resposta inesperada da API:", response.data);
         setErrorMessage("Erro ao carregar usuários. Resposta inesperada do servidor.");
@@ -105,10 +102,9 @@ const CadastrarReserva = () => {
     }
   };
 
-  // Função para adicionar participante da UFCG
   const addUfcgParticipant = (index) => {
     const email = ufcgParticipantInputs[index].email;
-    const user = users.find((u) => u.email === email && u.is_internal); // Verifica se o usuário é da UFCG
+    const user = users.find((u) => u.email === email && u.is_internal);
     if (user) {
       setUfcgParticipants([...ufcgParticipants, { name: user.full_name, email: user.email, id: user.id }]);
       setUfcgParticipantInputs(ufcgParticipantInputs.filter((_, i) => i !== index));
@@ -118,10 +114,9 @@ const CadastrarReserva = () => {
     }
   };
 
-  // Função para adicionar participante externo
   const addExternalParticipant = (index) => {
     const email = externalParticipantInputs[index].email;
-    const user = users.find((u) => u.email === email && !u.is_internal); // Verifica se o usuário é externo
+    const user = users.find((u) => u.email === email && !u.is_internal);
     if (user) {
       setExternalParticipants([...externalParticipants, { name: user.full_name, email: user.email, id: user.id }]);
       setExternalParticipantInputs(externalParticipantInputs.filter((_, i) => i !== index));
@@ -137,34 +132,30 @@ const CadastrarReserva = () => {
     return newDate;
   };
 
-  // Função para cadastrar reserva
   const handleCadastrarReserva = async () => {
     abrirModal("carregando");
 
     try {
       const token = localStorage.getItem("access_token");
 
-      // Remove duplicados dos participantes
       const uniqueParticipants = [...new Set([
-        ...(responsavel?.id ? [responsavel.id] : []), // Inclui o responsável se existir
-        ...ufcgParticipants.map((p) => p.id), // IDs dos participantes da UFCG
-        ...externalParticipants.map((p) => p.id), // IDs dos participantes externos
+        ...(responsavel?.id ? [responsavel.id] : []),
+        ...ufcgParticipants.map((p) => p.id),
+        ...externalParticipants.map((p) => p.id),
       ])];
 
-      // Ajusta os horários subtraindo 3 horas
       const adjustedStartDate = subtractHours(new Date(selectedDate), 3).toISOString();
+      const endDate = new Date(selectedDate.getTime() + 90 * 60000);
       const adjustedEndDate = subtractHours(new Date(endDate), 3).toISOString();
 
-      // Dados dinâmicos para envio
       const dadosParaEnvio = {
-        responsible_user_id: responsavel?.id || "", // Garante que seja uma string válida
-        arena_id: String(arenaId), // Converte para string
-        start_date: adjustedStartDate, // Data e hora de início ajustada
-        end_date: adjustedEndDate, // Data e hora de término ajustada
-        participants: uniqueParticipants, // Lista de participantes únicos
+        responsible_user_id: responsavel?.id || "",
+        arena_id: String(arenaId),
+        start_date: adjustedStartDate,
+        end_date: adjustedEndDate,
+        participants: uniqueParticipants,
       };
 
-          // Verifica se já há reserva no horário
       const verifyUrl = `http://127.0.0.1:8000/v1/reservations/arena/${arenaId}`;
       const verifyResponse = await axios.post(verifyUrl, {
         start_date: adjustedStartDate,
@@ -180,13 +171,12 @@ const CadastrarReserva = () => {
 
       if (!available) {
         fecharModal();
-        abrirModal("sobrescrever"); // Chama modal de confirmação para sobrescrever
+        abrirModal("sobrescrever");
         return;
       }
 
       console.log("Dados enviados para o backend:", dadosParaEnvio);
 
-      // Envia a requisição para o backend
       const response = await axios.post("http://127.0.0.1:8000/v1/reservations/", dadosParaEnvio, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -195,7 +185,7 @@ const CadastrarReserva = () => {
       });
 
       console.log("Reserva realizada com sucesso:", response.data);
-      fecharModal(); //fecha o loading;
+      fecharModal();
       abrirModal("sucesso");
     } catch (error) {
       console.error("Erro ao cadastrar reserva:", error);
@@ -203,55 +193,54 @@ const CadastrarReserva = () => {
       let message = "Erro ao cadastrar reserva";
 
       if (error.response && error.response.data) {
-       if (typeof detail === "string") {
+        if (typeof detail === "string") {
           message = detail;
         } else if (Array.isArray(detail)) {
-          // Se for uma lista de erros, pega a primeira mensagem
           message = detail[0]?.msg || message;
         } else if (typeof detail === "object" && detail?.msg) {
-          // objeto com msg
           message = detail.msg;
-        } 
+        }
 
         setErrorMessage(traduzirMensagem(message));
       } else {
         setErrorMessage("Erro ao cadastrar reserva. Tente novamente mais tarde.");
       }
 
-      fecharModal(); //fecha o loading;
+      fecharModal();
       abrirModal("erro");
     }
   };
 
   useEffect(() => {
     fetchArenas();
-    fetchUsers(); // Busca os usuários cadastrados ao montar o componente
+    fetchUsers();
   }, []);
 
   const handleSobrescreverReserva = async () => {
     abrirModal("carregando");
-  
+
     try {
-      const isAdmin = await getPerfil(); // Buscar perfil do usuário logado
-  
+      const isAdmin = await getPerfil();
+
       if (!isAdmin) {
         setErrorMessage("Apenas administradores podem sobrescrever reservas.");
         fecharModal();
         abrirModal("erro");
         return;
       }
-  
+
       const token = localStorage.getItem("access_token");
-  
+
       const uniqueParticipants = [...new Set([
         ...(responsavel?.id ? [responsavel.id] : []),
         ...ufcgParticipants.map((p) => p.id),
         ...externalParticipants.map((p) => p.id),
       ])];
-  
+
       const adjustedStartDate = subtractHours(new Date(selectedDate), 3).toISOString();
+      const endDate = new Date(selectedDate.getTime() + 90 * 60000);
       const adjustedEndDate = subtractHours(new Date(endDate), 3).toISOString();
-  
+
       const dadosParaEnvio = {
         responsible_user_id: responsavel?.id || "",
         arena_id: String(arenaId),
@@ -259,7 +248,7 @@ const CadastrarReserva = () => {
         end_date: adjustedEndDate,
         participants: uniqueParticipants,
       };
-  
+
       const response = await axios.post("http://127.0.0.1:8000/v1/reservations/", dadosParaEnvio, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -270,12 +259,11 @@ const CadastrarReserva = () => {
       console.log("Reserva sobrescrita com sucesso:", response.data);
       fecharModal();
       abrirModal("sucesso-sobrescrita");
-  
     } catch (error) {
       console.error("Erro ao sobrescrever reserva:", error);
       const detail = error?.response?.data?.detail;
       let message = "Erro ao cadastrar reserva. Verifique os dados e tente novamente.";
-  
+
       if (typeof detail === "string") {
         message = detail;
       } else if (Array.isArray(detail)) {
@@ -283,7 +271,7 @@ const CadastrarReserva = () => {
       } else if (typeof detail === "object" && detail?.msg) {
         message = detail.msg;
       }
-  
+
       setErrorMessage(traduzirMensagem(message));
       fecharModal();
       abrirModal("erro");
@@ -313,12 +301,8 @@ const CadastrarReserva = () => {
             </select>
           </div>
           <div className="input-group">
-            <label htmlFor="data-hora">DATA E HORA INÍCIO</label>
+            <label htmlFor="data-hora">DATA E HORA</label>
             <DateTimePicker selectedDate={selectedDate} onChange={setSelectedDate} />
-          </div>
-          <div className="input-group">
-            <label htmlFor="data-hora-fim">DATA E HORA FIM</label>
-            <DateTimePicker selectedDate={endDate} onChange={setEndDate} />
           </div>
         </div>
         <div className="participants-section">
@@ -423,67 +407,67 @@ const CadastrarReserva = () => {
         </div>
 
         {isModalOpen && modalType === "sobrescrever" && (
-        <ModalTwoOptions
-          iconName="calendario-erro"
-          modalText="Já existe uma reserva nesse horário. Deseja sobrescrever?"
-          buttonTextOne="Sobrescrever"
-          buttonColorOne="red"
-          onClickButtonOne={handleSobrescreverReserva}
-          buttonTextTwo="Cancelar"
-          onClickButtonTwo={fecharModal}
-        />
-      )}
+          <ModalTwoOptions
+            iconName="calendario-erro"
+            modalText="Já existe uma reserva nesse horário. Deseja sobrescrever?"
+            buttonTextOne="Sobrescrever"
+            buttonColorOne="red"
+            onClickButtonOne={handleSobrescreverReserva}
+            buttonTextTwo="Cancelar"
+            onClickButtonTwo={fecharModal}
+          />
+        )}
 
         {isModalOpen && modalType === "sucesso" && (
-        <ModalOneOption
-          iconName="calendario-check"
-          modalText="Reserva realizada com sucesso!"
-          buttonText="Voltar"
-          buttonPath="/visualizar-reservas"
-        />
-      )}
+          <ModalOneOption
+            iconName="calendario-check"
+            modalText="Reserva realizada com sucesso!"
+            buttonText="Voltar"
+            buttonPath="/visualizar-reservas"
+          />
+        )}
 
-      {isModalOpen && modalType === "sucesso-sobrescrita" && (
-        <ModalOneOption
-          iconName="calendario-check"
-          modalText="Reserva sobrescrita com sucesso!"
-          buttonText="Voltar"
-          buttonPath="/visualizar-reservas"
-        />
-      )}
+        {isModalOpen && modalType === "sucesso-sobrescrita" && (
+          <ModalOneOption
+            iconName="calendario-check"
+            modalText="Reserva sobrescrita com sucesso!"
+            buttonText="Voltar"
+            buttonPath="/visualizar-reservas"
+          />
+        )}
 
-      {isModalOpen && modalType === "erro" && (
-        <ModalOneOption
-          iconName="X"
-          modalText={errorMessage || "Erro inesperado, tente novamente mais tarde."}
-          buttonText="Fechar"
-          buttonPath=""
-          onClick={fecharModal}
-        />
-      )}
+        {isModalOpen && modalType === "erro" && (
+          <ModalOneOption
+            iconName="X"
+            modalText={errorMessage || "Erro inesperado, tente novamente mais tarde."}
+            buttonText="Fechar"
+            buttonPath=""
+            onClick={fecharModal}
+          />
+        )}
 
-      {isModalOpen && modalType === "erro-loading" && (
-        <ModalOneOption
-          iconName="circulo-erro"
-          modalText={errorMessage || "Erro ao carregar dados."}
-          buttonText="Voltar"
-          buttonPath="/visualizar-reservas"
-        />
-      )}
+        {isModalOpen && modalType === "erro-loading" && (
+          <ModalOneOption
+            iconName="circulo-erro"
+            modalText={errorMessage || "Erro ao carregar dados."}
+            buttonText="Voltar"
+            buttonPath="/visualizar-reservas"
+          />
+        )}
 
-      {isModalOpen && modalType === "confirmacao" && (
-        <ModalTwoOptions
-          iconName="calendario-relogio"
-          modalText="Deseja confirmar a reserva?"
-          buttonTextOne="Confirmar"
-          onClickButtonOne={() => {
-            fecharModal(); 
-            handleCadastrarReserva();
-          }}
-          buttonTextTwo="Cancelar"
-          onClickButtonTwo={fecharModal}
-        />
-      )}
+        {isModalOpen && modalType === "confirmacao" && (
+          <ModalTwoOptions
+            iconName="calendario-relogio"
+            modalText="Deseja confirmar a reserva?"
+            buttonTextOne="Confirmar"
+            onClickButtonOne={() => {
+              fecharModal();
+              handleCadastrarReserva();
+            }}
+            buttonTextTwo="Cancelar"
+            onClickButtonTwo={fecharModal}
+          />
+        )}
       </section>
     </div>
   );

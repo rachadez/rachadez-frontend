@@ -4,17 +4,17 @@ import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
 import TableList from "./components/TableList/TableList";
 import axios from "axios";
-import ModalOneOption from "./components/Modal/ModalOneOption"
+import ModalOneOption from "./components/Modal/ModalOneOption";
 import ModalTwoOptions from "./components/Modal/ModalTwoOptions";
 
 function AdminUsuariosExcluir() {
-  const [usuarios, setUsuarios] = useState([]); // Estado para armazenar os usuários
-  const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
+  const [usuarios, setUsuarios] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalType, setModalType] = useState(""); // 'erro', 'confirmacao', 'sucesso'
+  const [modalType, setModalType] = useState("");
   const [selectedUserId, setSelectedUserId] = useState(null);
 
-  const cabecalho = ["Nome", "CPF", "Ocupação", "Telefone"]; // Removida a coluna "Ações"
+  const cabecalho = ["Nome", "CPF", "Ocupação", "Telefone"];
 
   const abrirModal = (type) => {
     setModalType(type);
@@ -26,21 +26,18 @@ function AdminUsuariosExcluir() {
     setIsModalOpen(false);
   };
 
-  // Função para buscar os usuários da API
   useEffect(() => {
     const fetchUsuarios = async () => {
       try {
-        const token = localStorage.getItem("access_token"); // Obtém o token do localStorage
+        const token = localStorage.getItem("access_token");
         const response = await axios.get("http://127.0.0.1:8000/v1/users/", {
-          params: {
-            offset: 0,
-            limit: 100, // Limite de usuários a serem buscados
-          },
-          headers: {
-            Authorization: `Bearer ${token}`, // Adiciona o token no cabeçalho
-          },
+          params: { offset: 0, limit: 100 },
+          headers: { Authorization: `Bearer ${token}` },
         });
-        setUsuarios(response.data); // Atualiza o estado com os dados retornados
+
+        // Filtra os usuários para excluir os administradores
+        const usuariosFiltrados = response.data.filter((usuario) => !usuario.is_admin);
+        setUsuarios(usuariosFiltrados);
       } catch (error) {
         console.error("Erro ao buscar usuários:", error);
         setErrorMessage("Erro ao carregar os usuários. Tente novamente mais tarde.");
@@ -51,16 +48,13 @@ function AdminUsuariosExcluir() {
     fetchUsuarios();
   }, []);
 
-  // Função para excluir um usuário
   const handleDelete = async () => {
     try {
-      const token = localStorage.getItem("access_token"); // Obtém o token do localStorage
+      const token = localStorage.getItem("access_token");
       await axios.delete(`http://127.0.0.1:8000/v1/users/${selectedUserId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
-      // Atualiza a lista de usuários após a exclusão
+
       setUsuarios((prev) => prev.filter((u) => u.id !== selectedUserId));
       abrirModal("sucesso");
     } catch (error) {
@@ -78,7 +72,6 @@ function AdminUsuariosExcluir() {
     }
   };
 
-  // Mapeia os dados da API para o formato esperado pela tabela
   const dados = usuarios.map((usuario) => ({
     nome: usuario.full_name,
     cpf: usuario.cpf,

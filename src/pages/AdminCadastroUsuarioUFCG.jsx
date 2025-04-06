@@ -217,7 +217,7 @@ function AdminCadastroUsuarioUFCG() {
               onChange={handleInputChange}
             />
           </div>
-          <div className="button">
+          <div className="button-user-interno">
             <DefaultButton label={"Cadastrar"} type="submit" />
           </div>
         </form>

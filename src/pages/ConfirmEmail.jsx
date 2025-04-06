@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import './ConfirmEmail.css';
 function ConfirmEmail() {
     const { token } = useParams();
     const [message, setMessage] = useState('');
@@ -16,8 +16,8 @@ function ConfirmEmail() {
                 if (response.status === 200) {
                     setMessage('Email confirmado com sucesso!');
                     setTimeout(() => {
-                        navigate("/login")
-                    }, 3000)
+                        navigate("/login");
+                    }, 3000);
                 } else {
                     setMessage('Erro ao confirmar email.');
                 }
@@ -31,9 +31,9 @@ function ConfirmEmail() {
     }, [token, navigate]);
 
     return (
-        <div>
+        <div className="confirm-email-container">
             <h1>Confirmação de Email</h1>
-            <p>{message}</p>
+            <p className={message.includes('sucesso') ? 'success-message' : 'error-message'}>{message}</p>
         </div>
     );
 }
