@@ -44,6 +44,21 @@ const CadastrarReserva = () => {
     return traducoes[mensagem] || mensagem;
   };
 
+  const getPerfil = async () => {
+    const token = localStorage.getItem("access_token");
+  
+    const response = await axios.get("http://127.0.0.1:8000/v1/users/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  
+    const user = response.data;
+  
+    const isAdmin = user?.is_admin;
+    return isAdmin;
+  };
+
   // Função para buscar arenas disponíveis
   const fetchArenas = async () => {
     try {
@@ -149,6 +164,26 @@ const CadastrarReserva = () => {
         participants: uniqueParticipants, // Lista de participantes únicos
       };
 
+          // Verifica se já há reserva no horário
+      const verifyUrl = `http://127.0.0.1:8000/v1/reservations/arena/${arenaId}`;
+      const verifyResponse = await axios.post(verifyUrl, {
+        start_date: adjustedStartDate,
+        end_date: adjustedEndDate,
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      const available = verifyResponse.data;
+
+      if (!available) {
+        fecharModal();
+        abrirModal("sobrescrever"); // Chama modal de confirmação para sobrescrever
+        return;
+      }
+
       console.log("Dados enviados para o backend:", dadosParaEnvio);
 
       // Envia a requisição para o backend
@@ -178,13 +213,6 @@ const CadastrarReserva = () => {
           message = detail.msg;
         } 
 
-        // Verifica se é erro de conflito de horário
-        if (typeof message === "string" && message.includes("Já existe uma reserva nesse horário")) {
-          fecharModal(); // Fecha o "carregando"
-          abrirModal("sobrescrever");
-          return;
-        }
-
         setErrorMessage(traduzirMensagem(message));
       } else {
         setErrorMessage("Erro ao cadastrar reserva. Tente novamente mais tarde.");
@@ -202,8 +230,17 @@ const CadastrarReserva = () => {
 
   const handleSobrescreverReserva = async () => {
     abrirModal("carregando");
-
+  
     try {
+      const isAdmin = await getPerfil(); // Buscar perfil do usuário logado
+  
+      if (!isAdmin) {
+        setErrorMessage("Apenas administradores podem sobrescrever reservas.");
+        fecharModal();
+        abrirModal("erro");
+        return;
+      }
+  
       const token = localStorage.getItem("access_token");
   
       const uniqueParticipants = [...new Set([
@@ -221,7 +258,6 @@ const CadastrarReserva = () => {
         start_date: adjustedStartDate,
         end_date: adjustedEndDate,
         participants: uniqueParticipants,
-        force: true, // sobrescrever
       };
   
       const response = await axios.post("http://127.0.0.1:8000/v1/reservations/", dadosParaEnvio, {
@@ -230,13 +266,26 @@ const CadastrarReserva = () => {
           "Content-Type": "application/json",
         },
       });
+      console.log("passou aqui");
   
       console.log("Reserva sobrescrita com sucesso:", response.data);
       fecharModal();
       abrirModal("sucesso-sobrescrita");
+  
     } catch (error) {
-      const message = error.response.data.detail || "Erro ao cadastrar reserva. Verifique os dados e tente novamente.";
-      setErrorMessage(message);
+      console.error("Erro ao sobrescrever reserva:", error);
+      const detail = error?.response?.data?.detail;
+      let message = "Erro ao cadastrar reserva. Verifique os dados e tente novamente.";
+  
+      if (typeof detail === "string") {
+        message = detail;
+      } else if (Array.isArray(detail)) {
+        message = detail[0]?.msg || message;
+      } else if (typeof detail === "object" && detail?.msg) {
+        message = detail.msg;
+      }
+  
+      setErrorMessage(traduzirMensagem(message));
       fecharModal();
       abrirModal("erro");
     }
