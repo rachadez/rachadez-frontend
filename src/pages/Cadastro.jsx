@@ -8,6 +8,7 @@ import ModalOneOption from "./components/Modal/ModalOneOption";
 import SelectInput from "./components/SelectInput/SelectInput";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ModalLoading from "./components/Modal/ModalLoading";
 
 function Cadastro() {
   const navigate = useNavigate(); 
@@ -59,14 +60,13 @@ function Cadastro() {
         occupation: "",
       }));
     }
-    
+  
     const cleanedFormData = {
       ...formData,
       cpf: formData.cpf.replace(/\D/g, ""),
       phone: formData.phone.replace(/\D/g, ""),
     };
-
-    // Validação dos campos obrigatórios
+  
     if (
       !cleanedFormData.full_name ||
       !cleanedFormData.cpf ||
@@ -80,33 +80,34 @@ function Cadastro() {
       setIsModalOpen(true);
       return;
     }
-
+  
     try {
+      // Exibe o modal de loading
+      setModalType("loading");
+      setIsModalOpen(true);
+  
       const response = await axios.post("http://127.0.0.1:8000/v1/users/signup", cleanedFormData, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-
+  
       if (response.status === 200) {
-        // Cadastro bem-sucedido
-        navigate("/login");
+        // Mostra modal de sucesso
+        setModalType("sucesso");
+        setIsModalOpen(true);
       }
     } catch (error) {
-      // Verifica se a resposta contém detalhes de erro
       const apiErrorMessage = error.response?.data?.detail;
-
-      // Trata o caso em que o erro é um array ou objeto
       const formattedErrorMessage = Array.isArray(apiErrorMessage)
         ? apiErrorMessage.map((err) => err.msg).join(", ")
         : apiErrorMessage || "Erro ao realizar cadastro. Verifique os dados e tente novamente.";
-
+  
       setErrorMessage(formattedErrorMessage);
       setModalType("erro");
+      setIsModalOpen(true);
       console.error(error);
     }
-
-    setIsModalOpen(true);
   };
 
   const closeModal = () => {
@@ -198,25 +199,27 @@ function Cadastro() {
 
       {/* Exibe o Modal dependendo do tipo de sucesso ou erro */}
       {isModalOpen && (
-        modalType === "sucesso" ? (
-          <ModalOneOption
-            iconName="triangulo-amarelo"
-            modalText="Enviamos um e-mail para você! Para concluir
-                      o seu cadastro, clique no link de confirmação
-                      que está em seu e-mail. Lembre-se de checar
-                      sua pasta de spam."
-            buttonText="Entendido!"
-            buttonPath="/login"
-          />
-        ) : (
-          <ModalOneOption
-            iconName="X"
-            modalText={errorMessage || "Ocorreu um erro inesperado. Por favor, tente novamente!"}
-            buttonText="Tentar novamente"
-            onClick={closeModal}
-          />
-        )
-      )}
+      modalType === "loading" ? (
+        <ModalLoading texto="Cadastrando usuário..." />
+      ) : modalType === "sucesso" ? (
+        <ModalOneOption
+          iconName="triangulo-amarelo"
+          modalText="Para concluir
+                    o seu cadastro, clique no link de confirmação
+                    que enviamos para seu e-mail. Lembre-se de checar
+                    sua pasta de spam!"
+          buttonText="Entendido!"
+          buttonPath="/login"
+        />
+      ) : (
+        <ModalOneOption
+          iconName="X"
+          modalText={errorMessage || "Ocorreu um erro inesperado. Por favor, tente novamente!"}
+          buttonText="Tentar novamente"
+          onClick={closeModal}
+        />
+      )
+    )}
     </div>
   );
 }

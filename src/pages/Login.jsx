@@ -62,11 +62,16 @@ function Login() {
             // Exibe mensagem de erro detalhada, se disponível
             if (error.response && error.response.status === 401) {
                 setErrorMessage("Credenciais inválidas. Verifique seu e-mail e senha.");
-            } else {
-                setErrorMessage("Erro ao fazer login. Tente novamente mais tarde.");
+              } else {
+                setErrorMessage(
+                  error.response?.data?.detail ||
+                  "Erro ao fazer login. Tente novamente mais tarde."
+                );
+              }
+              setModalType("erro");
+              setIsModalOpen(true);
+              console.error(error);
             }
-            console.error(error);
-        }
     };
 
     return (
@@ -96,7 +101,6 @@ function Login() {
                             />
                             <DefaultButton label={"Entrar"} />
                         </form>
-                        {errorMessage && <p className="error-message">{errorMessage}</p>}
                         <p onClick={handleNaoSouDaUFCG} style={{ cursor: "pointer" }}>Não sou da UFCG</p>
                         <p onClick={() => navigate("/recuperar-senha")} style={{ cursor: "pointer" }}>Esqueci minha senha</p>
                         <p onClick={() => navigate("/cadastro")} style={{ cursor: "pointer" }}>
@@ -114,6 +118,15 @@ function Login() {
                     buttonText="Entendido!"
                     onClick={() => setIsModalOpen(false)}
                 />
+            )}
+
+            {isModalOpen && modalType === "erro" && (
+            <ModalOneOption
+                iconName="X"
+                modalText={errorMessage}
+                buttonText="Tentar novamente"
+                onClick={() => setIsModalOpen(false)}
+            />
             )}
         </>
     );
