@@ -8,15 +8,13 @@ import ModalTwoOptions from "./components/Modal/ModalTwoOptions";
 import ModalOneOption from "./components/Modal/ModalOneOption";
 
 function AdminUsuariosBanir() {
-  const [usuarios, setUsuarios] = useState([]); // Estado para armazenar os usuários
-  const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
-  const [modalType, setModalType] = useState(""); // '', 'confirm', 'success', 'error'
+  const [usuarios, setUsuarios] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [modalType, setModalType] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
 
   const cabecalho = ["Nome", "CPF", "Ocupação", "Telefone"];
-
-  // Função para buscar os usuários da API
 
   useEffect(() => {
     const fetchUsuarios = async () => {
@@ -27,8 +25,9 @@ function AdminUsuariosBanir() {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        const usuariosNaoBanidos = response.data.filter((usuario) => usuario.is_active);
-        setUsuarios(usuariosNaoBanidos);
+        // Filtra os usuários para excluir os administradores e incluir apenas usuários ativos
+        const usuariosFiltrados = response.data.filter((usuario) => !usuario.is_admin && usuario.is_active);
+        setUsuarios(usuariosFiltrados);
       } catch (error) {
         console.error("Erro ao buscar usuários:", error);
         setErrorMessage("Erro ao carregar os usuários. Tente novamente mais tarde.");
@@ -51,7 +50,6 @@ function AdminUsuariosBanir() {
     setSelectedUserId(null);
   };
 
-  // Função para banir um usuário
   const handleBanir = async () => {
     try {
       const token = localStorage.getItem("access_token");
@@ -62,16 +60,15 @@ function AdminUsuariosBanir() {
       setUsuarios((prevUsuarios) =>
         prevUsuarios.filter((usuario) => usuario.id !== selectedUserId)
       );
-      abrirModal("success"); 
+      abrirModal("success");
     } catch (error) {
       console.error("Erro ao banir usuário:", error);
       const detail = error.response?.data?.detail;
       setErrorMessage(detail || "Erro ao banir o usuário. Tente novamente mais tarde.");
       abrirModal("error");
-    } 
+    }
   };
 
-  // Mapeia os dados da API para o formato esperado pela tabela
   const dados = usuarios.map((usuario) => ({
     nome: usuario.full_name,
     cpf: usuario.cpf,
@@ -99,9 +96,7 @@ function AdminUsuariosBanir() {
       />
 
       <TableList cabecalho={cabecalho} dados={dados} />
-      
 
-      {/* Modal de confirmação */}
       {isModalOpen && modalType === "confirm" && (
         <ModalTwoOptions
           iconName="triangulo-amarelo"
@@ -114,7 +109,6 @@ function AdminUsuariosBanir() {
         />
       )}
 
-      {/* Modal de sucesso */}
       {isModalOpen && modalType === "success" && (
         <ModalOneOption
           iconName="sucesso-check"
@@ -124,7 +118,6 @@ function AdminUsuariosBanir() {
         />
       )}
 
-      {/* Modal de erro */}
       {isModalOpen && modalType === "error" && (
         <ModalOneOption
           iconName="X"
@@ -138,4 +131,3 @@ function AdminUsuariosBanir() {
 }
 
 export default AdminUsuariosBanir;
-
