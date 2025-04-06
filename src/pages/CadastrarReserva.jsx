@@ -27,6 +27,23 @@ const CadastrarReserva = () => {
   const [arenaId, setArenaId] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
 
+  const abrirModal = (tipo) => {
+    setModalType(tipo);
+    setIsModalOpen(true);
+  };
+  
+  const fecharModal = () => {
+    setModalType("");
+    setIsModalOpen(false);
+  };
+
+  const traduzirMensagem = (mensagem) => {
+    const traducoes = {
+      "Input should be a valid UUID, invalid length: expected length 32 for simple format, found 0": "Selecione um responsável pela reserva",
+    };
+    return traducoes[mensagem] || mensagem;
+  };
+
   // Função para buscar arenas disponíveis
   const fetchArenas = async () => {
     try {
@@ -46,6 +63,7 @@ const CadastrarReserva = () => {
     } catch (error) {
       console.error("Erro ao buscar arenas:", error);
       setErrorMessage("Erro ao carregar arenas. Tente novamente mais tarde.");
+      abrirModal("erro-loading");
     }
   };
 
@@ -68,6 +86,7 @@ const CadastrarReserva = () => {
     } catch (error) {
       console.error("Erro ao buscar usuários:", error);
       setErrorMessage("Erro ao carregar usuários. Tente novamente mais tarde.");
+      abrirModal("erro-loading");
     }
   };
 
@@ -80,6 +99,7 @@ const CadastrarReserva = () => {
       setUfcgParticipantInputs(ufcgParticipantInputs.filter((_, i) => i !== index));
     } else {
       setErrorMessage("Usuário não encontrado ou não é da UFCG.");
+      abrirModal("erro");
     }
   };
 
@@ -92,6 +112,7 @@ const CadastrarReserva = () => {
       setExternalParticipantInputs(externalParticipantInputs.filter((_, i) => i !== index));
     } else {
       setErrorMessage("Usuário não encontrado ou não é externo.");
+      abrirModal("erro");
     }
   };
 
@@ -103,6 +124,8 @@ const CadastrarReserva = () => {
 
   // Função para cadastrar reserva
   const handleCadastrarReserva = async () => {
+    abrirModal("carregando");
+
     try {
       const token = localStorage.getItem("access_token");
 
@@ -137,18 +160,38 @@ const CadastrarReserva = () => {
       });
 
       console.log("Reserva realizada com sucesso:", response.data);
-      setModalType("reserva-realizada");
-      setIsModalOpen(true);
+      fecharModal(); //fecha o loading;
+      abrirModal("sucesso");
     } catch (error) {
       console.error("Erro ao cadastrar reserva:", error);
+      const detail = error?.response?.data?.detail;
+      let message = "Erro ao cadastrar reserva";
 
-      // Exibe o motivo do erro no console para depuração
       if (error.response && error.response.data) {
-        console.error("Detalhes do erro:", error.response.data);
-        setErrorMessage(error.response.data.detail || "Erro ao cadastrar reserva. Verifique os dados e tente novamente.");
+       if (typeof detail === "string") {
+          message = detail;
+        } else if (Array.isArray(detail)) {
+          // Se for uma lista de erros, pega a primeira mensagem
+          message = detail[0]?.msg || message;
+        } else if (typeof detail === "object" && detail?.msg) {
+          // objeto com msg
+          message = detail.msg;
+        } 
+
+        // Verifica se é erro de conflito de horário
+        if (typeof message === "string" && message.includes("Já existe uma reserva nesse horário")) {
+          fecharModal(); // Fecha o "carregando"
+          abrirModal("sobrescrever");
+          return;
+        }
+
+        setErrorMessage(traduzirMensagem(message));
       } else {
         setErrorMessage("Erro ao cadastrar reserva. Tente novamente mais tarde.");
       }
+
+      fecharModal(); //fecha o loading;
+      abrirModal("erro");
     }
   };
 
@@ -156,6 +199,48 @@ const CadastrarReserva = () => {
     fetchArenas();
     fetchUsers(); // Busca os usuários cadastrados ao montar o componente
   }, []);
+
+  const handleSobrescreverReserva = async () => {
+    abrirModal("carregando");
+
+    try {
+      const token = localStorage.getItem("access_token");
+  
+      const uniqueParticipants = [...new Set([
+        ...(responsavel?.id ? [responsavel.id] : []),
+        ...ufcgParticipants.map((p) => p.id),
+        ...externalParticipants.map((p) => p.id),
+      ])];
+  
+      const adjustedStartDate = subtractHours(new Date(selectedDate), 3).toISOString();
+      const adjustedEndDate = subtractHours(new Date(endDate), 3).toISOString();
+  
+      const dadosParaEnvio = {
+        responsible_user_id: responsavel?.id || "",
+        arena_id: String(arenaId),
+        start_date: adjustedStartDate,
+        end_date: adjustedEndDate,
+        participants: uniqueParticipants,
+        force: true, // sobrescrever
+      };
+  
+      const response = await axios.post("http://127.0.0.1:8000/v1/reservations/", dadosParaEnvio, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+  
+      console.log("Reserva sobrescrita com sucesso:", response.data);
+      fecharModal();
+      abrirModal("sucesso-sobrescrita");
+    } catch (error) {
+      const message = error.response.data.detail || "Erro ao cadastrar reserva. Verifique os dados e tente novamente.";
+      setErrorMessage(message);
+      fecharModal();
+      abrirModal("erro");
+    }
+  };
 
   return (
     <div className="container-cadastrar-reserva">
@@ -288,6 +373,55 @@ const CadastrarReserva = () => {
             Cadastrar Reserva
           </button>
         </div>
+
+        {isModalOpen && modalType === "sobrescrever" && (
+        <ModalTwoOptions
+          iconName="calendario-erro"
+          modalText="Já existe uma reserva nesse horário. Deseja sobrescrever?"
+          buttonTextOne="Sobrescrever"
+          buttonColorOne="red"
+          onClickButtonOne={handleSobrescreverReserva}
+          buttonTextTwo="Cancelar"
+          onClickButtonTwo={fecharModal}
+        />
+      )}
+
+        {isModalOpen && modalType === "sucesso" && (
+        <ModalOneOption
+          iconName="calendario-check"
+          modalText="Reserva realizada com sucesso!"
+          buttonText="Voltar"
+          buttonPath="/visualizar-reservas"
+        />
+      )}
+
+      {isModalOpen && modalType === "sucesso-sobrescrita" && (
+        <ModalOneOption
+          iconName="calendario-check"
+          modalText="Reserva sobrescrita com sucesso!"
+          buttonText="Voltar"
+          buttonPath="/visualizar-reservas"
+        />
+      )}
+
+      {isModalOpen && modalType === "erro" && (
+        <ModalOneOption
+          iconName="X"
+          modalText={errorMessage || "Erro inesperado, tente novamente mais tarde."}
+          buttonText="Fechar"
+          buttonPath=""
+          onClick={fecharModal}
+        />
+      )}
+
+      {isModalOpen && modalType === "erro-loading" && (
+        <ModalOneOption
+          iconName="circulo-erro"
+          modalText={errorMessage || "Erro ao carregar dados."}
+          buttonText="Voltar"
+          buttonPath="/visualizar-reservas"
+        />
+      )}
       </section>
     </div>
   );
