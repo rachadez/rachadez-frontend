@@ -31,6 +31,12 @@ const UserModalidade = () => {
     "society": "futebol", 
   };
 
+  const corrigirNome = (nome) => {
+    return nome
+      .replace(/volei/gi, "Vôlei")
+      .replace(/tenis/gi, "Tênis")
+  };
+
   // Função para buscar as arenas disponíveis
   const fetchArenas = async () => {
     abrirModal("carregando");
@@ -52,7 +58,7 @@ const UserModalidade = () => {
       
         return {
           icon: getCustomIcon(tipoPadronizado),
-          title: `${arena.name} - ${arena.type}`,
+          title: corrigirNome(arena.name),
           path: `/user-reserva-horario/${tipoPadronizado}/${arena.id}`,
           disabled: false,
           id: arena.id,
