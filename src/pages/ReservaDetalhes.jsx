@@ -10,6 +10,7 @@ import Logo from "../assets/Logo_3_vazada.png";
 import ModalTwoOptions from "./components/Modal/ModalTwoOptions";
 import ModalOneOption from "./components/Modal/ModalOneOption";
 import axios from "axios";
+import ModalLoading from "./components/Modal/ModalLoading";
 
 const ReservaDetalhes = () => {
   const navigate = useNavigate();
@@ -18,6 +19,16 @@ const ReservaDetalhes = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState("");
   const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
+
+  const abrirModal = (tipo) => {
+    setModalType(tipo);
+    setIsModalOpen(true);
+  };
+  
+  const fecharModal = () => {
+    setModalType("");
+    setIsModalOpen(false);
+  };
 
   // Função para buscar o user_id do usuário logado
   const fetchUserId = async () => {
@@ -58,6 +69,7 @@ const ReservaDetalhes = () => {
     } catch (error) {
       console.error("Erro ao buscar os dados da reserva:", error);
       setErrorMessage("Erro ao carregar os dados da reserva. Tente novamente mais tarde.");
+      abrirModal("erro-loading");
     }
   };
 
@@ -133,12 +145,21 @@ const ReservaDetalhes = () => {
     doc.save("reserva_detalhes.pdf");
   };
 
-  if (errorMessage) {
-    return <p className="error-message">{errorMessage}</p>;
+  if (errorMessage && isModalOpen && modalType === "erro-loading") {
+    return (
+      <ModalOneOption
+        iconName="circulo-erro"
+        modalText={errorMessage || "Erro ao carregar dados."}
+        buttonText="Voltar"
+        buttonPath="/visualizar-reservas"
+      />
+    );
   }
 
   if (!reservaData) {
-    return <p>Carregando dados da reserva...</p>;
+    return (
+      <ModalLoading texto="Carregando dados da reserva"/>
+    )
   }
 
   return (
@@ -217,6 +238,25 @@ const ReservaDetalhes = () => {
         <ModalOneOption
           iconName="sucesso-check"
           modalText="Reserva deletada com sucesso!"
+          buttonText="Voltar"
+          buttonPath="/visualizar-reservas"
+        />
+      )}
+
+      {isModalOpen && modalType === "erro" && (
+        <ModalOneOption
+          iconName="X"
+          modalText={errorMessage || "Erro inesperado, tente novamente mais tarde."}
+          buttonText="Fechar"
+          buttonPath=""
+          onClick={fecharModal}
+        />
+      )}
+
+      {isModalOpen && modalType === "erro-loading" && (
+        <ModalOneOption
+          iconName="circulo-erro"
+          modalText={errorMessage || "Erro ao carregar dados."}
           buttonText="Voltar"
           buttonPath="/visualizar-reservas"
         />
