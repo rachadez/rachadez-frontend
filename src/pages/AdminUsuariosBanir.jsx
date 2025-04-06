@@ -14,7 +14,7 @@ function AdminUsuariosBanir() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
 
-  const cabecalho = ["Nome", "CPF", "Ocupação", "Telefone", "Ações"];
+  const cabecalho = ["Nome", "CPF", "Ocupação", "Telefone"];
 
   // Função para buscar os usuários da API
 

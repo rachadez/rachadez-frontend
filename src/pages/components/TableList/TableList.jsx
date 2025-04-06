@@ -25,7 +25,7 @@ const TableList = ({ cabecalho, dados, dadosEdit = [], botao, hideAcoes = false,
               </div>
             ))}
 
-            {!hideAcoes && (
+            {hideAcoes && (
               <div className="acoes-container">
                 <Eye
                   className="icon view"

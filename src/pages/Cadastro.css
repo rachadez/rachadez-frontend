@@ -49,6 +49,13 @@ select {
   margin-bottom: 60px;
 }
 
+.cadastro-page .button-user-interno {
+  width: 330px;
+  display: flex;
+  grid-column: 1 / -1;
+  margin-bottom: 60px;
+}
+
 .form-wrapper {
   display: flex;
   flex-direction: column;

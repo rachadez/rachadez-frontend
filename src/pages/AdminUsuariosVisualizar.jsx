@@ -64,6 +64,12 @@ function AdminUsuariosVisualizar() {
     cpf: usuario.cpf,
     ocupacao: usuario.occupation,
     telefone: usuario.phone,
+    acoes: (
+      <DefaultButton
+        label="Visualizar"
+        onClick={() => navigate(`/admin-visualizar-usuario/${usuario.id}`)}
+      />
+    ),
   }));
 
   return (
@@ -81,7 +87,6 @@ function AdminUsuariosVisualizar() {
         <TableList
           cabecalho={cabecalho}
           dados={dados}
-          botao={<DefaultButton label="Ver" />}
         />
       )}
     </>
