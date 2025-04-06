@@ -11,6 +11,7 @@ import ModalTwoOptions from "./components/Modal/ModalTwoOptions";
 import ModalOneOption from "./components/Modal/ModalOneOption";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import ModalLoading from "./components/Modal/ModalLoading";
 
 const EditarReserva = () => {
     const { id: reservation_id } = useParams();
@@ -26,6 +27,16 @@ const EditarReserva = () => {
     const [newExternalParticipant, setNewExternalParticipant] = useState({ name: "", email: "" });
     const [editingUfcgIndex, setEditingUfcgIndex] = useState(null);
     const [editingExternalIndex, setEditingExternalIndex] = useState(null);
+
+    const abrirModal = (tipo) => {
+        setModalType(tipo);
+        setIsModalOpen(true);
+      };
+      
+      const fecharModal = () => {
+        setModalType("");
+        setIsModalOpen(false);
+      };
 
     const fetchUserId = async () => {
         try {
@@ -43,7 +54,8 @@ const EditarReserva = () => {
             return response.data.id;
         } catch (error) {
             console.error("Erro ao buscar o ID do usuário:", error);
-            setErrorMessage("Erro ao carregar os dados do usuário.");
+            setErrorMessage(error.response.data.detail);
+            abrirModal("erro-loading"); 
             return null;
         }
     };
@@ -67,7 +79,8 @@ const EditarReserva = () => {
             });
         } catch (error) {
             console.error("Erro ao buscar os dados da reserva:", error);
-            setErrorMessage("Erro ao carregar os dados da reserva.");
+            setErrorMessage(error.response.data.detail);
+            abrirModal("erro-loading"); 
         }
     };
 
@@ -117,6 +130,7 @@ const EditarReserva = () => {
         } catch (error) {
             console.error("Erro ao verificar horário:", error);
             setErrorMessage("Erro ao verificar horário. Tente novamente.");
+            abrirModal("erro"); 
         }
     };
 
@@ -133,6 +147,7 @@ const EditarReserva = () => {
             if (!token) {
                 console.error("Token não encontrado");
                 setErrorMessage("Token não encontrado, faça login novamente.");
+                abrirModal("erro"); 
                 return;
             }
 
@@ -155,11 +170,14 @@ const EditarReserva = () => {
                         return response.data.user_id;
                     } catch (error) {
                         console.error(`Erro ao buscar UUID para o email ${email}:`, error);
+                        abrirModal("erro"); 
                         if (error.response) {
                             console.error("Dados da resposta:", error.response.data);
                             setErrorMessage(`Erro ao buscar usuário ${email}: ${error.response.data.detail || error.message}`);
+                            abrirModal("erro"); 
                         } else {
                             setErrorMessage(`Erro ao buscar usuário ${email}.`);
+                            abrirModal("erro"); 
                         }
                         throw error;
                     }
@@ -186,14 +204,16 @@ const EditarReserva = () => {
             });
 
             console.log("Reserva editada com sucesso. Resposta:", response.data);
-            navigate(`/reserva/${reservation_id}`);
+            abrirModal("sucesso")
         } catch (error) {
             console.error("Erro ao salvar as alterações:", error);
             if (error.response) {
                 console.error("Dados da resposta:", error.response.data);
                 setErrorMessage(`Erro ao salvar: ${error.response.data.detail || error.message}`);
+                abrirModal("erro"); 
             } else {
                 setErrorMessage("Erro ao salvar as alterações.");
+                abrirModal("erro"); 
             }
         } finally {
             setIsSaving(false);
@@ -206,6 +226,8 @@ const EditarReserva = () => {
             setReservaData((prev) => ({ ...prev, [type]: updatedParticipants }));
         } catch (error) {
             console.error("Erro ao remover participante:", error);
+            setErrorMessage(error.response.data.detail)
+            abrirModal("erro"); 
         }
     };
 
@@ -246,13 +268,8 @@ const EditarReserva = () => {
             setShowExternalInput(true);
         }
     };
-
-    if (errorMessage) {
-        return <p className="error-message">{errorMessage}</p>;
-    }
-
     if (!reservaData) {
-        return <p>Carregando dados da reserva...</p>;
+        return <ModalLoading />
     }
 
     return (
@@ -380,7 +397,7 @@ const EditarReserva = () => {
                             iconName="calendario-check"
                             modalText="Reserva atualizada com sucesso!"
                             buttonText="Voltar"
-                            buttonPath={"/admin-detalhes-reserva"}
+                            buttonPath={`/admin-detalhes-reserva/${reservation_id}`}
                         />
                     )}
 
@@ -396,26 +413,23 @@ const EditarReserva = () => {
                         />
                     )}
 
-                    {/* Modal de horário indisponivel */}
-                    {isModalOpen && modalType === "horario-indisponivel" && (
+                    {/* Modal de erro */}
+                    {isModalOpen && modalType === "erro" && (
                         <ModalOneOption
                             iconName="calendario-erro"
-                            modalText="Data/horário escolhido indisponível. Tente novamente"
+                            modalText={errorMessage}
                             buttonText="Tentar novamente"
                             onClick={() => setIsModalOpen(false)}
                         />
                     )}
 
-                    {/* Modal pra caso o usuario responsavel nao seja permitido ou haja qualquer
-                        problema com os dados inseridos */}
-                    {isModalOpen && modalType === "credenciais-invalidas" && (
+                    {/* Modal de erro no loading */}
+                    {isModalOpen && modalType === "erro-loading" && (
                         <ModalOneOption
                             iconName="circulo-erro"
-                            modalText="Credenciais inválidas!
-                            Cheque os dados inseridos e
-                            tente novamente"
-                            buttonText="Tentar novamente"
-                            onClick={() => setIsModalOpen(false)}
+                            modalText={errorMessage}
+                            buttonText="Voltar"
+                            buttonPath={`/admin-detalhes-reserva/${reservation_id}`}
                         />
                     )}
                 </div>
