@@ -6,6 +6,7 @@ import Header from "./components/Header/Header";
 import MainContent from "./components/MainContent/MainContent";
 import SelectInput from "./components/SelectInput/SelectInput";
 import axios from "axios";
+import ModalOneOption from "./components/Modal/ModalOneOption";
 
 function AdminCadastroUsuarioUFCG() {
   // Lista de opções para o campo "Ocupação"
@@ -25,8 +26,30 @@ function AdminCadastroUsuarioUFCG() {
     phone: "",
   });
 
-  const [errorMessage, setErrorMessage] = useState(""); // Estado para mensagens de erro
-  const [successMessage, setSuccessMessage] = useState(""); // Estado para mensagens de sucesso
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalType, setModalType] = useState("");
+  const [errorMessage, setErrorMessage] = useState([]); // Estado para mensagens de erro
+
+  const abrirModal = (type) => {
+    setModalType(type);
+    setIsModalOpen(true);
+  };
+
+  const fecharModal = () => {
+    setModalType("");
+    setIsModalOpen(false);
+  };
+
+  const traduzirMensagem = (mensagem) => {
+    const traducoes = {
+      "String should have at least 8 characters": "A senha deve ter pelo menos 8 caracteres",
+      "String should have at most 11 characters": "O telefone/cpf deve ter no máximo 11 dígitos",
+      "Invalid email: must have a domain of ufcg.edu.br.": "E-mail inválido: o domínio deve ser '*.ufcg.edu.br'.",
+      "Input should be 'ALUNO', 'SERVIDOR', 'PROFESSOR' or 'EXTERNO'": "Selecione uma ocupação válida: Aluno, Servidor, Professor ou Externo.",
+    };
+  
+    return traducoes[mensagem] || mensagem; // retorna a tradução, ou a original se não tiver
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -50,9 +73,7 @@ function AdminCadastroUsuarioUFCG() {
         },
       });
 
-      setSuccessMessage("Usuário cadastrado com sucesso!");
-      setErrorMessage(""); // Limpa mensagens de erro
-      console.log("Resposta da API:", response.data);
+      abrirModal("sucesso");
 
       // Limpa o formulário após o cadastro
       setUsuario({
@@ -64,15 +85,22 @@ function AdminCadastroUsuarioUFCG() {
         phone: "",
       });
     } catch (error) {
-      console.error("Erro ao cadastrar usuário:", error);
+    console.error("Erro ao cadastrar usuário:", error);
+ 
+    let mensagemBackend = "Erro ao cadastrar o usuário. Tente novamente mais tarde.";
 
-      if (error.response && error.response.status === 422) {
-        setErrorMessage("Erro nos dados enviados. Verifique os campos e tente novamente.");
-      } else {
-        setErrorMessage("Erro ao cadastrar o usuário. Tente novamente mais tarde.");
-      }
+    const detalhe = error.response?.data?.detail;
 
-      setSuccessMessage(""); // Limpa mensagens de sucesso
+    if (detalhe) {
+      const mensagens = Array.isArray(detalhe)
+        ? detalhe.map((err) => traduzirMensagem(err.msg))
+        : [typeof detalhe === "string" ? traduzirMensagem(detalhe) : traduzirMensagem(detalhe?.msg)];
+
+      mensagemBackend = mensagens[0];
+    }
+
+    setErrorMessage(mensagemBackend);
+    abrirModal("erro");
     }
   };
 
@@ -140,15 +168,30 @@ function AdminCadastroUsuarioUFCG() {
               onChange={(e) => setUsuario({ ...usuario, phone: e.target.value })}
             />
           </div>
-
-          {errorMessage && <p className="error-message">{errorMessage}</p>}
-          {successMessage && <p className="success-message">{successMessage}</p>}
-
           <div className="button">
             <DefaultButton label={"Cadastrar"} type="submit" />
           </div>
         </form>
       </div>
+
+
+      {isModalOpen && modalType === "erro" && (
+        <ModalOneOption
+          iconName="X"
+          modalText={errorMessage}
+          buttonText="Fechar"
+          onClick={fecharModal}
+        />
+      )}
+
+      {isModalOpen && modalType === "sucesso" && (
+        <ModalOneOption
+          iconName="sucesso-check"
+          modalText="Usuário cadastrado com sucesso!"
+          buttonText="Fechar"
+          onClick={fecharModal}
+        />
+      )}
     </div>
   );
 }
