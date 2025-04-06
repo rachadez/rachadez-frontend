@@ -18,6 +18,25 @@
    align-items: left;
 }
 
+.regras-agendamento {
+    display: flex;
+    margin-top: 50px;
+    justify-content: center;
+}
+
+.regras-conteudo h4 {
+    color: #0B53B8;
+    margin-top: 1.5rem;
+}
+
+.regras-conteudo p {
+    max-width: 95%;
+}
+
+.default-button {
+    max-width: 300px;
+}
+
 .date-container {
     margin-bottom: 20px;
 }

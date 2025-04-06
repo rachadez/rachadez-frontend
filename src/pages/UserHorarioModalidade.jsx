@@ -5,11 +5,13 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import DefaultButton from './components/Buttons/DefaultButton';
 import ModalOneOption from './components/Modal/ModalOneOption';
+import RegrasDialog from './components/RegrasDialog/RegrasDialog'
 
 const UserHorarioModalidade = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedTime, setSelectedTime] = useState(null);
     const [selectedDate, setSelectedDate] = useState("");
+    const [dialogVisivel, setDialogVisivel] = useState(false);
 
     const { modalidade, quadra } = useParams();
     const location = useLocation();
@@ -92,6 +94,15 @@ const UserHorarioModalidade = () => {
                 subtitle="Horários disponíveis"
                 path={"/user-reserva-modalidade"}
             />
+
+        <div className="regras-agendamento">
+            <DefaultButton onClick={() => setDialogVisivel(true)} label="Horários Permitidos"></DefaultButton>
+
+            <RegrasDialog
+                visible={dialogVisivel}
+                onHide={() => setDialogVisivel(false)}
+            />
+        </div>
 
             <div className="container-agendamento">
                 <h2>Agende um horário</h2>
