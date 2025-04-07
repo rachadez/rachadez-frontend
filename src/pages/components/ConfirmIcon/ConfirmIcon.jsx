@@ -1,10 +1,9 @@
 import React from "react";
-import "./ConfirmIcon.css";
 
 const ConfirmIcon = ({ onClick }) => {
   return (
     <div className="icon" onClick={onClick}>
-      <ion-icon name="checkmark-circle"></ion-icon>
+      <ion-icon name="checkmark-circle" style={{ fontSize: "30px", color: "blue" }} />
     </div>
   );
 };
