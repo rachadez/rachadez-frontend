@@ -3,8 +3,7 @@ import "./DefaultButton.css";
 
 import { useNavigate } from "react-router-dom";
 
-function DefaultButton({ label, onClick, to }) {
-
+function DefaultButton({ label, onClick, to, className }) {
     const navigate = useNavigate();
 
     const handleClick = () => {
@@ -17,11 +16,11 @@ function DefaultButton({ label, onClick, to }) {
 
     return (
         <Button             
-            className="default-button"
+            className={`default-button ${className}`}
             label={label}
             onClick={handleClick}
         ></Button>
-    )
+    );
 }
 
 export default DefaultButton;

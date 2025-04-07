@@ -38,20 +38,18 @@ body {
   margin-top: 0;
 }
 
-.form-grid {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  align-items: center;
+.responsavel-label {
+  font-size: 0.875rem;
+  color: gray;
+  margin-right: 16px; 
 }
 
 }
 
-.form-grid {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  align-items: center;
+.responsavel-label {
+  font-size: 0.875rem;
+  color: gray;
+  margin-right: 16px; 
 }
 
 @media (min-width: 768px) {
@@ -65,6 +63,21 @@ body {
   flex-direction: column;
   align-items: center;
   width: 18%;
+}
+
+.input-date-time {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.view-date-time {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;;
 }
 
 label {
@@ -88,6 +101,14 @@ label {
   outline: none;
   border-color: #0B53B8;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.date-time-section {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding-left: 6rem;
 }
 
 .participants-section {
@@ -130,6 +151,7 @@ label {
 .participant-list {
   display: flex;
   flex-direction: column;
+  margin-bottom: 40px;
 }
 
 .participant-item {
@@ -143,22 +165,34 @@ label {
 
 .participant-item span {
   flex: 1;
-  margin-right: 1rem;
+  margin-right: 16px; 
+  
   text-overflow: ellipsis;
   overflow: hidden;
   word-wrap: break-word;
 }
 
 .participant-email {
-  margin-right: 1rem;
+  margin-right: 16px; 
   color: #6b7280;
   word-wrap: break-word;
 }
 
-
 .participant-email,
 .participant-cpf {
   color: #6b7280;
+}
+
+.participant-item input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.participant-item .responsavel-label {
+  margin-right: 46px; 
+}
+
+.participant-item .trash-icon {
+  margin-left: 32px; 
 }
 
 .input-row {
@@ -178,7 +212,8 @@ label {
 .submit-button-container {
   display: flex;
   justify-content: center;
-  margin-top: 1.5rem;
+  margin-top: 0px;
+  margin-bottom: 1.5rem;
 }
 
 .submit-button {
@@ -199,7 +234,7 @@ label {
 
 .participant-item input {
   padding: 0.5rem;
-  margin-right: 1rem;
+  margin-right: 16px; 
   border: 1px solid #d1d5db;
   border-radius: 0.375rem;
 }
@@ -223,9 +258,7 @@ label {
   background-color: #1d4ed8;
 }
 
-
 @media (max-width: 767px) {
-
   .form-grid {
     flex-direction: column;
     justify-content: flex-start;
@@ -238,12 +271,23 @@ label {
     align-items: flex-start;
   }
 
-  .participant-item input {
+  .participant-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .participant-item span,
+  .participant-item input[type="email"],
+  .participant-item input[type="checkbox"],
+  .participant-item label {
     width: 100%;
-    padding: 0.5rem;
     margin-right: 0;
-    border: 1px solid #d1d5db;
-    border-radius: 0.375rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .action-icons {
+    width: 100%;
+    justify-content: flex-start;
   }
 
   .participants-section {
@@ -255,6 +299,13 @@ label {
     width: 100%;
     padding: 1rem;
   }
+
+  .add-button {
+    font-size: 1.5rem;
+  }
+
+  .participant-item .trash-icon {
+    width: 112px;
+    height: 72px;
+  }
 }
-
-

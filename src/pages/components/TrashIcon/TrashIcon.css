@@ -1,0 +1,12 @@
+.trash-icon {
+    width: 24px;
+    height: 24px;
+    color: red;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.trash-icon:hover {
+    transform: scale(1.1);
+}
+

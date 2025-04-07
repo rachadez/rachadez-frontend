@@ -1,0 +1,35 @@
+.input-container-read-only {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-family: 'Open Sans', sans-serif;
+  }
+  
+  .input-container-read-only label {
+    font-size: 20px;
+    color: #0B53B8;
+    margin-bottom: 0.5rem;
+  }
+  
+  .input-container-read-only select {
+    font-size: 1rem; 
+    color: #717171;
+    appearance: none;
+    border: 1px solid #d1d1d1;
+  }
+
+  .input-container-read-only option {
+    color: #717171;
+  }
+  
+  .input-container-read-only select.error {
+    border-color: #FF4646;
+  }
+  
+  .input-container-read-only .error-message {
+    color: #FF4646;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+    text-align: left;
+  }
+  

@@ -1,21 +1,45 @@
-# React + Vite
+# Racha10 — Frontend
 
-Este template fornece uma configuração mínima para usar React com Vite, com HMR (Hot Module Replacement) e algumas regras do ESLint.
-
-Atualmente, estão disponíveis dois plugins oficiais:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md): utiliza [Babel](https://babeljs.io/) para Fast Refresh.
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc/blob/main/packages/plugin-react-swc/README.md): utiliza [SWC](https://swc.rs/) para Fast Refresh.
+Este repositório contém o código-fonte do frontend do projeto **Racha10**, uma plataforma desenvolvida para **digitalizar o processo de agendamento e gestão do Complexo Esportivo da UFCG**.
 
 ---
 
-## Comandos úteis
+## 📦 Tecnologias Utilizadas
 
-### `npm install`
-Este comando instala todas as dependências do projeto listadas no arquivo `package.json`. É necessário executá-lo apenas uma vez, ou sempre que novas dependências forem adicionadas ao projeto.
+- **[React](https://reactjs.org/)** – Biblioteca principal para construção da interface
+- **[Vite](https://vitejs.dev/)** – Ferramenta de build
+- **[PrimeReact](https://primereact.org/)** – Componentes UI
+- **[PrimeIcons](https://primefaces.org/primeicons/)** – Conjunto de ícones integrados ao PrimeReact
+- **[Lucide](https://lucide.dev/)** – Ícones em SVG personalizáveis
+- **JavaScript** – Linguagem base da aplicação
+- **CSS** – Estilização
+- **[React Router DOM](https://reactrouter.com/)** – Gerenciamento de rotas SPA
+- **[NPM](https://www.npmjs.com/)** – Gerenciador de dependências
 
-### `npm run dev`
-Este comando inicia o servidor de desenvolvimento do Vite. Ele cria uma versão do projeto que você pode acessar no navegador para desenvolvimento, com HMR (Hot Module Replacement), o que significa que as alterações no código serão refletidas automaticamente na página sem a necessidade de recarregar.
+---
 
-### `npm i react-router-dom`
-Este comando instala a biblioteca `react-router-dom`, que é usada para gerenciar as rotas de navegação em um aplicativo React. Por exemplo, ela permite criar páginas e navegar entre elas sem recarregar a aplicação.
+## 🛠️ Como executar o projeto localmente
+
+1. **Clone o repositório:**
+
+```bash
+git clone https://github.com/rachadez/rachadez-frontend
+cd rachadez-frontend
+```
+
+2. **Instale as dependências:**
+```bash
+npm install
+```
+
+3. **Inicie o servidor de desenvolvimento:**
+```bash
+npm run dev
+```
+O projeto estará disponível em ```http://localhost:5173```
+
+## Autores
+- [Ananda Vilar](https://github.com/4nandaw)
+- [Filipe Magno](https://github.com/magnofilipe)
+- [Kevin Nicolas](https://github.com/kevinicolas22)
+- [Leila Farias](https://github.com/LeilaFarias)
